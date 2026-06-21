@@ -1,6 +1,6 @@
 # Agent Profile
 
-This is the recommended engineering profile for agents working inside Forge-managed
+This is the recommended engineering profile for agents working inside Gither-managed
 workspaces.
 
 ## Writing
@@ -27,9 +27,9 @@ workspaces.
 
 ## Multi-Repo Discipline
 
-- Route first with Forge.
+- Route first with Gither.
 - Read the selected repo docs.
 - Make the change.
 - Run selected repo tests.
-- Run the Forge test plan if shared contracts changed.
+- Run the Gither test plan if shared contracts changed.
 - Update the workspace manifest if repository ownership changed.

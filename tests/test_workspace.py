@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from forge.workspace import discover_workspace
+from gither.workspace import discover_workspace
 
 
 def test_discover_workspace_finds_git_dirs(tmp_path: Path) -> None:

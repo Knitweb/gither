@@ -1,4 +1,4 @@
-# Forge Roadmap
+# Gither Roadmap
 
 ## Phase 1: Current Build
 
@@ -8,7 +8,10 @@
 - Test-plan output.
 - Repo graph export.
 - Benchmark plan.
-- Documentation site.
+- Repository snapshot command.
+- Python source audit.
+- Local review gate.
+- Versioned change notes.
 
 ## Phase 2: Knitweb Integration
 
@@ -16,6 +19,8 @@
 - Add content-addressed graph export.
 - Track which routes were correct after human review.
 - Feed accepted routing decisions into Lens.
+- Sign change notes and CI receipts.
+- Move review state out of hosted forges.
 
 ## Phase 3: Benchmark Harness
 
@@ -32,10 +37,12 @@
 - Add mixture-of-experts review slots.
 - Add final review checklist.
 - Add CI adapters for repo-local and cross-repo tests.
+- Add serverless CI receipt exchange between developer nodes.
+- Add DApp-ready release acceptance records.
 
 ## Phase 5: Distribution Resilience
 
-- Mirror Forge outside GitHub.
+- Mirror Gither outside GitHub and GitLab.
 - Publish source bundles.
 - Add Radicle repository identity.
 - Archive releases with Software Heritage.

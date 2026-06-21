@@ -1,39 +1,53 @@
-# Forge
+# Gither
 
-Forge is the Knitweb multi-repo build and navigation layer.
-It does not replace Git.
-It tells an agent, developer, or reviewer which repository should change, which tests
-prove the change, and how the resulting knowledge can be connected back into the
-Knitweb graph.
+Gither is the Knitweb code forge for serverless continuous development and
+continuous integration.
 
-The first goal is practical:
+It is meant to replace GitHub and GitLab as the trusted application layer for code
+ownership, change review, release gating, and repository collaboration.
+Git can still be used underneath as the open-source, de-facto interoperable object and
+transport layer.
+GitHub and GitLab are optional mirrors, not the authority.
 
-- stop manual project switching from becoming chaos;
-- keep separate repositories without losing the whole-system view;
-- route a request to the right repo from plain language;
-- generate a repo relation graph;
-- produce a test plan across the portfolio;
-- document benchmark criteria for Knitweb/Lens versus LightRAG-style systems.
+Documentation is not the goal.
+Documentation is a consequence of disciplined code changes:
 
-The product idea is simple: **no LLM at compile time when the graph is already
-knitted**.
-Small changes should update deterministic relations and metadata instead of forcing
-an expensive full graph rebuild.
+- every code change has versioned context;
+- the programmer records why the change exists;
+- Python code is audited for annotations, docstrings, and manageable symbol size;
+- tests and review gates are attached to the repository state;
+- releases are accepted by Gither before they are mirrored outward.
 
-## Why Forge
+## Why Gither
 
-Knitweb is becoming a portfolio:
+Git is open source, but not a formally ratified open standard.
+There is no ISO Git and no IETF RFC that defines Git as a vendor-neutral standard.
+In practice, Git behaves like a strong de-facto standard because its formats and
+protocols are openly documented and independently reimplemented by libraries such as
+libgit2, JGit, go-git, gitoxide, Dulwich, and isomorphic-git.
 
-- `knitweb` is the relation fabric and content-addressed graph layer.
-- `pulse` is the token and live-state layer.
-- `lens` is the reasoning and query layer.
-- `monitor` observes repository and network activity.
-- `vbank` handles governance and time-series signals.
-- `bt` is the basket-trust DEX.
-- `molgang` is the game and P2P deployment surface.
+Gither keeps the useful Git object model while moving the forge layer away from
+central platforms.
+The long-term target is a serverless developer network where code, changes, reviews,
+tests, releases, and CI receipts can be verified through Knitweb records instead of
+trusted through one hosted service.
 
-Separate repos reduce spaghetti code, but they create a coordination problem.
-Forge is the coordination layer.
+## Current Build
+
+Gither already provides:
+
+- repository discovery;
+- task routing across Knitweb repos;
+- repo graph export;
+- cross-repo test plan output;
+- Git repository snapshots;
+- Python code discipline audit;
+- versioned change notes in `.gither/changes`;
+- a local review gate for source state and Python quality.
+
+This is still early.
+It is not yet a full GitHub/GitLab replacement, but the codebase now points in that
+direction.
 
 ## Install
 
@@ -41,59 +55,73 @@ Forge is the coordination layer.
 python -m pip install -e .
 ```
 
-## Commands
+## Code Forge Commands
+
+Inspect repository state:
+
+```bash
+gither repo-snapshot --repo .
+```
+
+Audit Python code discipline:
+
+```bash
+gither python-audit --root src
+```
+
+Write a versioned change note:
+
+```bash
+gither change-note \
+  --summary "add deterministic review gate" \
+  --why "Gither must own code quality before mirroring to external forges" \
+  --test "python -m pytest -q" \
+  --programmer-notes "Uses Git state for now; Knitweb signed records come next."
+```
+
+Run the local review gate:
+
+```bash
+gither gate --repo . --python-root src
+```
+
+## Portfolio Commands
 
 Discover local repositories:
 
 ```bash
-forge discover --root /Users/develuse/repo --output forge.workspace.json
+gither discover --root /Users/develuse/repo --output gither.workspace.json
 ```
 
 Route a task:
 
 ```bash
-forge route "benchmark Lens against LightRAG and expose graph query results"
+gither route "benchmark Lens against LightRAG and expose graph query results"
 ```
 
 Print a cross-repo test plan:
 
 ```bash
-forge test-plan --workspace examples/knitweb.workspace.json
+gither test-plan --workspace examples/knitweb.workspace.json
 ```
 
 Export a repo graph:
 
 ```bash
-forge graph --workspace examples/knitweb.workspace.json --output forge-graph.json
+gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json
 ```
 
-Show the benchmark plan:
+## Authority Model
 
-```bash
-forge benchmark-plan
-```
+Gither should become the authority for:
 
-## How The Agent Knows Where To Change Code
+- repository identity;
+- signed code changes;
+- review state;
+- CI receipts;
+- release manifests;
+- mirror publication.
 
-Forge uses a workspace manifest.
-Each repo has roles, keywords, paths, docs, and test commands.
-The router scores a user request against that manifest and returns the most likely
-target repositories with reasons.
-
-This is deliberately boring and deterministic.
-The LLM can propose a plan, but Forge gives the agent a stable map before code is
-touched.
-
-## Current Status
-
-This is a first build:
-
-- Python CLI works.
-- Workspace discovery works.
-- Task routing works.
-- Graph export works.
-- Test-plan generation works.
-- Docs are included for GitHub Pages.
-
-It is not yet a live Knitweb indexer, Radicle mirror manager, or CI orchestrator.
-Those are roadmap items.
+GitHub and GitLab should become distribution endpoints only.
+If they disappear, the Gither state and Knitweb-backed records should still be enough
+to continue development.

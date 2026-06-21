@@ -1,3 +1,5 @@
+"""Repository relation graph export for Gither workspaces."""
+
 from __future__ import annotations
 
 import json
@@ -7,6 +9,7 @@ from .models import Workspace
 
 
 def build_repo_graph(workspace: Workspace) -> dict[str, object]:
+    """Build a simple graph from shared workspace keywords."""
     nodes = [
         {
             "id": repo.name,
@@ -36,4 +39,5 @@ def build_repo_graph(workspace: Workspace) -> dict[str, object]:
 
 
 def graph_json(workspace: Workspace) -> str:
+    """Serialize the workspace graph as stable JSON."""
     return json.dumps(build_repo_graph(workspace), indent=2, sort_keys=True) + "\n"

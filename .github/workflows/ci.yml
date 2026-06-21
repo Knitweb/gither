@@ -14,7 +14,9 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev]"
-      - run: python -m py_compile src/forge/*.py
+      - run: python -m py_compile src/gither/*.py
       - run: python -m pytest -q
-      - run: python -m forge.cli route "benchmark Lens against LightRAG" --workspace examples/knitweb.workspace.json
-      - run: python -m forge.cli graph --workspace examples/knitweb.workspace.json
+      - run: python -m gither.cli python-audit --root src --strict
+      - run: python -m gither.cli gate --repo . --python-root src --strict
+      - run: python -m gither.cli route "benchmark Lens against LightRAG" --workspace examples/knitweb.workspace.json
+      - run: python -m gither.cli graph --workspace examples/knitweb.workspace.json

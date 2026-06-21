@@ -184,24 +184,34 @@
         "docs/MULTI_REPO_WORKFLOW.md"
       ],
       "keywords": [
+        "gither",
         "forge",
+        "code",
+        "review",
+        "gate",
+        "ci",
+        "cd",
+        "serverless",
+        "github",
+        "gitlab",
         "workflow",
         "agent",
         "router",
         "benchmark",
         "multi-repo"
       ],
-      "name": "forge",
-      "path": "/Users/develuse/repo/forge",
-      "remote": "git@github.com:Knitweb/forge.git",
+      "name": "gither",
+      "path": "/Users/develuse/repo/gither",
+      "remote": "git@github.com:Knitweb/gither.git",
       "roles": [
-        "multi-repo router",
-        "agent workflow",
+        "code forge",
+        "review gate",
+        "serverless CI",
         "build planner"
       ],
       "test_commands": [
         "PYTHONPATH=src python -m pytest -q",
-        "python -m py_compile src/forge/*.py"
+        "python -m py_compile src/gither/*.py"
       ]
     }
   ],

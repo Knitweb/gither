@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "knitweb-forge"
+name = "knitweb-gither"
 version = "0.1.0"
-description = "A deterministic multi-repo navigator and build planner for Knitweb agentic engineering."
+description = "A serverless-oriented code forge and review gate for Knitweb repositories."
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "Proprietary" }
@@ -18,7 +18,7 @@ dev = [
 ]
 
 [project.scripts]
-forge = "forge.cli:main"
+gither = "gither.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

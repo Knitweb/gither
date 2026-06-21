@@ -1,5 +1,5 @@
-from forge.graph import build_repo_graph
-from forge.models import RepoSpec, Workspace
+from gither.graph import build_repo_graph
+from gither.models import RepoSpec, Workspace
 
 
 def test_graph_links_repos_with_shared_keywords() -> None:

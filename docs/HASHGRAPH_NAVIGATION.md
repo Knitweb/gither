@@ -1,6 +1,6 @@
 # Hashgraph Navigation
 
-Forge is a step toward a code navigation mechanism for AI-built systems.
+Gither is a step toward a code navigation mechanism for AI-built systems.
 
 The idea from the chat:
 
@@ -57,4 +57,4 @@ The system should return:
 
 That feedback loop matters more than search alone.
 Search tells you what matched.
-Forge should eventually tell you what worked.
+Gither should eventually tell you what worked.

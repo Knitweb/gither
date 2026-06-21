@@ -1,3 +1,5 @@
+"""Deterministic task routing for Gither workspaces."""
+
 from __future__ import annotations
 
 import re
@@ -8,6 +10,7 @@ TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9_.:/-]*", re.IGNORECASE)
 
 
 def route_change(workspace: Workspace, query: str, limit: int = 5) -> list[RouteScore]:
+    """Route a plain-language request to likely repositories."""
     tokens = set(token.lower() for token in TOKEN_RE.findall(query))
     scores = [_score_repo(repo, tokens, query.lower()) for repo in workspace.repos]
     return [score for score in sorted(scores, key=lambda item: (-item.score, item.repo.name))[:limit] if score.score > 0]

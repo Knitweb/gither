@@ -1,9 +1,11 @@
+"""Benchmark plan text for Gither and Knitweb/Lens evaluation."""
+
 from __future__ import annotations
 
 
-BENCHMARK_MARKDOWN = """# Forge Benchmark Plan
+BENCHMARK_MARKDOWN = """# Gither Benchmark Plan
 
-Forge should compare Knitweb/Lens against LightRAG-style baselines on the dimensions
+Gither should compare Knitweb/Lens against LightRAG-style baselines on the dimensions
 that matter for the product claim.
 
 ## Systems
@@ -53,10 +55,11 @@ Knitweb repositories.
 No LLM is needed at compile time when the graph is already knitted.
 Only changed records should need deterministic relation updates.
 
-If this holds, Forge can market Knitweb as lower-cost and more provenance-rich than
+If this holds, Gither can market Knitweb as lower-cost and more provenance-rich than
 RAG systems that repeatedly reprocess the same corpus with model tokens.
 """
 
 
 def benchmark_plan() -> str:
+    """Return the benchmark plan as Markdown."""
     return BENCHMARK_MARKDOWN

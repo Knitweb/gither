@@ -1,3 +1,5 @@
+"""Workspace discovery and manifest handling for Gither."""
+
 from __future__ import annotations
 
 import json
@@ -22,14 +24,17 @@ SKIP_DIRS = {
 
 
 def load_workspace(path: Path) -> Workspace:
+    """Load a workspace manifest from disk."""
     return Workspace.from_json(json.loads(path.read_text()), base_dir=path.parent)
 
 
 def save_workspace(workspace: Workspace, path: Path) -> None:
+    """Write a workspace manifest to disk."""
     path.write_text(json.dumps(workspace.to_json(), indent=2, sort_keys=True) + "\n")
 
 
 def discover_workspace(root: Path, name: str = "knitweb") -> Workspace:
+    """Discover Git repositories below root."""
     repos = tuple(sorted(_discover_repos(root), key=lambda repo: repo.name.lower()))
     return Workspace(name=name, repos=repos)
 
@@ -74,6 +79,7 @@ def _git_output(path: Path, args: list[str]) -> str:
 
 
 def infer_repo_metadata(name: str) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
+    """Infer default roles, keywords, tests, and docs from a repository name."""
     lower = name.lower()
     defaults = {
         "roles": ("repository",),
@@ -110,9 +116,25 @@ def infer_repo_metadata(name: str) -> tuple[tuple[str, ...], tuple[str, ...], tu
             "roles": ("game", "node", "3D graph", "deployment"),
             "keywords": ("molgang", "game", "node", "server", "3d", "graph", "5mart"),
         },
-        "forge": {
-            "roles": ("multi-repo router", "agent workflow", "build planner"),
-            "keywords": ("forge", "workflow", "agent", "router", "benchmark", "multi-repo"),
+        "gither": {
+            "roles": ("code forge", "review gate", "serverless CI", "build planner"),
+            "keywords": (
+                "gither",
+                "forge",
+                "code",
+                "review",
+                "gate",
+                "ci",
+                "cd",
+                "serverless",
+                "github",
+                "gitlab",
+                "workflow",
+                "agent",
+                "router",
+                "benchmark",
+                "multi-repo",
+            ),
         },
     }
     selected = catalogue.get(lower, defaults)

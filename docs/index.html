@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Forge</title>
+    <title>Gither</title>
     <style>
       :root {
         color-scheme: dark;
@@ -193,7 +193,7 @@
       .vbank { left: 390px; top: 206px; }
       .bt { left: 590px; top: 190px; border-color: var(--red); }
       .molgang { left: 60px; top: 280px; }
-      .forge-node { left: 310px; top: 300px; border-color: var(--cyan); }
+      .gither-node { left: 310px; top: 300px; border-color: var(--cyan); }
 
       .line-a { left: 166px; top: 72px; width: 100px; }
       .line-b { left: 392px; top: 76px; width: 104px; transform: rotate(9deg); }
@@ -294,13 +294,13 @@
     <main>
       <header>
         <div>
-          <h1>Forge</h1>
-          <p class="subline">Knitweb multi-repo navigator, agent router, and benchmark planner.</p>
+          <h1>Gither</h1>
+          <p class="subline">Knitweb code forge for serverless continuous development and integration.</p>
         </div>
         <div class="status" aria-label="project status">
           <span><strong>8</strong> mapped repos</span>
-          <span><strong>0</strong> LLM compile claim</span>
-          <span><strong>1</strong> test map</span>
+          <span><strong>1</strong> local review gate</span>
+          <span><strong>0</strong> hosted forge authority</span>
         </div>
       </header>
 
@@ -323,7 +323,7 @@
             <div class="node vbank"><strong>vbank</strong><span>time-series governance</span></div>
             <div class="node bt"><strong>bt</strong><span>DEX market</span></div>
             <div class="node molgang"><strong>molgang</strong><span>game and nodes</span></div>
-            <div class="node forge-node"><strong>forge</strong><span>routing and tests</span></div>
+            <div class="node gither-node"><strong>gither</strong><span>code forge</span></div>
           </div>
         </section>
 
@@ -339,7 +339,7 @@
             </article>
             <article class="card">
               <strong>Likely route</strong>
-              <p>Lens first, Knitweb second, Forge for benchmark orchestration, Monitor when activity telemetry is needed.</p>
+              <p>Lens first, Knitweb second, Gither for code review gates and change records, Monitor when activity telemetry is needed.</p>
             </article>
           </div>
         </section>
@@ -351,10 +351,13 @@
           </div>
           <div class="body">
             <pre>python -m pip install -e .
-forge discover --root /Users/develuse/repo --output forge.workspace.json
-forge route "benchmark Lens against LightRAG"
-forge test-plan --workspace examples/knitweb.workspace.json
-forge graph --workspace examples/knitweb.workspace.json --output forge-graph.json</pre>
+gither discover --root /Users/develuse/repo --output gither.workspace.json
+gither repo-snapshot --repo .
+gither python-audit --root src
+gither gate --repo . --python-root src
+gither route "benchmark Lens against LightRAG"
+gither test-plan --workspace examples/knitweb.workspace.json
+gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json</pre>
           </div>
         </section>
 
@@ -365,16 +368,16 @@ forge graph --workspace examples/knitweb.workspace.json --output forge-graph.jso
           </div>
           <div class="body cards">
             <article class="card">
-              <strong><a href="./MULTI_REPO_WORKFLOW.md">Multi-repo workflow</a></strong>
-              <p>How an agent knows where a change belongs and how the whole system is tested.</p>
+              <strong><a href="./CODE_FORGE.md">Code forge</a></strong>
+              <p>How Gither records code changes, review gates, and CI receipts before mirroring outward.</p>
             </article>
             <article class="card">
-              <strong><a href="./HASHGRAPH_NAVIGATION.md">Hashgraph navigation</a></strong>
-              <p>How deterministic relations can become a navigation layer over code and data.</p>
+              <strong><a href="./GIT_POSITION.md">Git position</a></strong>
+              <p>Git is open source and de-facto interoperable, while Gither replaces the hosted forge layer.</p>
             </article>
             <article class="card">
               <strong><a href="./AGENT_PROFILE.md">Agent profile</a></strong>
-              <p>Engineering rules for agents working inside Forge-managed repositories.</p>
+              <p>Engineering rules for agents working inside Gither-managed repositories.</p>
             </article>
           </div>
         </section>
@@ -398,11 +401,13 @@ forge graph --workspace examples/knitweb.workspace.json --output forge-graph.jso
       </div>
 
       <footer>
-        <span>Forge is a deterministic map before agentic code changes.</span>
+        <span>Gither owns code review state before GitHub or GitLab mirrors it.</span>
         <span>
           <a href="./ARCHITECTURE.md">Architecture</a>
+          <a href="./CODE_FORGE.md">Code forge</a>
+          <a href="./GIT_POSITION.md">Git position</a>
           <a href="./ROADMAP.md">Roadmap</a>
-          <a href="https://github.com/Knitweb/forge">GitHub</a>
+          <a href="https://github.com/Knitweb/gither">GitHub</a>
         </span>
       </footer>
     </main>

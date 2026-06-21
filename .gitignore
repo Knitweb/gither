@@ -7,5 +7,5 @@ __pycache__/
 build/
 dist/
 .DS_Store
-forge.workspace.json
-forge-graph.json
+gither.workspace.json
+gither-graph.json

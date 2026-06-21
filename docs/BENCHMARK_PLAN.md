@@ -1,6 +1,6 @@
 # Benchmark Plan
 
-Forge should benchmark Knitweb/Lens against LightRAG-style systems only after the
+Gither should benchmark Knitweb/Lens against LightRAG-style systems only after the
 corpus is privacy-safe.
 
 The benchmark must not use private WhatsApp, personal notes, or unpublished business

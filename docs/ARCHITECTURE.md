@@ -1,19 +1,28 @@
-# Forge Architecture
+# Gither Architecture
 
-Forge has one job: keep a multi-repo Knitweb system understandable and testable.
+Gither has one primary job: own the code forge layer for Knitweb.
 
-It is not a monorepo tool.
-It is not a replacement for Git.
-It is a deterministic control plane for agents and developers.
+It should replace GitHub and GitLab as the trusted application layer for repository
+state, change review, CI receipts, and releases.
+
+It is not a replacement for Git at the object-storage level yet.
+Git remains the open-source, de-facto interoperable substrate while Gither builds the
+serverless forge layer above it.
 
 ## Components
 
-### Workspace Manifest
+### Repository Registry
 
-The workspace manifest lists repositories, paths, roles, keywords, docs, remotes, and
-test commands.
+The registry lists repositories, paths, roles, keywords, remotes, and test commands.
 
 This gives the agent a stable map before it edits code.
+
+### Repository Snapshot
+
+The snapshot command records branch, head commit, dirty state, changed files, and
+remotes.
+
+This is the minimum codebase state required before a review can mean anything.
 
 ### Router
 
@@ -28,6 +37,20 @@ It intentionally starts simple:
 
 The first version is deterministic and inspectable.
 Later versions can add Knitweb graph records and Lens reasoning on top.
+
+### Changebook
+
+The changebook writes `.gither/changes/*.json` records.
+
+Each record stores the change reason, programmer background notes, tests, repository
+state, and current diff names.
+
+### Review Gate
+
+The local gate combines repository state and source audit.
+
+The first implementation audits Python syntax, annotations, docstrings, and symbol
+size.
 
 ### Test Planner
 
@@ -59,23 +82,28 @@ No LLM is needed at compile time when the graph is already knitted.
 request -> workspace manifest -> router -> target repos -> repo tests -> graph export
 ```
 
-The agent can still use a frontier model for reasoning, but Forge decides the boring
-mechanical routing first.
+The agent can still use a frontier model for reasoning, but Gither owns the code
+state and review gate first.
 
 ## Boundaries
 
-Forge does not:
+Gither does not:
 
 - run untrusted code automatically;
 - merge pull requests;
 - replace repository-specific tests;
 - claim benchmark wins before data exists;
 - upload private corpus data.
+- treat GitHub or GitLab as the authority.
 
-Forge does:
+Gither does:
 
 - map repos;
 - route tasks;
+- record repository state;
+- write versioned change notes;
+- audit Python code discipline;
+- gate local review;
 - expose test plans;
 - export graph metadata;
 - document benchmark criteria.

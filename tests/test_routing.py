@@ -1,5 +1,5 @@
-from forge.models import RepoSpec, Workspace
-from forge.routing import route_change
+from gither.models import RepoSpec, Workspace
+from gither.routing import route_change
 
 
 def test_route_change_prefers_lens_for_lightrag_benchmark() -> None:
