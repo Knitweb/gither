@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forge</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #101216;
+        --panel: #181d24;
+        --panel-2: #202732;
+        --line: #343d49;
+        --text: #eff4f8;
+        --muted: #a8b4c3;
+        --cyan: #58c7dd;
+        --green: #3ed18a;
+        --gold: #e6b84e;
+        --red: #ff736b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1320px, 100%);
+        margin: 0 auto;
+        padding: 18px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+        min-height: 92px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        font-size: 19px;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .subline,
+      .muted,
+      footer {
+        color: var(--muted);
+      }
+
+      .status {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        gap: 8px;
+      }
+
+      .status span {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: var(--panel-2);
+        color: var(--muted);
+      }
+
+      .status strong {
+        display: block;
+        color: var(--text);
+        font-size: 20px;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+        grid-template-areas:
+          "graph route"
+          "docs commands"
+          "bench commands";
+        gap: 14px;
+        padding-top: 14px;
+      }
+
+      section {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+
+      .graph {
+        grid-area: graph;
+      }
+
+      .route {
+        grid-area: route;
+      }
+
+      .docs {
+        grid-area: docs;
+      }
+
+      .commands {
+        grid-area: commands;
+      }
+
+      .bench {
+        grid-area: bench;
+      }
+
+      .head {
+        min-height: 56px;
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .body {
+        padding: 14px;
+      }
+
+      .repo-map {
+        position: relative;
+        min-height: 360px;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+
+      .node {
+        position: absolute;
+        width: 132px;
+        min-height: 54px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        background: #111821;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      }
+
+      .node strong {
+        display: block;
+        font-size: 14px;
+      }
+
+      .node span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .line {
+        position: absolute;
+        height: 2px;
+        background: var(--line);
+        transform-origin: left center;
+      }
+
+      .knitweb { left: 40px; top: 42px; border-color: var(--cyan); }
+      .lens { left: 265px; top: 38px; border-color: var(--green); }
+      .pulse { left: 490px; top: 65px; border-color: var(--gold); }
+      .monitor { left: 150px; top: 175px; }
+      .vbank { left: 390px; top: 206px; }
+      .bt { left: 590px; top: 190px; border-color: var(--red); }
+      .molgang { left: 60px; top: 280px; }
+      .forge-node { left: 310px; top: 300px; border-color: var(--cyan); }
+
+      .line-a { left: 166px; top: 72px; width: 100px; }
+      .line-b { left: 392px; top: 76px; width: 104px; transform: rotate(9deg); }
+      .line-c { left: 195px; top: 204px; width: 200px; transform: rotate(9deg); }
+      .line-d { left: 520px; top: 236px; width: 75px; transform: rotate(-15deg); }
+      .line-e { left: 187px; top: 307px; width: 126px; transform: rotate(5deg); }
+
+      .cards {
+        display: grid;
+        gap: 10px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: #141a22;
+      }
+
+      .card strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .card p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      pre {
+        margin: 0;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: #0e1319;
+        color: #dfe8ef;
+        font-size: 12px;
+      }
+
+      footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 14px;
+        font-size: 13px;
+      }
+
+      a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      @media (max-width: 960px) {
+        header {
+          grid-template-columns: 1fr;
+        }
+
+        .status {
+          grid-template-columns: 1fr;
+        }
+
+        .workspace {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "graph"
+            "route"
+            "commands"
+            "docs"
+            "bench";
+        }
+
+        .repo-map {
+          min-height: 620px;
+        }
+
+        .node {
+          position: static;
+          width: auto;
+          margin: 10px;
+        }
+
+        .line {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Forge</h1>
+          <p class="subline">Knitweb multi-repo navigator, agent router, and benchmark planner.</p>
+        </div>
+        <div class="status" aria-label="project status">
+          <span><strong>8</strong> mapped repos</span>
+          <span><strong>0</strong> LLM compile claim</span>
+          <span><strong>1</strong> test map</span>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <section class="graph">
+          <div class="head">
+            <h2>Portfolio Map</h2>
+            <span class="muted">manifest driven</span>
+          </div>
+          <div class="repo-map" aria-label="Knitweb repository map">
+            <div class="line line-a"></div>
+            <div class="line line-b"></div>
+            <div class="line line-c"></div>
+            <div class="line line-d"></div>
+            <div class="line line-e"></div>
+            <div class="node knitweb"><strong>knitweb</strong><span>hashgraph fabric</span></div>
+            <div class="node lens"><strong>lens</strong><span>reasoning layer</span></div>
+            <div class="node pulse"><strong>pulse</strong><span>token state</span></div>
+            <div class="node monitor"><strong>monitor</strong><span>repo telemetry</span></div>
+            <div class="node vbank"><strong>vbank</strong><span>time-series governance</span></div>
+            <div class="node bt"><strong>bt</strong><span>DEX market</span></div>
+            <div class="node molgang"><strong>molgang</strong><span>game and nodes</span></div>
+            <div class="node forge-node"><strong>forge</strong><span>routing and tests</span></div>
+          </div>
+        </section>
+
+        <section class="route">
+          <div class="head">
+            <h2>Route A Task</h2>
+            <span class="muted">plain language</span>
+          </div>
+          <div class="body cards">
+            <article class="card">
+              <strong>Example</strong>
+              <p>Benchmark Lens against LightRAG and compare query output, compile time, and model weight.</p>
+            </article>
+            <article class="card">
+              <strong>Likely route</strong>
+              <p>Lens first, Knitweb second, Forge for benchmark orchestration, Monitor when activity telemetry is needed.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="commands">
+          <div class="head">
+            <h2>Commands</h2>
+            <span class="muted">local first</span>
+          </div>
+          <div class="body">
+            <pre>python -m pip install -e .
+forge discover --root /Users/develuse/repo --output forge.workspace.json
+forge route "benchmark Lens against LightRAG"
+forge test-plan --workspace examples/knitweb.workspace.json
+forge graph --workspace examples/knitweb.workspace.json --output forge-graph.json</pre>
+          </div>
+        </section>
+
+        <section class="docs">
+          <div class="head">
+            <h2>Docs</h2>
+            <span class="muted">operator readable</span>
+          </div>
+          <div class="body cards">
+            <article class="card">
+              <strong><a href="./MULTI_REPO_WORKFLOW.md">Multi-repo workflow</a></strong>
+              <p>How an agent knows where a change belongs and how the whole system is tested.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./HASHGRAPH_NAVIGATION.md">Hashgraph navigation</a></strong>
+              <p>How deterministic relations can become a navigation layer over code and data.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./AGENT_PROFILE.md">Agent profile</a></strong>
+              <p>Engineering rules for agents working inside Forge-managed repositories.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="bench">
+          <div class="head">
+            <h2>Benchmark Target</h2>
+            <span class="muted">prove before claiming</span>
+          </div>
+          <div class="body cards">
+            <article class="card">
+              <strong>No LLM at compile time</strong>
+              <p>When the graph is already knitted, small changes should update deterministic records instead of rebuilding the whole graph with model tokens.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./BENCHMARK_PLAN.md">Benchmark plan</a></strong>
+              <p>Measure compile time, query time, output quality, model weight, privacy, and reproducibility.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <span>Forge is a deterministic map before agentic code changes.</span>
+        <span>
+          <a href="./ARCHITECTURE.md">Architecture</a>
+          <a href="./ROADMAP.md">Roadmap</a>
+          <a href="https://github.com/Knitweb/forge">GitHub</a>
+        </span>
+      </footer>
+    </main>
+  </body>
+</html>

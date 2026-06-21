@@ -1,0 +1,209 @@
+{
+  "repos": [
+    {
+      "docs": [
+        "README.md",
+        "docs/SYNAPTIC_WEB.md",
+        "docs/ROADMAP.md"
+      ],
+      "keywords": [
+        "knit",
+        "cid",
+        "hash",
+        "relation",
+        "graph",
+        "fabric",
+        "p2p"
+      ],
+      "name": "knitweb",
+      "path": "/Users/develuse/repo/knitweb",
+      "remote": "git@github.com:Knitweb/knitweb.git",
+      "roles": [
+        "relation fabric",
+        "content addressing",
+        "hashgraph"
+      ],
+      "test_commands": [
+        "python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md",
+        "docs/SYNAPTIC_WEB.md"
+      ],
+      "keywords": [
+        "pulse",
+        "token",
+        "wallet",
+        "beat",
+        "live",
+        "pls"
+      ],
+      "name": "pulse",
+      "path": "/Users/develuse/repo/pulse",
+      "remote": "git@github.com:Knitweb/pulse.git",
+      "roles": [
+        "token",
+        "live state",
+        "wallet"
+      ],
+      "test_commands": [
+        "PYTHONPATH=src python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md"
+      ],
+      "keywords": [
+        "lens",
+        "query",
+        "reason",
+        "lightrag",
+        "rag",
+        "benchmark"
+      ],
+      "name": "lens",
+      "optional": true,
+      "path": "/Users/develuse/repo/lens",
+      "remote": "git@github.com:Knitweb/lens.git",
+      "roles": [
+        "reasoning",
+        "query",
+        "LRM"
+      ],
+      "test_commands": [
+        "python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md"
+      ],
+      "keywords": [
+        "monitor",
+        "github",
+        "activity",
+        "repo",
+        "telemetry",
+        "location"
+      ],
+      "name": "knitweb-monitor",
+      "path": "/Users/develuse/repo/knitweb-monitor",
+      "remote": "git@github.com:Knitweb/knitweb-monitor.git",
+      "roles": [
+        "activity monitor",
+        "repository telemetry"
+      ],
+      "test_commands": [
+        "python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md"
+      ],
+      "keywords": [
+        "vbank",
+        "votebank",
+        "governance",
+        "timeseries",
+        "time-series",
+        "float"
+      ],
+      "name": "vbank",
+      "path": "/Users/develuse/repo/vbank",
+      "remote": "git@github.com:Knitweb/vbank.git",
+      "roles": [
+        "governance",
+        "time series",
+        "VoteBank"
+      ],
+      "test_commands": [
+        "python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md",
+        "docs/PULSE_READINESS.md",
+        "docs/SOVEREIGN_DISTRIBUTION.md"
+      ],
+      "keywords": [
+        "bt",
+        "dex",
+        "market",
+        "basket",
+        "trade",
+        "pulse",
+        "stablecoin"
+      ],
+      "name": "bt",
+      "path": "/Users/develuse/repo/bt",
+      "remote": "git@github.com:Knitweb/bt.git",
+      "roles": [
+        "DEX",
+        "basket trust",
+        "market"
+      ],
+      "test_commands": [
+        "PYTHONPATH=src python -m pytest -q",
+        "node --check docs/app.js"
+      ]
+    },
+    {
+      "docs": [
+        "README.md"
+      ],
+      "keywords": [
+        "molgang",
+        "game",
+        "node",
+        "server",
+        "3d",
+        "graph",
+        "5mart"
+      ],
+      "name": "molgang",
+      "path": "/Users/develuse/repo/molgang",
+      "remote": "git@github.com:Knitweb/molgang.git",
+      "roles": [
+        "game",
+        "node",
+        "3D graph",
+        "deployment"
+      ],
+      "test_commands": [
+        "python -m pytest -q"
+      ]
+    },
+    {
+      "docs": [
+        "README.md",
+        "docs/MULTI_REPO_WORKFLOW.md"
+      ],
+      "keywords": [
+        "forge",
+        "workflow",
+        "agent",
+        "router",
+        "benchmark",
+        "multi-repo"
+      ],
+      "name": "forge",
+      "path": "/Users/develuse/repo/forge",
+      "remote": "git@github.com:Knitweb/forge.git",
+      "roles": [
+        "multi-repo router",
+        "agent workflow",
+        "build planner"
+      ],
+      "test_commands": [
+        "PYTHONPATH=src python -m pytest -q",
+        "python -m py_compile src/forge/*.py"
+      ]
+    }
+  ],
+  "workspace": "knitweb"
+}
