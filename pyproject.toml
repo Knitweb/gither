@@ -12,6 +12,11 @@ license = { text = "Proprietary" }
 authors = [{ name = "Knitweb" }]
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+]
+
 [project.scripts]
 forge = "forge.cli:main"
 
