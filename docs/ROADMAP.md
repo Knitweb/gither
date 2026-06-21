@@ -12,6 +12,7 @@
 - Python source audit.
 - Local review gate.
 - Versioned change notes.
+- Knowledge ownership model.
 
 ## Phase 2: Knitweb Integration
 
@@ -20,6 +21,8 @@
 - Track which routes were correct after human review.
 - Feed accepted routing decisions into Lens.
 - Sign change notes and CI receipts.
+- Emit ownership records for accepted software state.
+- Link releases to Knitweb dependency records.
 - Move review state out of hosted forges.
 
 ## Phase 3: Benchmark Harness
@@ -39,6 +42,8 @@
 - Add CI adapters for repo-local and cross-repo tests.
 - Add serverless CI receipt exchange between developer nodes.
 - Add DApp-ready release acceptance records.
+- Add Pulse usage receipt ingestion.
+- Add usage-based royalty split calculation.
 
 ## Phase 5: Distribution Resilience
 

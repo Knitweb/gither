@@ -13,6 +13,7 @@ from .changebook import write_change_note
 from .gitops import snapshot_repo
 from .graph import graph_json
 from .routing import route_change
+from .value import value_model
 from .workspace import discover_workspace, load_workspace, save_workspace
 
 
@@ -28,6 +29,7 @@ def main(argv: list[str] | None = None) -> int:
         "python-audit": handle_python_audit,
         "change-note": handle_change_note,
         "gate": handle_gate,
+        "value-model": handle_value_model,
         "benchmark-plan": handle_benchmark_plan,
         "explain": handle_explain,
     }
@@ -81,6 +83,7 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--strict", action="store_true", help="return non-zero on audit issues")
 
     subparsers.add_parser("benchmark-plan", help="print benchmark plan")
+    subparsers.add_parser("value-model", help="print knowledge ownership model")
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
 
@@ -194,6 +197,12 @@ def handle_benchmark_plan(_args: argparse.Namespace) -> int:
     return 0
 
 
+def handle_value_model(_args: argparse.Namespace) -> int:
+    """Print the Gither knowledge ownership model."""
+    print(value_model())
+    return 0
+
+
 def handle_explain(_args: argparse.Namespace) -> int:
     """Print the Gither workflow explanation."""
     print(EXPLAIN_TEXT)
@@ -239,10 +248,12 @@ EXPLAIN_TEXT = """Gither workflow:
 5. Make the smallest coherent code change.
 6. Write a versioned change note with background and tests.
 7. Run repo-local tests and the Gither gate.
-8. Mirror outward only after Gither accepts the change.
+8. Attach accepted code to Knitweb dependency records and Pulse usage receipts.
+9. Mirror outward only after Gither accepts the change.
 
 Git remains a low-level object store and transport for now.
 GitHub and GitLab are optional mirrors, not the source of authority.
+Gither rewards actual software usage, not commit volume.
 """
 
 

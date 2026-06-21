@@ -1,0 +1,48 @@
+{
+  "created_at": "20260621T200137Z",
+  "diff_name_status": [
+    "M\tREADME.md",
+    "M\tdocs/CODE_FORGE.md",
+    "M\tdocs/ROADMAP.md",
+    "M\tdocs/index.html",
+    "M\tsrc/gither/cli.py",
+    "A\tdocs/KNOWLEDGE_OWNERSHIP.md",
+    "A\tsrc/gither/value.py",
+    "A\ttests/test_value.py"
+  ],
+  "programmer_notes": "Adds gither value-model, knowledge ownership docs, homepage messaging, and anti-farming rules. Knitweb records dependency relationships; Pulse records usage receipts; Gither records reviewed ownership and royalty policy.",
+  "repo": {
+    "branch": "main",
+    "changed_files": [
+      "README.md",
+      "docs/CODE_FORGE.md",
+      "docs/ROADMAP.md",
+      "docs/index.html",
+      "src/gither/cli.py",
+      "docs/KNOWLEDGE_OWNERSHIP.md",
+      "src/gither/value.py",
+      "tests/test_value.py"
+    ],
+    "dirty": true,
+    "head": "65b0ff03f7cc31e744fb1d5e7954bbb9a336672e",
+    "name": "gither",
+    "path": "/Users/develuse/repo/gither",
+    "remotes": [
+      "origin\tgit@github.com:Knitweb/gither.git (fetch)",
+      "origin\tgit@github.com:Knitweb/gither.git (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add Gither knowledge ownership model",
+  "tests": [
+    "python3 -m py_compile src/gither/*.py",
+    "PYTHONPATH=src /private/tmp/pulse-rewrite/.venv/bin/python -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict"
+  ],
+  "why": "Gither must be positioned as the ownership layer of the knowledge economy, with royalties based on actual software usage instead of commit or line volume."
+}

@@ -64,6 +64,23 @@ A CI receipt should eventually record:
 This makes continuous integration serverless-friendly because the receipt can travel
 as a signed record instead of living only in one hosted CI service.
 
+### Ownership Record
+
+An ownership record binds accepted software state to its contributor, review gate,
+release, and dependency position.
+
+It is not a claim that a line of code is valuable.
+Value is only measured later through actual use.
+
+### Usage-Based Royalty
+
+Gither should treat revenue distribution as a royalty problem, not a commit reward
+problem.
+
+Knitweb records the dependency graph.
+Pulse records usage receipts.
+Gither applies reproducible split rules to the components that were actually used.
+
 ## Serverless Direction
 
 The long-term Gither model is:

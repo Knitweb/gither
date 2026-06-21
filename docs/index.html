@@ -295,12 +295,12 @@
       <header>
         <div>
           <h1>Gither</h1>
-          <p class="subline">Knitweb code forge for serverless continuous development and integration.</p>
+          <p class="subline">The ownership layer of the knowledge economy.</p>
         </div>
         <div class="status" aria-label="project status">
           <span><strong>8</strong> mapped repos</span>
           <span><strong>1</strong> local review gate</span>
-          <span><strong>0</strong> hosted forge authority</span>
+          <span><strong>0</strong> commit farming reward</span>
         </div>
       </header>
 
@@ -318,7 +318,7 @@
             <div class="line line-e"></div>
             <div class="node knitweb"><strong>knitweb</strong><span>hashgraph fabric</span></div>
             <div class="node lens"><strong>lens</strong><span>reasoning layer</span></div>
-            <div class="node pulse"><strong>pulse</strong><span>token state</span></div>
+            <div class="node pulse"><strong>pulse</strong><span>usage receipts</span></div>
             <div class="node monitor"><strong>monitor</strong><span>repo telemetry</span></div>
             <div class="node vbank"><strong>vbank</strong><span>time-series governance</span></div>
             <div class="node bt"><strong>bt</strong><span>DEX market</span></div>
@@ -339,7 +339,7 @@
             </article>
             <article class="card">
               <strong>Likely route</strong>
-              <p>Lens first, Knitweb second, Gither for code review gates and change records, Monitor when activity telemetry is needed.</p>
+              <p>Gither owns reviewed code, Knitweb records dependencies, and Pulse proves actual usage before royalties are split.</p>
             </article>
           </div>
         </section>
@@ -355,6 +355,7 @@ gither discover --root /Users/develuse/repo --output gither.workspace.json
 gither repo-snapshot --repo .
 gither python-audit --root src
 gither gate --repo . --python-root src
+gither value-model
 gither route "benchmark Lens against LightRAG"
 gither test-plan --workspace examples/knitweb.workspace.json
 gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json</pre>
@@ -374,6 +375,10 @@ gither graph --workspace examples/knitweb.workspace.json --output gither-graph.j
             <article class="card">
               <strong><a href="./GIT_POSITION.md">Git position</a></strong>
               <p>Git is open source and de-facto interoperable, while Gither replaces the hosted forge layer.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./KNOWLEDGE_OWNERSHIP.md">Knowledge ownership</a></strong>
+              <p>How reviewed code, Knitweb dependencies, and Pulse usage receipts become software royalties.</p>
             </article>
             <article class="card">
               <strong><a href="./AGENT_PROFILE.md">Agent profile</a></strong>
@@ -401,10 +406,11 @@ gither graph --workspace examples/knitweb.workspace.json --output gither-graph.j
       </div>
 
       <footer>
-        <span>Gither owns code review state before GitHub or GitLab mirrors it.</span>
+        <span>Gither rewards actual software usage, not commit volume.</span>
         <span>
           <a href="./ARCHITECTURE.md">Architecture</a>
           <a href="./CODE_FORGE.md">Code forge</a>
+          <a href="./KNOWLEDGE_OWNERSHIP.md">Knowledge ownership</a>
           <a href="./GIT_POSITION.md">Git position</a>
           <a href="./ROADMAP.md">Roadmap</a>
           <a href="https://github.com/Knitweb/gither">GitHub</a>

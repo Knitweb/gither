@@ -1,13 +1,25 @@
 # Gither
 
-Gither is the Knitweb code forge for serverless continuous development and
-continuous integration.
+Gither is the ownership layer of the knowledge economy.
+
+Git stores code.
+Ethereum stores value.
+Gither stores ownership of knowledge.
+
+It is the Knitweb code forge for serverless continuous development and continuous
+integration.
 
 It is meant to replace GitHub and GitLab as the trusted application layer for code
 ownership, change review, release gating, and repository collaboration.
 Git can still be used underneath as the open-source, de-facto interoperable object and
 transport layer.
 GitHub and GitLab are optional mirrors, not the authority.
+
+GitHub is a repository.
+Gither is a marketplace for living software.
+
+GitHub tracks commits.
+Gither tracks value.
 
 Documentation is not the goal.
 Documentation is a consequence of disciplined code changes:
@@ -17,6 +29,20 @@ Documentation is a consequence of disciplined code changes:
 - Python code is audited for annotations, docstrings, and manageable symbol size;
 - tests and review gates are attached to the repository state;
 - releases are accepted by Gither before they are mirrored outward.
+
+Gither does not reward every "valuable line of code."
+That framing creates the wrong incentives: spam commits, commit farming, and
+AI-generated noise.
+The stronger rule is:
+
+```text
+code earns only when it is actually used
+```
+
+Knitweb records dependency relationships.
+Pulse records real usage.
+Gither records reviewed ownership and royalty policy.
+Revenue can then be distributed across the components that were actually used.
 
 ## Why Gither
 
@@ -85,6 +111,12 @@ Run the local review gate:
 gither gate --repo . --python-root src
 ```
 
+Print the knowledge ownership model:
+
+```bash
+gither value-model
+```
+
 ## Portfolio Commands
 
 Discover local repositories:
@@ -120,6 +152,8 @@ Gither should become the authority for:
 - review state;
 - CI receipts;
 - release manifests;
+- ownership records;
+- usage-based royalty policy;
 - mirror publication.
 
 GitHub and GitLab should become distribution endpoints only.
