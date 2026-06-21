@@ -22,6 +22,22 @@ Gither is a marketplace for living software.
 GitHub tracks commits.
 Gither tracks value.
 
+The first commercial message should be simpler:
+
+```text
+Gither is a peer-to-peer duplicate of GitHub,
+portable to Web3 and serverless development.
+```
+
+That does not mean GitHub compatibility disappears.
+It means GitHub becomes a mirror instead of the authority.
+
+GitLab is not a good final alternative because it is also server-based.
+It can reduce Microsoft GitHub dependence, but it still requires hosted instances,
+operators, accounts, backups, and platform uptime.
+Gither is meant to make the forge state portable before any Microsoft lockout or
+hosted-platform failure matters.
+
 That value must not be inferred from line count, commit count, or pull-request volume.
 Those metrics are too easy to farm.
 They also become worse when AI can generate unlimited plausible code noise.

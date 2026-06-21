@@ -13,6 +13,7 @@
 - Local review gate.
 - Versioned change notes.
 - Knowledge ownership model.
+- P2P GitHub-duplicate positioning.
 
 ## Phase 2: Knitweb Integration
 
@@ -24,6 +25,7 @@
 - Emit ownership records for accepted software state.
 - Link releases to Knitweb dependency records.
 - Move review state out of hosted forges.
+- Publish independent `gither.github.io` site when the GitHub identity is controlled.
 
 ## Phase 3: Benchmark Harness
 
@@ -50,5 +52,7 @@
 - Mirror Gither outside GitHub and GitLab.
 - Publish source bundles.
 - Add Radicle repository identity.
+- Add p2p forge-state exchange.
+- Add serverless issue and review-state replication.
 - Archive releases with Software Heritage.
 - Export manifests for offline recovery.

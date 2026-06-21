@@ -5,9 +5,18 @@ Gither has one primary job: own the code forge layer for Knitweb.
 It should replace GitHub and GitLab as the trusted application layer for repository
 state, change review, CI receipts, and releases.
 
+The first external positioning is intentionally simple: Gither is a peer-to-peer
+duplicate of GitHub.
+It preserves the familiar forge workflow while moving authority into portable records
+that can survive GitHub, GitLab, hosted CI, and server lockout.
+
 It is not a replacement for Git at the object-storage level yet.
 Git remains the open-source, de-facto interoperable substrate while Gither builds the
 serverless forge layer above it.
+
+GitLab is not the final alternative because it still relies on servers, operators,
+accounts, backups, and platform uptime.
+Gither can mirror to GitLab, but it should not depend on GitLab as the authority.
 
 ## Components
 

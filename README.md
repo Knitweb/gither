@@ -21,6 +21,14 @@ Gither is a marketplace for living software.
 GitHub tracks commits.
 Gither tracks value.
 
+Gither should first be sold as a peer-to-peer duplicate of GitHub: familiar enough
+for developers to adopt, but portable enough to move toward Web3 and serverless
+development.
+The strategic risk is Microsoft lockout through GitHub dependence.
+The practical answer is not "move to GitLab."
+GitLab still depends on servers, operators, hosted instances, and platform uptime.
+For Gither, GitLab can be a mirror or migration bridge, not the end state.
+
 Documentation is not the goal.
 Documentation is a consequence of disciplined code changes:
 
@@ -70,6 +78,8 @@ Gither already provides:
 - Python code discipline audit;
 - versioned change notes in `.gither/changes`;
 - a local review gate for source state and Python quality.
+- a knowledge ownership model;
+- p2p GitHub-duplicate positioning for Web3/serverless portability.
 
 This is still early.
 It is not yet a full GitHub/GitLab replacement, but the codebase now points in that
@@ -159,3 +169,18 @@ Gither should become the authority for:
 GitHub and GitLab should become distribution endpoints only.
 If they disappear, the Gither state and Knitweb-backed records should still be enough
 to continue development.
+
+## Public Site
+
+The desired independent site is:
+
+```text
+https://gither.github.io/
+```
+
+That requires control of the GitHub account or organization named `gither`.
+Until that identity is controlled, the public fallback is:
+
+```text
+https://knitweb.github.io/gither/
+```
