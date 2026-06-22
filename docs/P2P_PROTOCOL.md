@@ -21,7 +21,8 @@ on four primitives, each of which Gither ports:
 | Node ID = Ed25519 public key, encoded as `did:key` | `gither.peer` | **shipped** |
 | Repository ID (RID) = content-addressed identity hash | `gither.identity` | **shipped** |
 | Signed refs (`rad/sigrefs`) — every peer signs its refs | `gither.sigrefs` | **shipped** |
-| Gossip: inventory + ref announcements between nodes | `gither.gossip` | planned |
+| Gossip messages: inventory + ref announcements | `gither.gossip` | **shipped** |
+| Gossip transport (sockets between hosts) | `gither.transport` | planned |
 
 ## 1. Peer identity (shipped — `gither.peer`)
 
@@ -106,12 +107,32 @@ $ gither sigrefs --verify        # a receiver re-verifies before trusting the re
 
 The signed set is stored at `.gither/identity/sigrefs.json`.
 
-## 4. Gossip (planned — `gither.gossip`)
+## 4a. Gossip messages (shipped — `gither.gossip`)
 
 Nodes announce two things to peers: their **inventory** (which RIDs they seed) and
-**ref announcements** (per-repo, per-namespace: the signed-refs head plus a timestamp and
-signature). Peers interested in a repo fetch the refs from any node announcing them.
-Availability comes from **seeding** — nodes that choose to replicate and serve a repo.
+**ref announcements** (per repo: the signed-refs root plus a timestamp and signature).
+Peers interested in a repo fetch the refs from any node announcing them; availability
+comes from **seeding** — nodes that choose to replicate and serve a repo.
+
+Both message types are **signed by the announcing node** (so a relay cannot forge or alter
+them) and carry a **timestamp**. A receiver merges them through `GossipState`, which keeps
+only the freshest *verified* announcement per `(node, repo)` and ignores forged or replayed
+(stale) messages — how the network converges without a server.
+
+```console
+$ gither announce            # emit the signed inventory + ref announcements to gossip
+{
+  "inventory": { "kind": "inventory", "node_id": "z6Mk…", "rids": ["rad:z…"], … },
+  "refs":      { "kind": "refs", "node_id": "z6Mk…", "rid": "rad:z…", "refs_root": "…", … }
+}
+```
+
+## 4b. Gossip transport (planned — `gither.transport`)
+
+The remaining layer is the wire that carries these signed messages between hosts
+(peer discovery, connections, an exchange loop). It is the only part that needs real
+multi-node networking; the message layer above is transport-agnostic, so the socket layer
+can be developed and tested independently against the already-verifiable announcements.
 
 ## Implementation order
 

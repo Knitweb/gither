@@ -1,0 +1,41 @@
+{
+  "created_at": "20260622T071313Z",
+  "diff_name_status": [
+    "M\tdocs/P2P_PROTOCOL.md",
+    "M\tsrc/gither/cli.py",
+    "A\tsrc/gither/gossip.py",
+    "A\ttests/test_gossip.py"
+  ],
+  "programmer_notes": "RefsAnnouncement (node_id,rid,refs_root,timestamp,sig) + InventoryAnnouncement (node_id,rids,timestamp,sig), each Ed25519-signed over canonical bytes. refs_root=sha256 of canonical SignedRefs. GossipState.ingest_* keeps freshest verified per (node,rid); seeders(rid) lists advertisers. 'gither announce' emits both (timestamp=int(time.time())). New: src/gither/gossip.py, tests/test_gossip.py (9 tests). 53 tests total. Socket transport deferred to layer 4b (gither.transport).",
+  "repo": {
+    "branch": "feat/p2p-gossip-announce",
+    "changed_files": [
+      "docs/P2P_PROTOCOL.md",
+      "src/gither/cli.py",
+      "src/gither/gossip.py",
+      "tests/test_gossip.py"
+    ],
+    "dirty": true,
+    "head": "16331de706fce65e1d10faf790237e8428a40d3a",
+    "name": "gither",
+    "path": "/tmp/gither",
+    "remotes": [
+      "origin\thttps://github.com/knitweb/gither (fetch)",
+      "origin\thttps://github.com/knitweb/gither (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add gossip announcements (signed inventory + ref announcements + freshness merge)",
+  "tests": [
+    "PYTHONPATH=src python3 -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli python-audit --root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli announce --repo <repo>"
+  ],
+  "why": "P2P layer 4a: nodes must tell peers which repos they seed and whose refs advanced, in a way a relay cannot forge or replay. Signed, timestamped announcements + a freshness-based merge let the network converge without a server. Modeled on Radicle gossip; builds on peer/identity/sigrefs. Only the socket transport (4b) remains."
+}
