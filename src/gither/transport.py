@@ -34,6 +34,8 @@ _DEFAULT_TIMEOUT = 10.0
 def _send_message(sock: socket.socket, payload: dict[str, object]) -> None:
     """Send one length-prefixed JSON message over a socket."""
     body = json.dumps(payload, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    if len(body) > _MAX_MESSAGE_BYTES:
+        raise ValueError("outgoing gossip message exceeds the size limit")
     sock.sendall(_LEN.pack(len(body)) + body)
 
 
@@ -55,7 +57,10 @@ def _recv_message(sock: socket.socket) -> dict[str, object]:
     (length,) = _LEN.unpack(_recv_exactly(sock, _LEN.size))
     if length > _MAX_MESSAGE_BYTES:
         raise ValueError("incoming gossip message exceeds the size limit")
-    return json.loads(_recv_exactly(sock, length).decode("utf-8"))
+    payload = json.loads(_recv_exactly(sock, length).decode("utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("incoming gossip message must be a JSON object")
+    return payload
 
 
 def make_bundle(refs: tuple[RefsAnnouncement, ...], inventory: tuple[InventoryAnnouncement, ...]) -> dict[str, object]:
@@ -66,6 +71,14 @@ def make_bundle(refs: tuple[RefsAnnouncement, ...], inventory: tuple[InventoryAn
     }
 
 
+def _bundle_items(bundle: dict[str, object], key: str) -> tuple[object, ...]:
+    """Return a normalized list-like field from a received bundle."""
+    value = bundle.get(key, [])
+    if not isinstance(value, list):
+        return ()
+    return tuple(value)
+
+
 def ingest_bundle(state: GossipState, bundle: dict[str, object]) -> int:
     """Feed every announcement in a received bundle through GossipState.
 
@@ -73,13 +86,13 @@ def ingest_bundle(state: GossipState, bundle: dict[str, object]) -> int:
     are skipped, so a hostile peer cannot crash the receiver with bad data.
     """
     accepted = 0
-    for item in bundle.get("refs", []):
+    for item in _bundle_items(bundle, "refs"):
         try:
             if state.ingest_refs(RefsAnnouncement.from_json(dict(item))):
                 accepted += 1
         except (KeyError, ValueError, TypeError):
             continue
-    for item in bundle.get("inventory", []):
+    for item in _bundle_items(bundle, "inventory"):
         try:
             if state.ingest_inventory(InventoryAnnouncement.from_json(dict(item))):
                 accepted += 1
@@ -116,7 +129,10 @@ class GossipPeer:
 
         def _run() -> None:
             with listener:
-                conn, _ = listener.accept()
+                try:
+                    conn, _ = listener.accept()
+                except (socket.timeout, OSError):
+                    return
                 with conn:
                     conn.settimeout(self.timeout)
                     ingest_bundle(self.state, _recv_message(conn))
