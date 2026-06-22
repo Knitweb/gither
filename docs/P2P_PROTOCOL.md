@@ -19,7 +19,7 @@ on four primitives, each of which Gither ports:
 | Radicle (Heartwood) | Gither | Status |
 | --- | --- | --- |
 | Node ID = Ed25519 public key, encoded as `did:key` | `gither.peer` | **shipped** |
-| Repository ID (RID) = content-addressed identity hash | `gither.identity` | planned |
+| Repository ID (RID) = content-addressed identity hash | `gither.identity` | **shipped** |
 | Signed refs (`rad/sigrefs`) — every peer signs its refs | `gither.sigrefs` | planned |
 | Gossip: inventory + ref announcements between nodes | `gither.gossip` | planned |
 
@@ -56,14 +56,30 @@ node id:  z6Mkgjqe3XpXkRvdtWcv45kAhJGRatq227hfWC4SvY7NYrGD
 The private seed is written to `.gither/identity/node.key` with `0600` permissions and is
 git-ignored — it must never be committed or mirrored.
 
-## 2. Repository ID (planned — `gither.identity`)
+## 2. Repository ID (shipped — `gither.identity`)
 
 A repository's identity is a signed document — name, description, **delegates** (the
 DIDs allowed to update the canonical identity), and a signing **threshold**. The
-**Repository ID (RID)** is the content address of that initial document (a hash, encoded
-like the Node ID). Because it is content-addressed, the RID is stable, globally unique,
-and independent of any hosting location — the property that lets a repo move between
-peers, static sites, and mirrors while keeping one identity.
+**Repository ID (RID)** is the content address of that document: `rad:z…`, a multibase
+base58btc-encoded SHA-256 of the document's canonical JSON bytes — the same
+`rad:z<base58>` shape Radicle uses. Because it is content-addressed, the RID is stable,
+globally unique, and independent of any hosting location — the property that lets a repo
+move between peers, static sites, and mirrors while keeping one identity.
+
+Updates to the identity require a **threshold of valid delegate signatures**
+(`SignedIdentity.is_verified()`), so no single peer can unilaterally rewrite who controls
+a repository. Canonical JSON serialization makes the RID and every signature reproducible
+on every peer.
+
+```console
+$ gither rad-id --name myproj --description "demo"
+rid:       rad:z5Cfi46wchoAnM17JRd1XDY3DBDMZgAPGCyRghoUx4Wud
+name:      myproj
+delegates: 1-of-1 threshold
+verified:  True (1 valid signature(s))
+```
+
+The signed identity is stored at `.gither/identity/rad.json`.
 
 ## 3. Signed refs (planned — `gither.sigrefs`)
 

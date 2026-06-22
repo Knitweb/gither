@@ -12,6 +12,7 @@ from .benchmark import benchmark_plan
 from .changebook import write_change_note
 from .gitops import snapshot_repo
 from .graph import graph_json
+from .identity import IdentityDoc, SignedIdentity, collect_signatures
 from .licenses import license_protocol_json_text, license_protocol_markdown
 from .peer import PeerIdentity
 from .routing import route_change
@@ -35,6 +36,7 @@ def main(argv: list[str] | None = None) -> int:
         "value-model": handle_value_model,
         "benchmark-plan": handle_benchmark_plan,
         "peer": handle_peer,
+        "rad-id": handle_rad_id,
         "explain": handle_explain,
     }
     return handlers[args.command](args)
@@ -96,6 +98,14 @@ def build_parser() -> argparse.ArgumentParser:
     peer.add_argument("--repo", default=".", help="repository path holding .gither")
     peer.add_argument("--new", action="store_true", help="generate a fresh identity, overwriting any existing key")
     peer.add_argument("--json", action="store_true")
+
+    rad_id = subparsers.add_parser("rad-id", help="init or show the repository identity (RID)")
+    rad_id.add_argument("--repo", default=".", help="repository path holding .gither")
+    rad_id.add_argument("--name", help="repository name (required to initialize)")
+    rad_id.add_argument("--description", default="", help="repository description")
+    rad_id.add_argument("--delegate", action="append", default=[], help="delegate DID (repeatable; defaults to this node)")
+    rad_id.add_argument("--threshold", type=int, default=1, help="delegate signatures required for updates")
+    rad_id.add_argument("--json", action="store_true")
 
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
@@ -251,6 +261,52 @@ def handle_peer(args: argparse.Namespace) -> int:
     print(f"did:      {payload['did']}")
     print(f"node id:  {payload['node_id']}")
     return 0
+
+
+def _load_or_create_node(repo: Path) -> PeerIdentity:
+    """Load this node's identity from .gither/identity/node.key, creating it if absent."""
+    key_path = repo / ".gither" / "identity" / "node.key"
+    if key_path.exists():
+        return PeerIdentity.from_seed_hex(key_path.read_text())
+    identity = PeerIdentity.generate()
+    key_path.parent.mkdir(parents=True, exist_ok=True)
+    key_path.write_text(identity.seed_hex() + "\n")
+    key_path.chmod(0o600)
+    return identity
+
+
+def handle_rad_id(args: argparse.Namespace) -> int:
+    """Initialize the repository identity (with --name) or show the existing one."""
+    repo = Path(args.repo).resolve()
+    rad_path = repo / ".gither" / "identity" / "rad.json"
+    node = _load_or_create_node(repo)
+    if args.name:
+        delegates = tuple(args.delegate) or (node.did(),)
+        doc = IdentityDoc(args.name, args.description, delegates, args.threshold)
+        signers = (node,) if node.did() in delegates else ()
+        signed = collect_signatures(doc, signers)
+        rad_path.write_text(json.dumps(signed.to_json(), indent=2, sort_keys=True) + "\n")
+    elif rad_path.exists():
+        signed = SignedIdentity.from_json(json.loads(rad_path.read_text()))
+    else:
+        print("no repository identity yet; initialize with: gither rad-id --name <name>")
+        return 1
+    payload = {
+        "rid": signed.doc.rid(),
+        "name": signed.doc.name,
+        "delegates": list(signed.doc.delegates),
+        "threshold": signed.doc.threshold,
+        "valid_signatures": signed.valid_signature_count(),
+        "verified": signed.is_verified(),
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
+    print(f"rid:       {payload['rid']}")
+    print(f"name:      {payload['name']}")
+    print(f"delegates: {payload['threshold']}-of-{len(payload['delegates'])} threshold")
+    print(f"verified:  {payload['verified']} ({payload['valid_signatures']} valid signature(s))")
+    return 0 if payload["verified"] else 1
 
 
 def handle_explain(_args: argparse.Namespace) -> int:

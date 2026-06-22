@@ -1,0 +1,41 @@
+{
+  "created_at": "20260622T070416Z",
+  "diff_name_status": [
+    "M\tdocs/P2P_PROTOCOL.md",
+    "M\tsrc/gither/cli.py",
+    "A\tsrc/gither/identity.py",
+    "A\ttests/test_identity.py"
+  ],
+  "programmer_notes": "IdentityDoc (name/description/delegates/threshold) with canonical JSON; RID = rad:z + base58btc(sha256(canonical)) matching Radicle's rad:z form. SignedIdentity verifies a threshold of distinct delegate Ed25519 signatures (duplicate-delegate safe, tamper-evident). New: src/gither/identity.py, tests/test_identity.py (11 tests), 'gither rad-id' CLI. 36 tests total.",
+  "repo": {
+    "branch": "feat/p2p-repo-identity",
+    "changed_files": [
+      "docs/P2P_PROTOCOL.md",
+      "src/gither/cli.py",
+      "src/gither/identity.py",
+      "tests/test_identity.py"
+    ],
+    "dirty": true,
+    "head": "fc67567a2d972e30ca13465566f54f8e56e6e4bc",
+    "name": "gither",
+    "path": "/tmp/gither",
+    "remotes": [
+      "origin\thttps://github.com/knitweb/gither (fetch)",
+      "origin\thttps://github.com/knitweb/gither (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add content-addressed repository identity (RID) + delegate threshold signing",
+  "tests": [
+    "PYTHONPATH=src python3 -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli python-audit --root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli rad-id --name demo"
+  ],
+  "why": "P2P layer 2: repositories need a stable, location-free identity (the GitHub-duplicate 'repository identity' primitive) and a rule for who may update it without a server. Modeled on Radicle's RID + delegate model; builds on gither.peer."
+}
