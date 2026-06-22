@@ -13,6 +13,7 @@ from .changebook import write_change_note
 from .gitops import snapshot_repo
 from .graph import graph_json
 from .licenses import license_protocol_json_text, license_protocol_markdown
+from .peer import PeerIdentity
 from .routing import route_change
 from .value import value_model
 from .workspace import discover_workspace, load_workspace, save_workspace
@@ -33,6 +34,7 @@ def main(argv: list[str] | None = None) -> int:
         "license-protocol": handle_license_protocol,
         "value-model": handle_value_model,
         "benchmark-plan": handle_benchmark_plan,
+        "peer": handle_peer,
         "explain": handle_explain,
     }
     return handlers[args.command](args)
@@ -89,6 +91,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("benchmark-plan", help="print benchmark plan")
     subparsers.add_parser("value-model", help="print knowledge ownership model")
+
+    peer = subparsers.add_parser("peer", help="show or create this node's peer identity")
+    peer.add_argument("--repo", default=".", help="repository path holding .gither")
+    peer.add_argument("--new", action="store_true", help="generate a fresh identity, overwriting any existing key")
+    peer.add_argument("--json", action="store_true")
+
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
 
@@ -214,6 +222,34 @@ def handle_license_protocol(args: argparse.Namespace) -> int:
 def handle_value_model(_args: argparse.Namespace) -> int:
     """Print the Gither knowledge ownership model."""
     print(value_model())
+    return 0
+
+
+def handle_peer(args: argparse.Namespace) -> int:
+    """Show this node's peer identity, creating one on first use or with --new."""
+    key_path = Path(args.repo).resolve() / ".gither" / "identity" / "node.key"
+    created = False
+    if args.new or not key_path.exists():
+        identity = PeerIdentity.generate()
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        key_path.write_text(identity.seed_hex() + "\n")
+        key_path.chmod(0o600)
+        created = True
+    else:
+        identity = PeerIdentity.from_seed_hex(key_path.read_text())
+    payload = {
+        "did": identity.did(),
+        "node_id": identity.node_id(),
+        "public_key": identity.public.hex(),
+        "key_path": str(key_path),
+        "created": created,
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
+    print(f"{'created' if created else 'loaded'} peer identity at {key_path}")
+    print(f"did:      {payload['did']}")
+    print(f"node id:  {payload['node_id']}")
     return 0
 
 

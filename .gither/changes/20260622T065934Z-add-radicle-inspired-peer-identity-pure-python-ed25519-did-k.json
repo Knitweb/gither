@@ -1,0 +1,44 @@
+{
+  "created_at": "20260622T065934Z",
+  "diff_name_status": [
+    "M\t.gitignore",
+    "A\tdocs/P2P_PROTOCOL.md",
+    "M\tsrc/gither/cli.py",
+    "A\tsrc/gither/peer.py",
+    "A\ttests/test_peer.py"
+  ],
+  "programmer_notes": "Ed25519 (RFC 8032) in pure Python (hashlib only); Node ID + W3C did:key (multicodec 0xed01 + base58btc 'z'). Cross-validated byte-identical to libsodium across 200 random keys both directions; did:key codec validated against the W3C canonical example. New: src/gither/peer.py, tests/test_peer.py (10 tests), docs/P2P_PROTOCOL.md, 'gither peer' CLI. Private seed at .gither/identity/node.key (0600, gitignored).",
+  "repo": {
+    "branch": "feat/p2p-peer-identity",
+    "changed_files": [
+      ".gitignore",
+      "docs/P2P_PROTOCOL.md",
+      "src/gither/cli.py",
+      "src/gither/peer.py",
+      "tests/test_peer.py"
+    ],
+    "dirty": true,
+    "head": "b3795c99fc4540adecc5945a4b485aadeeb1691e",
+    "name": "gither",
+    "path": "/tmp/gither",
+    "remotes": [
+      "origin\thttps://github.com/knitweb/gither (fetch)",
+      "origin\thttps://github.com/knitweb/gither (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add Radicle-inspired peer identity (pure-Python Ed25519 did:key)",
+  "tests": [
+    "python3 -m py_compile src/gither/*.py",
+    "PYTHONPATH=src python3 -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli python-audit --root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli peer --json"
+  ],
+  "why": "Gither is positioned as a serverless P2P GitHub duplicate but had no P2P-git primitives. Peer identity is the cryptographic root that repository IDs, signed refs, and gossip all anchor to. Modeled on Radicle Heartwood; pure stdlib to keep gither dependency-free."
+}
