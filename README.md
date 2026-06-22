@@ -147,6 +147,12 @@ Read the Radicle gap and catch-up backlog:
 docs/RADICLE_GAP_BACKLOG.md
 ```
 
+Read the public agentic-workflows page:
+
+```text
+docs/agentic-workflows.html
+```
+
 ## Portfolio Commands
 
 Discover local repositories:

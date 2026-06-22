@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gither Agentic Workflows</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f1318;
+        --panel: #161d25;
+        --panel-2: #1d2630;
+        --line: #33404d;
+        --text: #eef4f8;
+        --muted: #a3b1c0;
+        --cyan: #59c9de;
+        --green: #43d48f;
+        --gold: #e9bd55;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 15px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      ul,
+      ol {
+        margin: 0;
+      }
+
+      .topbar,
+      .hero,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .hero {
+        margin-top: 14px;
+        padding: 22px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+        gap: 16px;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+        line-height: 1.05;
+      }
+
+      .eyebrow,
+      .muted {
+        color: var(--muted);
+      }
+
+      .eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: 12px;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pill {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: var(--panel-2);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .hero-aside {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .quote {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #111821;
+        padding: 12px;
+      }
+
+      .quote strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .panel {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .panel h2 {
+        font-size: 20px;
+      }
+
+      .stack,
+      .case,
+      .steps {
+        display: grid;
+        gap: 10px;
+      }
+
+      .stack-item,
+      .case li,
+      .steps li {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #111821;
+      }
+
+      .stack-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .stack-item.gither strong {
+        color: var(--cyan);
+      }
+
+      .stack-item.knitweb strong {
+        color: var(--green);
+      }
+
+      .stack-item.pulse strong {
+        color: var(--gold);
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 0;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0c1117;
+        color: #dce7ef;
+        font-size: 12px;
+      }
+
+      ul,
+      ol {
+        padding-left: 18px;
+      }
+
+      footer {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="topbar">
+        <strong>Gither Agentic Workflows</strong>
+        <nav>
+          <a href="./index.html">Overview</a>
+          <a href="./RADICLE_GAP_BACKLOG.md">Radicle gap</a>
+          <a href="./KNOWLEDGE_OWNERSHIP.md">Ownership</a>
+          <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Portable forge authority for coordinated agents</span>
+          <h1>GitHub tracks commits. Gither tracks value.</h1>
+          <p>
+            Gither is the ownership layer of the knowledge economy. It should feel
+            familiar enough to adopt like GitHub, while moving review state, release
+            state, and ownership state into portable records that can survive server
+            lock-in.
+          </p>
+          <p>
+            The core product claim is not "agents write code." The stronger claim is
+            that agentic work becomes reviewable, attributable, deployable, and
+            eventually royalty-bearing across the Knitweb stack.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Git stores code</span>
+            <span class="pill">Ethereum stores value</span>
+            <span class="pill">Gither stores ownership of knowledge</span>
+            <span class="pill">GitHub and GitLab are mirrors, not authority</span>
+          </div>
+        </div>
+
+        <div class="hero-aside">
+          <div class="quote">
+            <strong>Agentic workflow rule</strong>
+            <p>Documentation is not the goal. Documentation is a consequence of disciplined code changes.</p>
+          </div>
+          <div class="quote">
+            <strong>Economic rule</strong>
+            <p><code>code earns only when it is actually used</code></p>
+          </div>
+          <div class="quote">
+            <strong>Public route</strong>
+            <p>Desired: <code>https://gither.github.io/</code></p>
+            <p class="muted">Fallback today: <code>https://knitweb.github.io/gither/</code></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="panel">
+          <h2>Why Agentic Workflows Need Gither</h2>
+          <div class="stack">
+            <div class="stack-item gither">
+              <strong>Gither</strong>
+              Review gates, change context, release acceptance, ownership policy,
+              mirror policy, and portable forge state.
+            </div>
+            <div class="stack-item knitweb">
+              <strong>Knitweb</strong>
+              Dependency relations, canonical graph structure, and the neutral
+              fabric that lets authority travel between repos and peers.
+            </div>
+            <div class="stack-item pulse">
+              <strong>Pulse</strong>
+              Real usage receipts, activity proofs, and the measured basis for
+              usage-linked royalty distribution.
+            </div>
+            <div class="stack-item">
+              <strong>vBank</strong>
+              Optional strong-identity and governance layer for releases, treasury
+              control, disputes, and sensitive operator actions.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Operating Loop</h2>
+          <ol class="steps">
+            <li>Route the request to the right repositories with <code>gither route</code>.</li>
+            <li>Snapshot local state before editing with <code>gither repo-snapshot</code>.</li>
+            <li>Use isolated worktrees or agent branches for parallel changes.</li>
+            <li>Write change context into <code>.gither/changes</code>.</li>
+            <li>Run <code>gither python-audit</code> and <code>gither gate</code> before acceptance.</li>
+            <li>Emit release, mirror, and later usage-linked ownership records.</li>
+          </ol>
+          <pre>gither route "require issuer-backed release signing for vbank agents"
+gither repo-snapshot --repo .
+gither change-note --summary "gate strong-identity release flow" --why "protect sensitive operator authority"
+gither gate --repo . --python-root src</pre>
+        </section>
+
+        <section class="panel">
+          <h2>Example Case: Knitweb + Gither + vBank</h2>
+          <ol class="case">
+            <li>
+              A maintainer wants releases that affect agent identity or treasury
+              control to require stronger accountability than a normal device key.
+            </li>
+            <li>
+              Gither routes the task across <code>gither</code>, <code>vbank</code>,
+              and the relevant protocol repository, then records the accepted change
+              notes and review receipts.
+            </li>
+            <li>
+              Knitweb records the dependency relation: the release gate depends on
+              issuer and registrar records, plus the identity attestation boundary.
+            </li>
+            <li>
+              vBank provides the optional attestation rail: public records stay
+              PII-free, but a release signer can still be traced through an encrypted
+              evidence path when policy requires it.
+            </li>
+            <li>
+              Pulse later records real use. If the feature is deployed and used, the
+              resulting value flow can follow reviewed dependency relationships rather
+              than raw commit counts.
+            </li>
+          </ol>
+        </section>
+
+        <section class="panel">
+          <h2>Why This Beats the Hosted End State</h2>
+          <ul class="steps">
+            <li>GitHub is familiar, but it is still a hosted trust root and a Microsoft lockout risk.</li>
+            <li>GitLab is not the answer to that problem. It still depends on servers, operators, hosted instances, and platform uptime.</li>
+            <li>Radicle already proves the sovereign-forge direction, but Gither can go further on review gates, deploy receipts, ownership, and optional identity-backed authority.</li>
+            <li>That is why Gither should first be sold as a p2p GitHub duplicate, then grown into a marketplace for living software.</li>
+          </ul>
+        </section>
+      </div>
+
+      <footer>
+        <span>Use the Radicle backlog as the competitive shipping plan, not as branding alone.</span>
+        <span>
+          <a href="./P2P_GITHUB_DUPLICATE.md">P2P duplicate</a>
+          <a href="./RADICLE_GAP_BACKLOG.md">Radicle gap</a>
+          <a href="./AGENT_IDENTITY_SERVICES_PAPER.md">Identity paper</a>
+        </span>
+      </footer>
+    </main>
+  </body>
+</html>
