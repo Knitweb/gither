@@ -79,6 +79,7 @@ Gither already provides:
 - versioned change notes in `.gither/changes`;
 - a local review gate for source state and Python quality.
 - a knowledge ownership model;
+- a license-aware mirror protocol;
 - p2p GitHub-duplicate positioning for Web3/serverless portability.
 
 This is still early.
@@ -127,6 +128,13 @@ Print the knowledge ownership model:
 gither value-model
 ```
 
+Print the license mirror protocol:
+
+```bash
+gither license-protocol
+gither license-protocol --json
+```
+
 ## Portfolio Commands
 
 Discover local repositories:
@@ -162,6 +170,7 @@ Gither should become the authority for:
 - review state;
 - CI receipts;
 - release manifests;
+- license records;
 - ownership records;
 - usage-based royalty policy;
 - mirror publication.

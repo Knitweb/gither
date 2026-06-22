@@ -1,0 +1,49 @@
+{
+  "created_at": "20260622T003506Z",
+  "diff_name_status": [
+    "M\tREADME.md",
+    "M\tdocs/P2P_GITHUB_DUPLICATE.md",
+    "M\tdocs/ROADMAP.md",
+    "M\tdocs/index.html",
+    "M\tsrc/gither/cli.py",
+    "A\tdocs/LICENSE_PROTOCOL.md",
+    "A\tsrc/gither/licenses.py",
+    "A\ttests/test_licenses.py"
+  ],
+  "programmer_notes": "Adds normalized GitHub and GitLab license template records, custom profiles for Elastic-2.0, SSPL-1.0, BUSL-1.1, Commons Clause, and PolyForm Noncommercial, plus p2p clause definitions for license_record, clause_record, notice_record, consent_record, mirror_manifest, license-key restrictions, and notice preservation.",
+  "repo": {
+    "branch": "main",
+    "changed_files": [
+      "README.md",
+      "docs/P2P_GITHUB_DUPLICATE.md",
+      "docs/ROADMAP.md",
+      "docs/index.html",
+      "src/gither/cli.py",
+      "docs/LICENSE_PROTOCOL.md",
+      "src/gither/licenses.py",
+      "tests/test_licenses.py"
+    ],
+    "dirty": true,
+    "head": "93ce99869665bfe1827257fe4b424754f2070d49",
+    "name": "gither",
+    "path": "/Users/develuse/repo/gither",
+    "remotes": [
+      "origin\tgit@github.com:Knitweb/gither.git (fetch)",
+      "origin\tgit@github.com:Knitweb/gither.git (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add license-aware mirror protocol",
+  "tests": [
+    "python3 -m py_compile src/gither/*.py",
+    "PYTHONPATH=src /private/tmp/pulse-rewrite/.venv/bin/python -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli license-protocol --json"
+  ],
+  "why": "Gither needs a core license protocol before mirroring GitHub and GitLab code, including platform templates, custom source-available clauses, and p2p mirror constraints."
+}

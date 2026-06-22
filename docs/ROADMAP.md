@@ -14,6 +14,7 @@
 - Versioned change notes.
 - Knowledge ownership model.
 - P2P GitHub-duplicate positioning.
+- License-aware mirror protocol.
 
 ## Phase 2: Knitweb Integration
 
@@ -24,6 +25,7 @@
 - Sign change notes and CI receipts.
 - Emit ownership records for accepted software state.
 - Link releases to Knitweb dependency records.
+- Emit license, clause, notice, consent, and mirror-manifest records.
 - Move review state out of hosted forges.
 - Publish independent `gither.github.io` site when the GitHub identity is controlled.
 
@@ -54,5 +56,6 @@
 - Add Radicle repository identity.
 - Add p2p forge-state exchange.
 - Add serverless issue and review-state replication.
+- Add license-aware p2p mirror negotiation.
 - Archive releases with Software Heritage.
 - Export manifests for offline recovery.

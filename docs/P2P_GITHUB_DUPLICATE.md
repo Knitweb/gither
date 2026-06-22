@@ -19,6 +19,7 @@ It duplicates the useful parts of GitHub:
 - review state;
 - CI receipts;
 - release manifests;
+- license records;
 - ownership records;
 - mirror publication.
 
@@ -29,6 +30,7 @@ GitHub host -> optional mirror
 Gither records -> portable source of authority
 Knitweb graph -> dependency and provenance layer
 Pulse receipts -> usage and activity layer
+License records -> mirror, execution, and royalty constraints
 ```
 
 ## Why Not GitLab
@@ -75,6 +77,25 @@ Gither should make repository state portable across:
 
 This is why Gither keeps Git compatibility while moving review state, CI receipts,
 ownership, and release policy into portable records.
+
+## License-Aware P2P
+
+A p2p GitHub duplicate cannot mirror every repository as executable or monetizable
+code.
+It must carry license records beside the Git object graph.
+
+Gither treats licenses as p2p state:
+
+- catalog metadata can replicate broadly;
+- source archives replicate only when redistribution is allowed;
+- executable mirrors require dependency and notice checks;
+- economic mirrors require license permission or maintainer consent.
+
+Custom source-available licenses are broken into clause records such as
+`managed-service-restriction`, `field-of-use`, `change-date`, `no-selling`, and
+`noncommercial`.
+Those clause records travel with the mirror manifest so nodes can reject unsafe use
+without rejecting the whole repository catalog.
 
 ## Site Target
 

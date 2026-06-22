@@ -12,6 +12,7 @@ from .benchmark import benchmark_plan
 from .changebook import write_change_note
 from .gitops import snapshot_repo
 from .graph import graph_json
+from .licenses import license_protocol_json_text, license_protocol_markdown
 from .routing import route_change
 from .value import value_model
 from .workspace import discover_workspace, load_workspace, save_workspace
@@ -29,6 +30,7 @@ def main(argv: list[str] | None = None) -> int:
         "python-audit": handle_python_audit,
         "change-note": handle_change_note,
         "gate": handle_gate,
+        "license-protocol": handle_license_protocol,
         "value-model": handle_value_model,
         "benchmark-plan": handle_benchmark_plan,
         "explain": handle_explain,
@@ -81,6 +83,9 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--python-root", default="src", help="Python source root inside repo")
     gate.add_argument("--json", action="store_true")
     gate.add_argument("--strict", action="store_true", help="return non-zero on audit issues")
+
+    license_protocol = subparsers.add_parser("license-protocol", help="print mirror license protocol")
+    license_protocol.add_argument("--json", action="store_true")
 
     subparsers.add_parser("benchmark-plan", help="print benchmark plan")
     subparsers.add_parser("value-model", help="print knowledge ownership model")
@@ -194,6 +199,15 @@ def handle_gate(args: argparse.Namespace) -> int:
 def handle_benchmark_plan(_args: argparse.Namespace) -> int:
     """Print the benchmark plan."""
     print(benchmark_plan())
+    return 0
+
+
+def handle_license_protocol(args: argparse.Namespace) -> int:
+    """Print the Gither license mirror protocol."""
+    if args.json:
+        print(license_protocol_json_text(), end="")
+    else:
+        print(license_protocol_markdown())
     return 0
 
 
