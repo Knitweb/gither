@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import socket
+
+import pytest
+
 from gither import gossip, transport
 from gither.peer import PeerIdentity
 from gither.sigrefs import sign_refs
@@ -48,6 +52,17 @@ def test_ingest_bundle_skips_malformed_entries() -> None:
     assert (alice.node_id(), _RID) in state.refs
 
 
+def test_ingest_bundle_ignores_non_list_top_level_fields() -> None:
+    """Malformed top-level fields are treated as empty instead of crashing."""
+    state = gossip.GossipState()
+
+    accepted = transport.ingest_bundle(state, {"refs": None, "inventory": "broken"})
+
+    assert accepted == 0
+    assert state.refs == {}
+    assert state.inventory == {}
+
+
 def test_forged_announcement_in_bundle_is_rejected() -> None:
     """A tampered announcement carried over the wire is not accepted."""
     alice = PeerIdentity.generate()
@@ -66,3 +81,16 @@ def test_make_bundle_shape() -> None:
     assert set(bundle) == {"refs", "inventory"}
     assert bundle["refs"][0]["kind"] == "refs"
     assert bundle["inventory"][0]["kind"] == "inventory"
+
+
+def test_send_message_rejects_oversized_payload() -> None:
+    """Outgoing frames respect the same size cap as incoming ones."""
+    left, right = socket.socketpair()
+    try:
+        payload = {"refs": ["x" * (8 * 1024 * 1024)], "inventory": []}
+
+        with pytest.raises(ValueError, match="outgoing gossip message exceeds the size limit"):
+            transport._send_message(left, payload)
+    finally:
+        left.close()
+        right.close()

@@ -130,7 +130,7 @@ $ gither announce            # emit the signed inventory + ref announcements to 
 ## 4b. Gossip transport (shipped — `gither.transport`)
 
 The wire that carries the signed messages between hosts. Pure-stdlib `socket` + `threading`:
-each message is a 4-byte length prefix + UTF-8 JSON body (oversized frames rejected to bound
+each message is a 4-byte length prefix + UTF-8 JSON body (oversized frames are rejected to bound
 memory), and a connection carries one **bundle** (`{"inventory": […], "refs": […]}`). The
 exchange is symmetric — each side sends its bundle and ingests the peer's through
 `GossipState`, so the transport never has to trust the socket: authenticity and freshness are
@@ -154,5 +154,5 @@ the natural next step on top of this one-shot exchange primitive.
 All protocol layers are shipped. Each was independently testable and shipped as its own
 pull request, keeping the review gate green at every step. The natural next work is
 productization on top of this protocol: a long-running `gither node serve` daemon, peer
-discovery/address book, and actual git object replication once a peer's signed refs are
+discovery/address book, and actual Git object replication once a peer's signed refs are
 known to have advanced.
