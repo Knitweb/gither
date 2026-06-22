@@ -1,0 +1,38 @@
+{
+  "created_at": "20260622T071717Z",
+  "diff_name_status": [
+    "M\tdocs/P2P_PROTOCOL.md",
+    "A\tsrc/gither/transport.py",
+    "A\ttests/test_transport.py"
+  ],
+  "programmer_notes": "transport.py: 4-byte length-prefixed JSON framing (8MB cap), bundle={refs:[],inventory:[]}. GossipPeer.serve_once (one-shot threaded server, bind :0, SO_REUSEADDR, timeouts) + exchange_with (client). ingest_bundle feeds each ann through GossipState (drops forged/stale; skips malformed). New: src/gither/transport.py, tests/test_transport.py (4 tests incl. 2-node loopback exchange). 57 tests total. Daemon CLI = future productization.",
+  "repo": {
+    "branch": "feat/p2p-transport",
+    "changed_files": [
+      "docs/P2P_PROTOCOL.md",
+      "src/gither/transport.py",
+      "tests/test_transport.py"
+    ],
+    "dirty": true,
+    "head": "55323df6e0fc1e8384337cd3c2cf3f9a859e79a3",
+    "name": "gither",
+    "path": "/tmp/gither",
+    "remotes": [
+      "origin\thttps://github.com/knitweb/gither (fetch)",
+      "origin\thttps://github.com/knitweb/gither (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add gossip transport (loopback-tested TCP wire for signed announcements)",
+  "tests": [
+    "PYTHONPATH=src python3 -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli python-audit --root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict"
+  ],
+  "why": "P2P layer 4b, the final protocol piece: a pure-stdlib TCP wire that carries signed gossip bundles between peers. The message layer is self-verifying, so the transport never trusts the socket; the full exchange is testable over loopback (two nodes, one process)."
+}
