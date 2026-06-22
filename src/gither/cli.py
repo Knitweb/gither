@@ -5,12 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 from .audit import audit_python
 from .benchmark import benchmark_plan
 from .changebook import write_change_note
 from .gitops import snapshot_repo
+from .gossip import announce_inventory, announce_refs
 from .graph import graph_json
 from .identity import IdentityDoc, SignedIdentity, collect_signatures
 from .licenses import license_protocol_json_text, license_protocol_markdown
@@ -39,6 +41,7 @@ def main(argv: list[str] | None = None) -> int:
         "peer": handle_peer,
         "rad-id": handle_rad_id,
         "sigrefs": handle_sigrefs,
+        "announce": handle_announce,
         "explain": handle_explain,
     }
     return handlers[args.command](args)
@@ -114,6 +117,10 @@ def build_parser() -> argparse.ArgumentParser:
     sigrefs.add_argument("--pattern", default="refs/heads/", help="ref pattern to publish")
     sigrefs.add_argument("--verify", action="store_true", help="verify the stored sigrefs instead of signing")
     sigrefs.add_argument("--json", action="store_true")
+
+    announce = subparsers.add_parser("announce", help="emit the signed gossip announcements for this repo")
+    announce.add_argument("--repo", default=".", help="repository path holding .gither")
+    announce.add_argument("--pattern", default="refs/heads/", help="ref pattern to publish")
 
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
@@ -345,6 +352,23 @@ def handle_sigrefs(args: argparse.Namespace) -> int:
         print(f"  {name} {oid[:12]}")
     print(f"verified: {payload['verified']}")
     return 0 if payload["verified"] else 1
+
+
+def handle_announce(args: argparse.Namespace) -> int:
+    """Emit the signed gossip announcements (inventory + refs) a peer would broadcast."""
+    repo = Path(args.repo).resolve()
+    rad_path = repo / ".gither" / "identity" / "rad.json"
+    if not rad_path.exists():
+        print("no repository identity yet; initialize with: gither rad-id --name <name>")
+        return 1
+    rid = SignedIdentity.from_json(json.loads(rad_path.read_text())).doc.rid()
+    node = _load_or_create_node(repo)
+    signed = sign_repo_refs(repo, node, args.pattern)
+    timestamp = int(time.time())
+    refs_ann = announce_refs(signed, rid, node, timestamp)
+    inv_ann = announce_inventory((rid,), node, timestamp)
+    print(json.dumps({"refs": refs_ann.to_json(), "inventory": inv_ann.to_json()}, indent=2, sort_keys=True))
+    return 0
 
 
 def handle_explain(_args: argparse.Namespace) -> int:
