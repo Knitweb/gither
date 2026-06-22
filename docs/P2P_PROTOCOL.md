@@ -20,7 +20,7 @@ on four primitives, each of which Gither ports:
 | --- | --- | --- |
 | Node ID = Ed25519 public key, encoded as `did:key` | `gither.peer` | **shipped** |
 | Repository ID (RID) = content-addressed identity hash | `gither.identity` | **shipped** |
-| Signed refs (`rad/sigrefs`) — every peer signs its refs | `gither.sigrefs` | planned |
+| Signed refs (`rad/sigrefs`) — every peer signs its refs | `gither.sigrefs` | **shipped** |
 | Gossip: inventory + ref announcements between nodes | `gither.gossip` | planned |
 
 ## 1. Peer identity (shipped — `gither.peer`)
@@ -81,14 +81,30 @@ verified:  True (1 valid signature(s))
 
 The signed identity is stored at `.gither/identity/rad.json`.
 
-## 3. Signed refs (planned — `gither.sigrefs`)
+## 3. Signed refs (shipped — `gither.sigrefs`)
 
 Each peer publishes its refs under its own namespace
 (`refs/namespaces/<node-id>/…`) and signs the `{refname: oid}` set it claims to hold.
 A receiving peer verifies the signature against the publisher's Node ID before trusting
-any ref, so a malicious relay cannot forge or roll back another peer's branches. The
+any ref, so a malicious relay cannot forge or roll back another peer's branches.
+
+`SignedRefs` binds the Node ID, the ref set, and an Ed25519 signature over the canonical
+bytes of *both* — so the set is tamper-evident (changing an oid breaks verification) and
+**cannot be reattributed** to another peer's namespace (the Node ID is signed in). The
 canonical branch head is the one the repository's delegates agree on (per the identity
-document threshold).
+document threshold from layer 2).
+
+```console
+$ gither sigrefs                 # sign the local repo's heads with this node's key
+node id:  z6Mkgjqe3XpXkRvdtWcv45kAhJGRatq227hfWC4SvY7NYrGD
+refs:     2 published
+  refs/heads/main a1b2c3d4e5f6
+  refs/heads/dev  0f1e2d3c4b5a
+verified: True
+$ gither sigrefs --verify        # a receiver re-verifies before trusting the refs
+```
+
+The signed set is stored at `.gither/identity/sigrefs.json`.
 
 ## 4. Gossip (planned — `gither.gossip`)
 

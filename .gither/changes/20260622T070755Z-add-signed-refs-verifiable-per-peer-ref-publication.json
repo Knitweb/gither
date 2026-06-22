@@ -1,0 +1,41 @@
+{
+  "created_at": "20260622T070755Z",
+  "diff_name_status": [
+    "M\tdocs/P2P_PROTOCOL.md",
+    "M\tsrc/gither/cli.py",
+    "A\tsrc/gither/sigrefs.py",
+    "A\ttests/test_sigrefs.py"
+  ],
+  "programmer_notes": "SignedRefs binds node_id + sorted refs + Ed25519 sig over canonical bytes of both (tamper-evident; cannot reattribute to another namespace). read_git_refs via gitops.run_git for-each-ref; namespaced() => refs/namespaces/<nid>/<ref>. New: src/gither/sigrefs.py, tests/test_sigrefs.py (8 tests incl. git-integration), 'gither sigrefs' CLI. 44 tests total.",
+  "repo": {
+    "branch": "feat/p2p-signed-refs",
+    "changed_files": [
+      "docs/P2P_PROTOCOL.md",
+      "src/gither/cli.py",
+      "src/gither/sigrefs.py",
+      "tests/test_sigrefs.py"
+    ],
+    "dirty": true,
+    "head": "deea07d63940cf713fb72ed3ec6931c86a20fef2",
+    "name": "gither",
+    "path": "/tmp/gither",
+    "remotes": [
+      "origin\thttps://github.com/knitweb/gither (fetch)",
+      "origin\thttps://github.com/knitweb/gither (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add signed refs (verifiable per-peer ref publication)",
+  "tests": [
+    "PYTHONPATH=src python3 -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli python-audit --root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict",
+    "PYTHONPATH=src python3 -m gither.cli sigrefs --verify"
+  ],
+  "why": "P2P layer 3: in a server-free network a relay cannot be trusted about another peer's branches. Signing each peer's {refname: oid} set under its namespace makes ref exchange tamper-evident and non-reattributable. Modeled on Radicle rad/sigrefs; builds on gither.peer + gither.identity."
+}
