@@ -91,3 +91,63 @@ Gither does not need to start as an Ethereum-only protocol.
 Ether belongs in the name as a strong signal of DApp-compatible settlement, not as a premature implementation lock.
 
 The first implementation can remain ledger-neutral while preserving the path to Ethereum, rollups, account abstraction, or another compatible settlement rail.
+
+## Semi-Commune Ownership
+
+Software ownership in Gither should not collapse to one maintainer just because one person
+opened the repo first.
+
+Many repositories are genuinely co-built.
+In those cases, the right model is a semi-commune:
+
+- the repository has a shared ownership pool;
+- individual developers hold explicit shares inside that pool;
+- some share belongs to the repository commons itself for future maintainers, fixes, and
+  long-tail upkeep;
+- dependency components can receive an allocated share when their code is actually used.
+
+This avoids two failures:
+
+1. fake individual ownership over obviously collective work;
+2. total collectivization with no attributable economic share.
+
+The shared pool should be review-governed, not commit-count-governed.
+
+## Multi-Developer Split Rules
+
+The intended split should come from records, not from folklore.
+
+At minimum Gither should record:
+
+- founding maintainer shares;
+- accepted contributor shares;
+- repository commons share;
+- dependency royalty share;
+- dispute or override decisions;
+- vesting or dilution rules when the team changes.
+
+That means a repo can say, for example:
+
+```text
+40% founding maintainers
+25% active contributors
+20% repository commons
+15% upstream dependencies
+```
+
+The exact percentages are governance decisions.
+The important point is that they are explicit, reviewable, and portable.
+
+## Issuer And Registrar Path
+
+If ownership or release authority needs stronger accountability, Gither should support an
+issuer-registrar path:
+
+- an issuer verifies a natural person or service role;
+- a registrar records whether that issuer is accepted for a repository, team, or network;
+- vBank can issue the resulting agent attestation;
+- Gither can require that attestation for sensitive actions such as release signing,
+  treasury control, or ownership disputes.
+
+This keeps ordinary coding open while letting high-risk actions move onto a stronger trust
+rail.

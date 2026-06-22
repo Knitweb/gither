@@ -135,6 +135,18 @@ gither license-protocol
 gither license-protocol --json
 ```
 
+Read the agent identity and miner-funded issuer paper:
+
+```text
+docs/AGENT_IDENTITY_SERVICES_PAPER.md
+```
+
+Read the Radicle gap and catch-up backlog:
+
+```text
+docs/RADICLE_GAP_BACKLOG.md
+```
+
 ## Portfolio Commands
 
 Discover local repositories:
