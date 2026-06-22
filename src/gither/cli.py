@@ -16,6 +16,7 @@ from .identity import IdentityDoc, SignedIdentity, collect_signatures
 from .licenses import license_protocol_json_text, license_protocol_markdown
 from .peer import PeerIdentity
 from .routing import route_change
+from .sigrefs import SignedRefs, sign_repo_refs
 from .value import value_model
 from .workspace import discover_workspace, load_workspace, save_workspace
 
@@ -37,6 +38,7 @@ def main(argv: list[str] | None = None) -> int:
         "benchmark-plan": handle_benchmark_plan,
         "peer": handle_peer,
         "rad-id": handle_rad_id,
+        "sigrefs": handle_sigrefs,
         "explain": handle_explain,
     }
     return handlers[args.command](args)
@@ -106,6 +108,12 @@ def build_parser() -> argparse.ArgumentParser:
     rad_id.add_argument("--delegate", action="append", default=[], help="delegate DID (repeatable; defaults to this node)")
     rad_id.add_argument("--threshold", type=int, default=1, help="delegate signatures required for updates")
     rad_id.add_argument("--json", action="store_true")
+
+    sigrefs = subparsers.add_parser("sigrefs", help="sign or verify this node's published refs")
+    sigrefs.add_argument("--repo", default=".", help="repository path holding .gither")
+    sigrefs.add_argument("--pattern", default="refs/heads/", help="ref pattern to publish")
+    sigrefs.add_argument("--verify", action="store_true", help="verify the stored sigrefs instead of signing")
+    sigrefs.add_argument("--json", action="store_true")
 
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
@@ -306,6 +314,36 @@ def handle_rad_id(args: argparse.Namespace) -> int:
     print(f"name:      {payload['name']}")
     print(f"delegates: {payload['threshold']}-of-{len(payload['delegates'])} threshold")
     print(f"verified:  {payload['verified']} ({payload['valid_signatures']} valid signature(s))")
+    return 0 if payload["verified"] else 1
+
+
+def handle_sigrefs(args: argparse.Namespace) -> int:
+    """Sign this node's published refs, or verify the stored signed-ref set."""
+    repo = Path(args.repo).resolve()
+    sigrefs_path = repo / ".gither" / "identity" / "sigrefs.json"
+    if args.verify:
+        if not sigrefs_path.exists():
+            print("no sigrefs yet; publish with: gither sigrefs")
+            return 1
+        signed = SignedRefs.from_json(json.loads(sigrefs_path.read_text()))
+    else:
+        node = _load_or_create_node(repo)
+        signed = sign_repo_refs(repo, node, args.pattern)
+        sigrefs_path.write_text(json.dumps(signed.to_json(), indent=2, sort_keys=True) + "\n")
+    payload = {
+        "node_id": signed.node_id,
+        "ref_count": len(signed.refs),
+        "refs": signed.as_dict(),
+        "verified": signed.is_verified(),
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
+    print(f"node id:  {signed.node_id}")
+    print(f"refs:     {payload['ref_count']} published")
+    for name, oid in signed.refs:
+        print(f"  {name} {oid[:12]}")
+    print(f"verified: {payload['verified']}")
     return 0 if payload["verified"] else 1
 
 
