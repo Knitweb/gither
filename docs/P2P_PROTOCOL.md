@@ -22,7 +22,7 @@ on four primitives, each of which Gither ports:
 | Repository ID (RID) = content-addressed identity hash | `gither.identity` | **shipped** |
 | Signed refs (`rad/sigrefs`) — every peer signs its refs | `gither.sigrefs` | **shipped** |
 | Gossip messages: inventory + ref announcements | `gither.gossip` | **shipped** |
-| Gossip transport (sockets between hosts) | `gither.transport` | planned |
+| Gossip transport (sockets between hosts) | `gither.transport` | **shipped** |
 
 ## 1. Peer identity (shipped — `gither.peer`)
 
@@ -127,19 +127,32 @@ $ gither announce            # emit the signed inventory + ref announcements to 
 }
 ```
 
-## 4b. Gossip transport (planned — `gither.transport`)
+## 4b. Gossip transport (shipped — `gither.transport`)
 
-The remaining layer is the wire that carries these signed messages between hosts
-(peer discovery, connections, an exchange loop). It is the only part that needs real
-multi-node networking; the message layer above is transport-agnostic, so the socket layer
-can be developed and tested independently against the already-verifiable announcements.
+The wire that carries the signed messages between hosts. Pure-stdlib `socket` + `threading`:
+each message is a 4-byte length prefix + UTF-8 JSON body (oversized frames rejected to bound
+memory), and a connection carries one **bundle** (`{"inventory": […], "refs": […]}`). The
+exchange is symmetric — each side sends its bundle and ingests the peer's through
+`GossipState`, so the transport never has to trust the socket: authenticity and freshness are
+enforced by the message layer (forged or stale announcements are dropped on ingest).
+
+Because the message layer is transport-agnostic and self-verifying, the full exchange runs
+and is tested over **loopback** — two `GossipPeer`s on `127.0.0.1` in one process swap bundles
+and each ends up holding the other's verified refs (`tests/test_transport.py`).
+
+A long-running `gither node serve` daemon (persistent listener + periodic peer dial-out) is
+the natural next step on top of this one-shot exchange primitive.
 
 ## Implementation order
 
 1. **Peer identity** ✅ — the cryptographic root everything else is anchored to.
-2. **Repository identity + RID** — content-addressed repos with delegate signing.
-3. **Signed refs** — per-peer, verifiable ref publication.
-4. **Gossip + seeding** — inventory and ref announcements over a transport.
+2. **Repository identity + RID** ✅ — content-addressed repos with delegate signing.
+3. **Signed refs** ✅ — per-peer, verifiable ref publication.
+4a. **Gossip messages** ✅ — signed inventory + ref announcements, freshness merge.
+4b. **Gossip transport** ✅ — the socket wire carrying announcements between peers.
 
-Each layer is independently testable and ships as its own pull request, keeping the
-review gate green at every step.
+All protocol layers are shipped. Each was independently testable and shipped as its own
+pull request, keeping the review gate green at every step. The natural next work is
+productization on top of this protocol: a long-running `gither node serve` daemon, peer
+discovery/address book, and actual git object replication once a peer's signed refs are
+known to have advanced.
