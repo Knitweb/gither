@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Identity Services Paper – Gither</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+main {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 24px 18px 48px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+nav a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+h1 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+h2 {
+  font-size: 20px;
+  margin: 36px 0 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 16px;
+  margin: 24px 0 8px;
+  color: var(--cyan);
+}
+h4 {
+  font-size: 14px;
+  margin: 18px 0 6px;
+  color: var(--gold);
+}
+p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 15px;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+}
+pre {
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #1a2130;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cyan);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+th {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 13px;
+}
+td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--text);
+}
+tr:nth-child(even) td { background: #141a22; }
+blockquote {
+  border-left: 3px solid var(--cyan);
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  background: #141a22;
+  color: var(--muted);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p { color: var(--muted); margin: 0; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+strong { color: var(--text); }
+em { color: var(--muted); font-style: italic; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">← Gither</a>
+      </nav>
+      <span class="eyebrow">Identity issuance, post-quantum migration, miner funding</span>
+      <article>
+        <h1>Agent Identity Issuance for Gither and Vank</h1>
+<h2>Abstract</h2>
+<p>Gither and Vank need two different protections that should not be collapsed into one mechanism.</p>
+<ul><li>Gither needs strong code authority so propaganda, mirror tampering, or forged release</li></ul>
+<p>  state cannot silently rewrite software history.</p>
+<ul><li>Vank needs strong accountability for agents and people, but it must not publish raw</li></ul>
+<p>  identity evidence or KYC payloads into the replicated fabric.</p>
+<p>This paper proposes a practical first architecture:</p>
+<ol><li>keep public voting and forge records minimal and content-addressed;</li><li>move raw identity evidence into an encrypted evidence vault;</li><li>let Vank issue traceable agent identity attestations only after a regulated or</li></ol>
+<p>   contractually trusted identity service has verified the underlying person;</p>
+<ol><li>make the cryptographic stack crypto-agile, with a migration path from</li></ol>
+<p>   secp256k1/SHA-256 toward post-quantum signatures and KEM-based evidence encryption;</p>
+<ol><li>let Gither miners finance identity issuance and renewal as a protocol cost, recorded</li></ol>
+<p>   as portable receipts.</p>
+<p>The conclusion is conservative:</p>
+<ul><li>use <strong>ML-DSA</strong> as the primary post-quantum signature target;</li><li>use <strong>SLH-DSA</strong> as the backup signature family;</li><li>use <strong>ML-KEM</strong> for the encrypted evidence vault;</li><li>treat <code>sha256.fail</code> as a <strong>frontier signal source</strong>, not yet as an autonomous switch;</li><li>keep raw ID copies and provider certificates <strong>off-fabric</strong> at all times.</li></ul>
+<h2>Repo-grounded constraints</h2>
+<p>The current codebase already locks in several useful boundaries.</p>
+<h3>Pulse / Knitweb today</h3>
+<p><code>pulse/src/knitweb/core/crypto.py</code> currently uses:</p>
+<ul><li>secp256k1 ECDSA for signatures;</li><li>SHA-256 for hashing and Merkle roots;</li><li>versioned <code>pls1</code> addresses with a reserved scheme byte for future post-quantum schemes.</li></ul>
+<p>That scheme byte is important. It means the system already anticipates a soft-fork path for future signature schemes instead of forcing one irreversible address rewrite.</p>
+<h3>Vank today</h3>
+<p><code>vank</code> currently consumes personhood tickets and scope nullifiers, and its ballot record deliberately carries no raw identity. In the personhood foundation branch of Pulse:</p>
+<ul><li><code>personhood-anchor</code> is PII-free;</li><li>revocation is pointer-based, not nullifier-based;</li><li>pairwise addresses are per-scope;</li><li>the verifier backend is intentionally replaceable;</li><li>current pairwise and nullifier derivation still depend on secp256k1/SHA-256.</li></ul>
+<p>This is the correct privacy direction. It should be extended, not undone.</p>
+<h3>sha256.fail today</h3>
+<p><code>sha256.fail</code> is currently a scaffold benchmark for reversible SHA-256 compression. It does not yet provide a production runtime, wallet, or key-management layer. Therefore it cannot yet be the component that directly switches live application cryptography. What it can do is publish a benchmarked <strong>risk frontier</strong> that downstream systems normalize into policy.</p>
+<h3>Gither today</h3>
+<p>Gither already positions itself as the authority layer above hosted forges. That makes it the right place to record:</p>
+<ul><li>miner receipts;</li><li>issuer registry entries;</li><li>crypto-policy updates;</li><li>release gates that refuse weak signature suites once risk passes a threshold.</li></ul>
+<h2>Problem statement</h2>
+<p>The user requirement is stricter than normal pseudonymous voting:</p>
+<ul><li>every relevant agent must remain traceable to a real identified person;</li><li>that trace must rest on a copy of an identity document and a trustworthy service-provider</li></ul>
+<p>  process;</p>
+<ul><li>but public ledgers and public forge records must not expose those raw artifacts;</li><li>miners may pay for the identity work, and miners themselves are paid via Gither.</li></ul>
+<p>That rules out two bad extremes:</p>
+<ol><li><strong>Pure pseudonymity only</strong>: good privacy, insufficient accountability.</li><li><strong>Raw KYC on-chain or on-fabric</strong>: strong accountability, unacceptable exposure and</li></ol>
+<p>   retention risk.</p>
+<p>The viable design is a split model:</p>
+<ul><li>public records hold only minimal attestable facts and revocation handles;</li><li>encrypted evidence stays off-fabric but remains audit-addressable;</li><li>payment and governance receipts remain on-fabric.</li></ul>
+<h2>Threat model</h2>
+<h3>Gither threats</h3>
+<ul><li>hosted mirror tampering;</li><li>propaganda injected into code mirrors or release metadata;</li><li>signature replay across record types;</li><li>key compromise of visible secp256k1 identities;</li><li>future Shor-style break against revealed ECC public keys.</li></ul>
+<h3>Vank threats</h3>
+<ul><li>disclosure of ID copies, liveness checks, or provider transcripts;</li><li>correlation of a person across scopes or elections;</li><li>forged or stale revocation status;</li><li>provider lock-in or regulatory dependence on a single issuer;</li><li>future decryption of archived identity evidence.</li></ul>
+<h3>Quantum transition threats</h3>
+<ul><li><code>sha256.fail</code> shows the resource frontier for Grover-style SHA-256 attacks moving down;</li><li>secp256k1 is structurally vulnerable to Shor once a sufficiently capable quantum computer</li></ul>
+<p>  exists;</p>
+<ul><li>an abrupt one-shot migration will fail operationally;</li><li>an unguided migration will fragment identity and code authority.</li></ul>
+<h2>Survey of existing digital services</h2>
+<p>The current market already splits into distinct service classes. No single provider should own the whole stack.</p>
+<h3>1. Public or regulated digital identity frameworks</h3>
+<p>The revised European digital identity framework requires Member States to provide a digital wallet, keep it voluntary, and let it link national identity with other electronic attestations. The Council text also emphasizes user control and free issuance, use, and revocation for natural persons.</p>
+<p>Implication for Gither/Vank:</p>
+<ul><li>public or regulated wallet ecosystems are the best upstream source for high-assurance</li></ul>
+<p>  personhood;</p>
+<ul><li>they should be treated as issuer roots or trust anchors, not as the storage layer for</li></ul>
+<p>  Gither or Vank.</p>
+<h3>2. Privacy-first selective-disclosure wallet layer</h3>
+<p>Yivi is relevant because it is:</p>
+<ul><li>open source;</li><li>explicit about selective disclosure;</li><li>explicit that data is stored on the user’s phone;</li><li>already oriented toward login, signing, and voting scenarios.</li></ul>
+<p>Implication:</p>
+<ul><li>Yivi-like flows fit the presentation layer well;</li><li>they are strong for privacy and user control;</li><li>they do not eliminate the need for a regulated issuer or external evidence process when</li></ul>
+<p>  legal traceability to a real person is required.</p>
+<h3>3. Commercial KYC / trust orchestration platforms</h3>
+<h4>Signicat</h4>
+<p>Signicat presents a broad European digital identity platform:</p>
+<ul><li>identity proofing;</li><li>authentication;</li><li>electronic signing;</li><li>trust orchestration;</li><li>EU Digital Identity Wallet support;</li><li>240+ identity methods via one integration surface.</li></ul>
+<p>This is strong for multi-market orchestration and issuer integration.</p>
+<h4>IDnow</h4>
+<p>IDnow presents a modular identity and trust platform with:</p>
+<ul><li>identity verification;</li><li>risk/fraud layers;</li><li>EUDI wallet support;</li><li>trust services;</li><li>SES, AES, QES, and QSeals.</li></ul>
+<p>This is strong where qualified signatures and trust-service style evidence matter.</p>
+<h4>Veriff</h4>
+<p>Veriff is strong as a high-volume KYC/KYB and fraud-screening layer:</p>
+<ul><li>document verification;</li><li>proof of address;</li><li>AML screening;</li><li>biometric verification;</li><li>liveness;</li><li>broad country and document coverage.</li></ul>
+<p>This is useful as an operational fallback or onboarding rail, but it should not become the sole root of trust for agent identity.</p>
+<h2>Recommended service split</h2>
+<p>The best first architecture is multi-layered.</p>
+<h3>Root issuer layer</h3>
+<p>Preferred sources:</p>
+<ul><li>EUDI / eIDAS wallet issuers and associated trust anchors;</li><li>regulated trust-service providers where qualified signatures or seals matter.</li></ul>
+<p>Role:</p>
+<ul><li>establish that a natural person exists and is verified;</li><li>establish that a provider operated under a recognized compliance process;</li><li>mint or support revocable, auditable attestations.</li></ul>
+<h3>Presentation layer</h3>
+<p>Preferred sources:</p>
+<ul><li>Yivi-style selective disclosure wallets;</li><li>EUDI wallet presentation flows;</li><li>pairwise per-scope identifiers.</li></ul>
+<p>Role:</p>
+<ul><li>authenticate to applications with minimum disclosure;</li><li>present age, role, or service entitlements without exposing raw identity.</li></ul>
+<h3>High-volume verification / fallback layer</h3>
+<p>Preferred sources:</p>
+<ul><li>Signicat;</li><li>IDnow;</li><li>Veriff;</li><li>similar KYC platforms under explicit contractual controls.</li></ul>
+<p>Role:</p>
+<ul><li>onboarding throughput;</li><li>document and liveness checks;</li><li>recovery or fallback where wallet-native issuance is not yet available.</li></ul>
+<h2>Proposed Vank architecture</h2>
+<p>Vank should become an issuer of <strong>agent identity attestations</strong>, but not a warehouse of raw identity artifacts.</p>
+<h3>Public fabric payload</h3>
+<p>Public records should contain only:</p>
+<ul><li>pairwise or agent-specific public identifier;</li><li>issuer trust anchor hash;</li><li>provider class;</li><li>credential class;</li><li>validity window;</li><li>revocation pointer;</li><li>proof digest;</li><li>key scheme;</li><li>evidence envelope CID or digest;</li><li>attestation signatures.</li></ul>
+<h3>Encrypted evidence vault</h3>
+<p>Raw artifacts stay off-fabric:</p>
+<ul><li>ID copy or passport scan;</li><li>provider KYC transcript;</li><li>liveness evidence;</li><li>service-provider certificate or qualification evidence;</li><li>internal case review notes;</li><li>revocation rationale where sensitive.</li></ul>
+<p>That vault should be encrypted per envelope, not per database.</p>
+<p>Recommended first target:</p>
+<ul><li>envelope key establishment with <strong>ML-KEM-768</strong>;</li><li>optional hybrid wrapping during transition;</li><li>object-addressable encrypted blobs with hash receipts stored in public records.</li></ul>
+<h3>Traceability rule</h3>
+<p>The public chain should not identify the person directly. Instead it should prove that:</p>
+<ol><li>a valid encrypted evidence envelope exists;</li><li>the envelope was created or countersigned by an accepted issuer/provider;</li><li>the provider can, under due process, map the envelope back to a real identified person.</li></ol>
+<p>This satisfies the “herleidbaar tot een persoon” requirement without turning the public fabric into a PII archive.</p>
+<h2>Proposed Gither architecture</h2>
+<p>Gither should not verify passports or selfies itself. Its role is economic and governance control.</p>
+<p>Gither should store:</p>
+<ul><li>issuer registry entries;</li><li>service-provider trust classes;</li><li>miner-funded identity issuance receipts;</li><li>crypto-policy records;</li><li>release gates requiring stronger schemes as risk rises;</li><li>dispute and revocation records for compromised agents or maintainers.</li></ul>
+<p>This directly addresses the propaganda concern: authority moves from a mutable hosted forge page into signed, portable records with explicit issuer and scheme metadata.</p>
+<h2>Post-quantum migration policy</h2>
+<h3>Why ML-DSA</h3>
+<p>NIST finalized <strong>FIPS 204</strong> as the primary post-quantum digital signature standard. For the Gither/Vank problem, that makes ML-DSA the correct primary target for:</p>
+<ul><li>code-authority signatures;</li><li>issuer attestations;</li><li>agent identity attestations;</li><li>miner payment receipts.</li></ul>
+<h3>Why SLH-DSA</h3>
+<p>NIST finalized <strong>FIPS 205</strong> as a backup signature family based on a different mathematical approach. That makes SLH-DSA the right contingency suite for:</p>
+<ul><li>long-lived root attestations;</li><li>emergency fallback if a lattice-based weakness appears;</li><li>high-value archive re-signing.</li></ul>
+<h3>Why ML-KEM</h3>
+<p>NIST finalized <strong>FIPS 203</strong> as the primary post-quantum KEM. That makes ML-KEM the right choice for:</p>
+<ul><li>encrypted evidence envelopes;</li><li>provider-to-Vank secure handoff;</li><li>key rotation for archived raw identity evidence.</li></ul>
+<h3>Migration phases</h3>
+<h4>Phase 0: current</h4>
+<ul><li>secp256k1 ECDSA + SHA-256 remains accepted;</li><li>public addresses keep their existing scheme byte;</li><li>no raw identity data on fabric.</li></ul>
+<h4>Phase 1: hybrid</h4>
+<p>Triggered when Gither governance and the frontier signal agree risk is material.</p>
+<ul><li>every critical attestation is dual-signed:</li></ul>
+<p>  - current secp256k1 path;   - ML-DSA path.</p>
+<ul><li>new evidence envelopes use ML-KEM wrapping.</li><li>roots may additionally carry SLH-DSA backup signatures.</li></ul>
+<h4>Phase 2: PQ-first</h4>
+<p>Triggered when the normalized hash-risk signal crosses the hard protocol threshold, such as the user-specified “effective SHA-256 break frontier under 512 qubits,” plus governance confirmation.</p>
+<ul><li>new Gither authority records require ML-DSA;</li><li>Vank issuer attestations require ML-DSA;</li><li>archived sensitive evidence must be rewrapped with ML-KEM;</li><li>secp256k1 becomes legacy-verify-only or fully disallowed, depending on record class.</li></ul>
+<h2>How <code>sha256.fail</code> should be used</h2>
+<p><code>sha256.fail</code> should not directly flip production cryptography today. It should publish a machine-readable frontier signal, for example:</p>
+<ul><li>current best reversible SHA-256 score;</li><li>estimated logical qubits;</li><li>estimated Toffoli cost;</li><li>normalized risk percentile;</li><li>last-updated and quorum metadata.</li></ul>
+<p>Gither can then convert that into a policy signal:</p>
+<ul><li><code>risk_percent</code>;</li><li><code>phase</code>;</li><li><code>required&lt;em&gt;signature&lt;/em&gt;schemes</code>;</li><li><code>required&lt;em&gt;evidence&lt;/em&gt;kem</code>;</li><li><code>legacy&lt;em&gt;acceptance&lt;/em&gt;window</code>.</li></ul>
+<p>That keeps the scientific benchmark separate from governance.</p>
+<h2>Miner-funded payment model</h2>
+<p>Identity issuance and maintenance should be protocol-paid, but not blindly.</p>
+<h3>Payment events</h3>
+<ul><li>enrollment completed;</li><li>renewal completed;</li><li>revocation processed;</li><li>challenge or recovery completed;</li><li>provider evidence envelope accepted;</li><li>dispute resolved.</li></ul>
+<h3>Suggested payment path</h3>
+<ol><li>Miner completes protocol work and receives Gither reward.</li><li>A defined fraction flows into an identity-operations pool.</li><li>Vank or Gither releases provider receipts when issuer work is validated.</li><li>Payment receipts are public; raw identity evidence remains encrypted and off-fabric.</li></ol>
+<p>This makes identity a funded infrastructure cost instead of an unfunded compliance burden.</p>
+<h2>Recommended first implementation</h2>
+<ol><li>Keep Vank public records PII-free.</li><li>Add an encrypted evidence-vault concept instead of storing ID copies in the fabric.</li><li>Register issuer/provider trust anchors in Gither.</li><li>Introduce hybrid-signature policy records in Gither before changing every primitive.</li><li>Let <code>sha256.fail</code> emit a frontier/risk JSON artifact instead of pretending it is already</li></ol>
+<p>   an application-side switch.</p>
+<ol><li>Add Vank support for traceable agent identity attestations backed by provider-issued</li></ol>
+<p>   evidence envelopes.</p>
+<h2>Decision</h2>
+<p>For the current repos, the best first move is:</p>
+<ul><li><strong>not</strong> to replace secp256k1 everywhere immediately;</li><li><strong>not</strong> to store identity documents in public or replicated records;</li><li><strong>not</strong> to let one commercial KYC provider become the only trust root.</li></ul>
+<p>Instead:</p>
+<ul><li>Gither becomes the portable policy and payment authority;</li><li>Vank becomes the issuer of traceable agent identity attestations;</li><li>regulated issuers and digital identity services feed encrypted evidence into that system;</li><li>ML-DSA, SLH-DSA, and ML-KEM define the post-quantum destination;</li><li><code>sha256.fail</code> supplies a risk frontier that helps time the migration.</li></ul>
+<h2>Sources</h2>
+<ul><li>Pulse current crypto boundary: local repo <code>pulse/src/knitweb/core/crypto.py</code></li><li>Pulse personhood foundation branch: local repo <code>origin/feat/personhood-foundation</code></li><li>Vank current architecture: local repo <code>vank/docs/ARCHITECTURE.md</code></li><li>Gither current authority model: local repo <code>gither/README.md</code></li><li>EU Council, <em>European digital identity (eID): Council adopts legal framework on a secure and trustworthy digital wallet for all Europeans</em>: https://www.consilium.europa.eu/en/press/press-releases/2024/03/26/european-digital-identity-eid-council-adopts-legal-framework-on-a-secure-and-trustworthy-digital-wallet-for-all-europeans/</li><li>NIST FIPS 203, <em>Module-Lattice-Based Key-Encapsulation Mechanism Standard</em>: https://csrc.nist.gov/pubs/fips/203/final</li><li>NIST FIPS 204, <em>Module-Lattice-Based Digital Signature Standard</em>: https://csrc.nist.gov/pubs/fips/204/final</li><li>NIST FIPS 205, <em>Stateless Hash-Based Digital Signature Standard</em>: https://csrc.nist.gov/pubs/fips/205/final</li><li>NIST, <em>NIST Releases First 3 Finalized Post-Quantum Encryption Standards</em>: https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards</li><li>Yivi official site: https://yivi.app/en/</li><li>Veriff official site: https://www.veriff.com/</li><li>IDnow official site: https://idnow.io/</li><li>Signicat official site: https://www.signicat.com/</li><li>Sitouah, Esposito, Bruschi (2026), <em>Self-Sovereign Identity and eIDAS 2.0: An Analysis of Control, Privacy, and Legal Implications</em>: https://arxiv.org/abs/2601.19837</li></ul>
+      </article>
+    </main>
+  </body>
+</html>
