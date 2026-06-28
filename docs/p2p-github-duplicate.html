@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P2P GitHub Duplicate – Gither</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+main {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 24px 18px 48px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+nav a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+h1 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+h2 {
+  font-size: 20px;
+  margin: 36px 0 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 16px;
+  margin: 24px 0 8px;
+  color: var(--cyan);
+}
+h4 {
+  font-size: 14px;
+  margin: 18px 0 6px;
+  color: var(--gold);
+}
+p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 15px;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+}
+pre {
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #1a2130;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cyan);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+th {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 13px;
+}
+td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--text);
+}
+tr:nth-child(even) td { background: #141a22; }
+blockquote {
+  border-left: 3px solid var(--cyan);
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  background: #141a22;
+  color: var(--muted);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p { color: var(--muted); margin: 0; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+strong { color: var(--text); }
+em { color: var(--muted); font-style: italic; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">← Gither</a>
+      </nav>
+      <span class="eyebrow">Portable forge for Web3 and serverless development</span>
+      <article>
+        <h1>P2P GitHub Duplicate</h1>
+<p>Gither should first be sold as a peer-to-peer duplicate of GitHub.</p>
+<p>That framing is deliberately direct. Developers already understand GitHub. Gither starts by preserving that mental model while removing the platform as the final authority.</p>
+<h2>Promise</h2>
+<p>Gither is a portable code forge for Web3 and serverless development.</p>
+<p>It duplicates the useful parts of GitHub:</p>
+<ul><li>repository identity;</li><li>source browsing;</li><li>change proposals;</li><li>review state;</li><li>CI receipts;</li><li>release manifests;</li><li>license records;</li><li>ownership records;</li><li>mirror publication.</li></ul>
+<p>It then changes the authority model:</p>
+<pre><code class="language-text">GitHub host -&gt; optional mirror
+Gither records -&gt; portable source of authority
+Knitweb graph -&gt; dependency and provenance layer
+Pulse receipts -&gt; usage and activity layer
+License records -&gt; mirror, execution, and royalty constraints</code></pre>
+<h2>Why Not GitLab</h2>
+<p>GitLab is not a sufficient alternative to GitHub for this goal.</p>
+<p>It can reduce dependency on Microsoft-owned GitHub, but it still assumes servers, operators, hosted instances, backups, account systems, and platform availability.</p>
+<p>That means it is still a forge platform. It is not a serverless, peer-to-peer, portable authority layer.</p>
+<p>For Gither, GitLab can be a mirror or migration bridge. It should not be positioned as the end state.</p>
+<h2>Microsoft Lockout Risk</h2>
+<p>GitHub is owned by Microsoft. That creates a strategic lockout risk for software projects that depend on GitHub as their only forge, CI history, release surface, issue memory, and social graph.</p>
+<p>Gither should not exaggerate this risk into a claim that GitHub is unusable. The point is narrower and stronger:</p>
+<pre><code class="language-text">critical open-source infrastructure should be portable before a lockout happens</code></pre>
+<p>The p2p duplicate gives developers a familiar escape path before they need it.</p>
+<h2>Web3 And Serverless Portability</h2>
+<p>The target is not just another hosted forge.</p>
+<p>Gither should make repository state portable across:</p>
+<ul><li>local developer machines;</li><li>static websites;</li><li>p2p storage;</li><li>Git mirrors;</li><li>signed Knitweb records;</li><li>Pulse usage receipts;</li><li>DApp-compatible settlement systems.</li></ul>
+<p>This is why Gither keeps Git compatibility while moving review state, CI receipts, ownership, and release policy into portable records.</p>
+<h2>License-Aware P2P</h2>
+<p>A p2p GitHub duplicate cannot mirror every repository as executable or monetizable code. It must carry license records beside the Git object graph.</p>
+<p>Gither treats licenses as p2p state:</p>
+<ul><li>catalog metadata can replicate broadly;</li><li>source archives replicate only when redistribution is allowed;</li><li>executable mirrors require dependency and notice checks;</li><li>economic mirrors require license permission or maintainer consent.</li></ul>
+<p>Custom source-available licenses are broken into clause records such as <code>managed-service-restriction</code>, <code>field-of-use</code>, <code>change-date</code>, <code>no-selling</code>, and <code>noncommercial</code>. Those clause records travel with the mirror manifest so nodes can reject unsafe use without rejecting the whole repository catalog.</p>
+<h2>Site Target</h2>
+<p>The preferred public identity is:</p>
+<pre><code class="language-text">https://gither.github.io/</code></pre>
+<p>That is risky because GitHub Pages user sites require control of the GitHub account or organization named <code>gither</code>. If that account is not controlled, the fallback remains:</p>
+<pre><code class="language-text">https://knitweb.github.io/gither/</code></pre>
+<p>The product message should still point toward an independent Gither identity, because the project is meant to become portable beyond Knitweb and beyond GitHub.</p>
+      </article>
+    </main>
+  </body>
+</html>
