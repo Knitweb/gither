@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gither Architecture – Gither</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+main {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 24px 18px 48px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+nav a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+h1 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+h2 {
+  font-size: 20px;
+  margin: 36px 0 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 16px;
+  margin: 24px 0 8px;
+  color: var(--cyan);
+}
+h4 {
+  font-size: 14px;
+  margin: 18px 0 6px;
+  color: var(--gold);
+}
+p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 15px;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+}
+pre {
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #1a2130;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cyan);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+th {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 13px;
+}
+td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--text);
+}
+tr:nth-child(even) td { background: #141a22; }
+blockquote {
+  border-left: 3px solid var(--cyan);
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  background: #141a22;
+  color: var(--muted);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p { color: var(--muted); margin: 0; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+strong { color: var(--text); }
+em { color: var(--muted); font-style: italic; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">← Gither</a>
+      </nav>
+      <span class="eyebrow">Components, data flow, and boundaries</span>
+      <article>
+        <h1>Gither Architecture</h1>
+<p>Gither has one primary job: own the code forge layer for Knitweb.</p>
+<p>It should replace GitHub and GitLab as the trusted application layer for repository state, change review, CI receipts, and releases.</p>
+<p>The first external positioning is intentionally simple: Gither is a peer-to-peer duplicate of GitHub. It preserves the familiar forge workflow while moving authority into portable records that can survive GitHub, GitLab, hosted CI, and server lockout.</p>
+<p>It is not a replacement for Git at the object-storage level yet. Git remains the open-source, de-facto interoperable substrate while Gither builds the serverless forge layer above it.</p>
+<p>GitLab is not the final alternative because it still relies on servers, operators, accounts, backups, and platform uptime. Gither can mirror to GitLab, but it should not depend on GitLab as the authority.</p>
+<h2>Components</h2>
+<h3>Repository Registry</h3>
+<p>The registry lists repositories, paths, roles, keywords, remotes, and test commands.</p>
+<p>This gives the agent a stable map before it edits code.</p>
+<h3>Repository Snapshot</h3>
+<p>The snapshot command records branch, head commit, dirty state, changed files, and remotes.</p>
+<p>This is the minimum codebase state required before a review can mean anything.</p>
+<h3>Router</h3>
+<p>The router scores a plain-language request against the workspace manifest.</p>
+<p>It intentionally starts simple:</p>
+<ul><li>repo name match;</li><li>keyword match;</li><li>role overlap;</li><li>documentation reference.</li></ul>
+<p>The first version is deterministic and inspectable. Later versions can add Knitweb graph records and Lens reasoning on top.</p>
+<h3>Changebook</h3>
+<p>The changebook writes <code>.gither/changes/*.json</code> records.</p>
+<p>Each record stores the change reason, programmer background notes, tests, repository state, and current diff names.</p>
+<h3>Review Gate</h3>
+<p>The local gate combines repository state and source audit.</p>
+<p>The first implementation audits Python syntax, annotations, docstrings, and symbol size.</p>
+<h3>Test Planner</h3>
+<p>The test planner prints the test commands attached to each repo.</p>
+<p>This answers the practical question: when a change crosses repo boundaries, what must be checked?</p>
+<h3>Graph Export</h3>
+<p>The graph exporter produces a JSON relation graph from shared repo keywords.</p>
+<p>This is not the final Knitweb graph. It is a bootstrap graph that can be loaded by Lens, Monitor, or the 3D Molgang graph.</p>
+<h3>Benchmark Plan</h3>
+<p>The benchmark plan defines how to compare Knitweb/Lens against LightRAG-style systems.</p>
+<p>The core claim to test is:</p>
+<pre><code class="language-text">No LLM is needed at compile time when the graph is already knitted.</code></pre>
+<h2>Data Flow</h2>
+<pre><code class="language-text">request -&gt; workspace manifest -&gt; router -&gt; target repos -&gt; repo tests -&gt; graph export</code></pre>
+<p>The agent can still use a frontier model for reasoning, but Gither owns the code state and review gate first.</p>
+<h2>Boundaries</h2>
+<p>Gither does not:</p>
+<ul><li>run untrusted code automatically;</li><li>merge pull requests;</li><li>replace repository-specific tests;</li><li>claim benchmark wins before data exists;</li><li>upload private corpus data.</li><li>treat GitHub or GitLab as the authority.</li></ul>
+<p>Gither does:</p>
+<ul><li>map repos;</li><li>route tasks;</li><li>record repository state;</li><li>write versioned change notes;</li><li>audit Python code discipline;</li><li>gate local review;</li><li>expose test plans;</li><li>export graph metadata;</li><li>document benchmark criteria.</li></ul>
+      </article>
+    </main>
+  </body>
+</html>
