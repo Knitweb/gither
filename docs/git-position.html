@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Git Position – Gither</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+main {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 24px 18px 48px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+nav a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+h1 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+h2 {
+  font-size: 20px;
+  margin: 36px 0 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 16px;
+  margin: 24px 0 8px;
+  color: var(--cyan);
+}
+h4 {
+  font-size: 14px;
+  margin: 18px 0 6px;
+  color: var(--gold);
+}
+p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 15px;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+}
+pre {
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #1a2130;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cyan);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+th {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 13px;
+}
+td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--text);
+}
+tr:nth-child(even) td { background: #141a22; }
+blockquote {
+  border-left: 3px solid var(--cyan);
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  background: #141a22;
+  color: var(--muted);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p { color: var(--muted); margin: 0; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+strong { color: var(--text); }
+em { color: var(--muted); font-style: italic; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">← Gither</a>
+      </nav>
+      <span class="eyebrow">Why Git stays, what Gither replaces</span>
+      <article>
+        <h1>Git Position</h1>
+<p>Gither does not call Git a formal open standard.</p>
+<p>Git is open source. The reference implementation is GPLv2 software that can be read, modified, and distributed.</p>
+<p>Git is also a de-facto interoperable standard. Its object model, pack files, index format, and wire protocols are documented by the Git project and implemented by multiple independent libraries.</p>
+<p>That is different from a formally ratified open standard such as a W3C, IETF, ISO, or ECMA specification. There is no ISO Git and no IETF RFC for Git as a complete standard.</p>
+<h2>Gither Position</h2>
+<p>Gither keeps Git as a useful low-level substrate.</p>
+<p>Git gives:</p>
+<ul><li>content-addressed objects;</li><li>commit history;</li><li>branches and tags;</li><li>mature transport;</li><li>broad tool compatibility.</li></ul>
+<p>Gither replaces the hosted forge layer:</p>
+<ul><li>repository registry;</li><li>issue and task routing;</li><li>change proposals;</li><li>review gates;</li><li>CI receipts;</li><li>release manifests;</li><li>mirror policy.</li></ul>
+<h2>Knitweb Position</h2>
+<p>Knitweb can give Gither a stronger content-addressing foundation than Git alone when records use published multiformats and IPLD specifications.</p>
+<p>The target path is:</p>
+<pre><code class="language-text">Git object compatibility -&gt; Gither review and CI state -&gt; Knitweb signed records</code></pre>
+<p>GitHub and GitLab are allowed to mirror this state. They are not allowed to be the only authority.</p>
+      </article>
+    </main>
+  </body>
+</html>
