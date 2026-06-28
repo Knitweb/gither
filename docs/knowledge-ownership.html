@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Knowledge Ownership – Gither</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+main {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  padding: 24px 18px 48px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+nav a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 14px;
+}
+nav a:hover { text-decoration: underline; }
+h1 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+h2 {
+  font-size: 20px;
+  margin: 36px 0 12px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+h3 {
+  font-size: 16px;
+  margin: 24px 0 8px;
+  color: var(--cyan);
+}
+h4 {
+  font-size: 14px;
+  margin: 18px 0 6px;
+  color: var(--gold);
+}
+p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 15px;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+}
+pre {
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: #1a2130;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--cyan);
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+th {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--muted);
+  font-size: 13px;
+}
+td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--text);
+}
+tr:nth-child(even) td { background: #141a22; }
+blockquote {
+  border-left: 3px solid var(--cyan);
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  background: #141a22;
+  color: var(--muted);
+  border-radius: 0 6px 6px 0;
+}
+blockquote p { color: var(--muted); margin: 0; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+strong { color: var(--text); }
+em { color: var(--muted); font-style: italic; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">← Gither</a>
+      </nav>
+      <span class="eyebrow">Ownership, royalties, and the software economy</span>
+      <article>
+        <h1>Knowledge Ownership</h1>
+<p>Gither stores ownership of knowledge.</p>
+<pre><code class="language-text">Git stores code.
+Ethereum stores value.
+Gither stores ownership of knowledge.</code></pre>
+<p>The name is intentionally compact:</p>
+<ul><li>Git is visible because Gither stays compatible with the open-source Git object and transport layer.</li><li>Ether is visible as a playful reference to DApp settlement.</li><li>Gither also sounds like gather: collecting code, context, usage, and ownership in one system.</li></ul>
+<h2>Marketplace For Living Software</h2>
+<p>GitHub is a repository. Gither is a marketplace for living software.</p>
+<p>GitHub tracks commits. Gither tracks value.</p>
+<p>The first commercial message should be simpler:</p>
+<pre><code class="language-text">Gither is a peer-to-peer duplicate of GitHub,
+portable to Web3 and serverless development.</code></pre>
+<p>That does not mean GitHub compatibility disappears. It means GitHub becomes a mirror instead of the authority.</p>
+<p>GitLab is not a good final alternative because it is also server-based. It can reduce Microsoft GitHub dependence, but it still requires hosted instances, operators, accounts, backups, and platform uptime. Gither is meant to make the forge state portable before any Microsoft lockout or hosted-platform failure matters.</p>
+<p>That value must not be inferred from line count, commit count, or pull-request volume. Those metrics are too easy to farm. They also become worse when AI can generate unlimited plausible code noise.</p>
+<h2>Royalty Rule</h2>
+<p>Code earns only when it is actually used.</p>
+<p>The intended flow is:</p>
+<pre><code class="language-text">code committed to Gither
+-&gt; ownership accepted by review gate
+-&gt; Knitweb records dependency relationships
+-&gt; Pulse records real usage
+-&gt; revenue is attributed across dependencies
+-&gt; royalties settle to owners of used components</code></pre>
+<p>This is closer to software royalties than commit rewards.</p>
+<h2>Ecosystem Roles</h2>
+<p>Knitweb owns the relationship layer. It records which modules, services, protocols, releases, and communities depend on each other.</p>
+<p>Pulse owns the live usage layer. It records the realtime receipts that prove software was exercised.</p>
+<p>Gither owns the software economy layer. It records repository identity, reviewed changes, ownership state, release gates, royalty policy, and future settlement hooks.</p>
+<h2>Anti-Farming Requirements</h2>
+<p>An economic claim should require all of these:</p>
+<ul><li>accepted review state;</li><li>a deployable release or artifact;</li><li>dependency records in Knitweb;</li><li>usage receipts from Pulse;</li><li>revenue or settlement input;</li><li>reproducible split rules.</li></ul>
+<p>Commits alone do not earn. Lines alone do not earn. AI-generated volume alone does not earn.</p>
+<h2>Settlement Direction</h2>
+<p>Gither does not need to start as an Ethereum-only protocol. Ether belongs in the name as a strong signal of DApp-compatible settlement, not as a premature implementation lock.</p>
+<p>The first implementation can remain ledger-neutral while preserving the path to Ethereum, rollups, account abstraction, or another compatible settlement rail.</p>
+<h2>Semi-Commune Ownership</h2>
+<p>Software ownership in Gither should not collapse to one maintainer just because one person opened the repo first.</p>
+<p>Many repositories are genuinely co-built. In those cases, the right model is a semi-commune:</p>
+<ul><li>the repository has a shared ownership pool;</li><li>individual developers hold explicit shares inside that pool;</li><li>some share belongs to the repository commons itself for future maintainers, fixes, and</li></ul>
+<p>  long-tail upkeep;</p>
+<ul><li>dependency components can receive an allocated share when their code is actually used.</li></ul>
+<p>This avoids two failures:</p>
+<ol><li>fake individual ownership over obviously collective work;</li><li>total collectivization with no attributable economic share.</li></ol>
+<p>The shared pool should be review-governed, not commit-count-governed.</p>
+<h2>Multi-Developer Split Rules</h2>
+<p>The intended split should come from records, not from folklore.</p>
+<p>At minimum Gither should record:</p>
+<ul><li>founding maintainer shares;</li><li>accepted contributor shares;</li><li>repository commons share;</li><li>dependency royalty share;</li><li>dispute or override decisions;</li><li>vesting or dilution rules when the team changes.</li></ul>
+<p>That means a repo can say, for example:</p>
+<pre><code class="language-text">40% founding maintainers
+25% active contributors
+20% repository commons
+15% upstream dependencies</code></pre>
+<p>The exact percentages are governance decisions. The important point is that they are explicit, reviewable, and portable.</p>
+<h2>Issuer And Registrar Path</h2>
+<p>If ownership or release authority needs stronger accountability, Gither should support an issuer-registrar path:</p>
+<ul><li>an issuer verifies a natural person or service role;</li><li>a registrar records whether that issuer is accepted for a repository, team, or network;</li><li>Vank can issue the resulting agent attestation;</li><li>Gither can require that attestation for sensitive actions such as release signing,</li></ul>
+<p>  treasury control, or ownership disputes.</p>
+<p>This keeps ordinary coding open while letting high-risk actions move onto a stronger trust rail.</p>
+      </article>
+    </main>
+  </body>
+</html>
