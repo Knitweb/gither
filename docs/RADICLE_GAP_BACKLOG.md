@@ -63,7 +63,7 @@ as an actual system claim.
 Radicle's public model is strong on self-sovereign device identity.
 Gither should add a higher-assurance mode:
 
-- optional vBank-issued agent identity;
+- optional Vank-issued agent identity;
 - issuer and registrar trust records;
 - encrypted evidence vaults;
 - public records that stay PII-free;

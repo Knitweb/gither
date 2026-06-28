@@ -63,7 +63,7 @@
 - Add p2p forge-state exchange.
 - Add serverless issue and review-state replication.
 - Add license-aware p2p mirror negotiation.
-- Add encrypted evidence-envelope references for optional vBank-backed agent identity.
+- Add encrypted evidence-envelope references for optional Vank-backed agent identity.
 - Add hybrid secp256k1 + post-quantum signature policy for critical records.
 - Add `sha256.fail` frontier-risk ingestion and crypto-policy gates.
 - Archive releases with Software Heritage.

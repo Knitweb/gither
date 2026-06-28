@@ -105,20 +105,20 @@
         "README.md"
       ],
       "keywords": [
-        "vbank",
-        "votebank",
+        "vank",
+        "votevank",
         "governance",
         "timeseries",
         "time-series",
         "float"
       ],
-      "name": "vbank",
-      "path": "/Users/develuse/repo/vbank",
-      "remote": "git@github.com:Knitweb/vbank.git",
+      "name": "vank",
+      "path": "/Users/develuse/repo/vank",
+      "remote": "git@github.com:Knitweb/vank.git",
       "roles": [
         "governance",
         "time series",
-        "VoteBank"
+        "VoteVank"
       ],
       "test_commands": [
         "python -m pytest -q"

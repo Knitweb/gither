@@ -145,7 +145,7 @@ issuer-registrar path:
 
 - an issuer verifies a natural person or service role;
 - a registrar records whether that issuer is accepted for a repository, team, or network;
-- vBank can issue the resulting agent attestation;
+- Vank can issue the resulting agent attestation;
 - Gither can require that attestation for sensitive actions such as release signing,
   treasury control, or ownership disputes.
 

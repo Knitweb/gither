@@ -295,7 +295,7 @@
               usage-linked royalty distribution.
             </div>
             <div class="stack-item">
-              <strong>vBank</strong>
+              <strong>Vank</strong>
               Optional strong-identity and governance layer for releases, treasury
               control, disputes, and sensitive operator actions.
             </div>
@@ -312,21 +312,21 @@
             <li>Run <code>gither python-audit</code> and <code>gither gate</code> before acceptance.</li>
             <li>Emit release, mirror, and later usage-linked ownership records.</li>
           </ol>
-          <pre>gither route "require issuer-backed release signing for vbank agents"
+          <pre>gither route "require issuer-backed release signing for vank agents"
 gither repo-snapshot --repo .
 gither change-note --summary "gate strong-identity release flow" --why "protect sensitive operator authority"
 gither gate --repo . --python-root src</pre>
         </section>
 
         <section class="panel">
-          <h2>Example Case: Knitweb + Gither + vBank</h2>
+          <h2>Example Case: Knitweb + Gither + Vank</h2>
           <ol class="case">
             <li>
               A maintainer wants releases that affect agent identity or treasury
               control to require stronger accountability than a normal device key.
             </li>
             <li>
-              Gither routes the task across <code>gither</code>, <code>vbank</code>,
+              Gither routes the task across <code>gither</code>, <code>vank</code>,
               and the relevant protocol repository, then records the accepted change
               notes and review receipts.
             </li>
@@ -335,7 +335,7 @@ gither gate --repo . --python-root src</pre>
               issuer and registrar records, plus the identity attestation boundary.
             </li>
             <li>
-              vBank provides the optional attestation rail: public records stay
+              Vank provides the optional attestation rail: public records stay
               PII-free, but a release signer can still be traced through an encrypted
               evidence path when policy requires it.
             </li>
