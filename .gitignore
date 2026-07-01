@@ -9,7 +9,8 @@ dist/
 .DS_Store
 gither.workspace.json
 gither-graph.json
+artifacts/
+uv.lock
 
 # peer identity private key (never commit)
 .gither/identity/
-artifacts/

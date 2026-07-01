@@ -148,6 +148,7 @@ class RepoAnalysis:
                     )
 
     def stats(self) -> dict[str, object]:
+        """Return aggregate definition, call, import, and resolution counts."""
         defs = self.all_definitions()
         calls = [c for fa in self.files for c in fa.calls]
         imports = [i for fa in self.files for i in fa.imports]

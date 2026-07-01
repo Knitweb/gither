@@ -67,7 +67,16 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the CLI parser without executing any command."""
     parser = argparse.ArgumentParser(description="Knitweb Gither codebase control plane")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    _add_workspace_commands(subparsers)
+    _add_review_commands(subparsers)
+    _add_codegraph_commands(subparsers)
+    _add_peer_commands(subparsers)
+    _add_misc_commands(subparsers)
+    subparsers.add_parser("explain", help="explain the Gither workflow")
+    return parser
 
+
+def _add_workspace_commands(subparsers) -> None:
     discover = subparsers.add_parser("discover", help="discover Git repositories")
     discover.add_argument("--root", default=".", help="root directory to scan")
     discover.add_argument("--name", default="knitweb", help="workspace name")
@@ -91,6 +100,8 @@ def build_parser() -> argparse.ArgumentParser:
     repo_snapshot.add_argument("--repo", default=".", help="repository path")
     repo_snapshot.add_argument("--json", action="store_true")
 
+
+def _add_review_commands(subparsers) -> None:
     python_audit = subparsers.add_parser("python-audit", help="audit Python code discipline")
     python_audit.add_argument("--root", default=".", help="source root")
     python_audit.add_argument("--json", action="store_true")
@@ -120,6 +131,8 @@ def build_parser() -> argparse.ArgumentParser:
     license_protocol = subparsers.add_parser("license-protocol", help="print mirror license protocol")
     license_protocol.add_argument("--json", action="store_true")
 
+
+def _add_codegraph_commands(subparsers) -> None:
     popular_repos = subparsers.add_parser("popular-repos", help="scan popular repositories and build PDFs")
     popular_repos.add_argument("--output-dir", default="artifacts/popularity")
     popular_repos.add_argument("--limit", type=int, default=20000)
@@ -167,9 +180,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     analyze.add_argument("--json", action="store_true")
 
-    subparsers.add_parser("benchmark-plan", help="print benchmark plan")
-    subparsers.add_parser("value-model", help="print knowledge ownership model")
 
+def _add_peer_commands(subparsers) -> None:
     peer = subparsers.add_parser("peer", help="show or create this node's peer identity")
     peer.add_argument("--repo", default=".", help="repository path holding .gither")
     peer.add_argument("--new", action="store_true", help="generate a fresh identity, overwriting any existing key")
@@ -193,6 +205,11 @@ def build_parser() -> argparse.ArgumentParser:
     announce.add_argument("--repo", default=".", help="repository path holding .gither")
     announce.add_argument("--pattern", default="refs/heads/", help="ref pattern to publish")
 
+
+def _add_misc_commands(subparsers) -> None:
+    subparsers.add_parser("benchmark-plan", help="print benchmark plan")
+    subparsers.add_parser("value-model", help="print knowledge ownership model")
+
     web3_fork = subparsers.add_parser("web3-fork-feature", help="print the web3 fork feature spec")
     web3_fork.add_argument("--json", action="store_true")
     p2p_manifest = subparsers.add_parser(
@@ -209,8 +226,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p2p_verify.add_argument("--manifest", required=True)
     p2p_verify.add_argument("--json", action="store_true")
-    subparsers.add_parser("explain", help="explain the Gither workflow")
-    return parser
 
 
 def handle_discover(args: argparse.Namespace) -> int:

@@ -11,6 +11,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from collections.abc import Callable
 
 __all__ = [
     "RepoRecord",
@@ -73,6 +74,7 @@ class ScriptRecord:
     size: int
 
     def to_json(self) -> dict[str, object]:
+        """Serialize one script record to JSON-compatible data."""
         return {"path": self.path, "language": self.language, "size": self.size}
 
 
@@ -93,9 +95,11 @@ class RepoRecord:
 
     @property
     def dominant_language_percent(self) -> float:
+        """Return the percentage for the dominant language."""
         return dominant_language_percent(self.language_percentages, self.dominant_language)
 
     def to_json(self) -> dict[str, object]:
+        """Serialize one repository popularity record."""
         return {
             "rank": self.rank,
             "full_name": self.full_name,
@@ -433,7 +437,7 @@ def enrich_top_scripts(
 
 def bucket_star_ranges(
     max_stars: int,
-    count_fn,
+    count_fn: Callable[[int, int], int],
     *,
     threshold: int = 1000,
 ) -> list[tuple[int, int, int]]:
@@ -683,7 +687,7 @@ def write_python_pdf(
 def _split_star_range(
     low: int,
     high: int,
-    count_fn,
+    count_fn: Callable[[int, int], int],
     threshold: int,
 ) -> list[tuple[int, int, int]]:
     if low > high:
