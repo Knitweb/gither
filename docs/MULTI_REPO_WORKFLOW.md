@@ -50,6 +50,8 @@ Each entry declares:
 7. Run `gither gate`.
 8. If contracts changed, run `gither test-plan`.
 9. Export the updated repo graph when topology changed.
+10. Export `gither p2p-manifest` so peers can verify repo identity and refs without
+    trusting GitHub as the authority.
 
 ## Example
 
@@ -108,3 +110,18 @@ Nine open sessions can work for a founder, but it does not scale.
 Gither makes the routing explicit.
 An agent can enter one repo with intent, run that repo's checks, and only widen scope
 when the manifest says the change touches multiple domains.
+
+## Making Repositories P2P
+
+The workspace manifest is the human-editable map.
+The p2p manifest is the peer-verifiable map.
+
+```bash
+gither p2p-manifest --workspace examples/knitweb.workspace.json --output artifacts/p2p/repos.json
+gither p2p-verify --manifest artifacts/p2p/repos.json
+```
+
+Peers can exchange `repos.json` by file sync, static hosting, p2p storage, or a future
+gossip transport.
+The manifest binds each repo's identity to its current Git refs and state hashes, so a
+peer can detect tampering before deciding whether to fetch Git objects from any mirror.

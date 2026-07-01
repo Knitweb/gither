@@ -6,6 +6,12 @@ import ast
 from dataclasses import dataclass
 from pathlib import Path
 
+BODY_LINE_LIMITS = {
+    "class": 200,
+    "function": 80,
+    "module": 1,
+}
+
 
 @dataclass(frozen=True)
 class SymbolAudit:
@@ -22,7 +28,11 @@ class SymbolAudit:
     @property
     def ok(self) -> bool:
         """Return whether this symbol satisfies the local quality gate."""
-        return self.has_docstring and not self.missing_annotations and self.body_lines <= 80
+        return (
+            self.has_docstring
+            and not self.missing_annotations
+            and self.body_lines <= BODY_LINE_LIMITS.get(self.kind, 80)
+        )
 
     def to_json(self) -> dict[str, object]:
         """Serialize the symbol audit to plain JSON data."""

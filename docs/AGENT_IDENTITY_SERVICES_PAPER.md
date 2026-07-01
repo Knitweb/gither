@@ -1,20 +1,20 @@
-# Agent Identity Issuance for Gither and Vank
+# Agent Identity Issuance for Gither and Vang
 
 ## Abstract
 
-Gither and Vank need two different protections that should not be collapsed into one
+Gither and Vang need two different protections that should not be collapsed into one
 mechanism.
 
 - Gither needs strong code authority so propaganda, mirror tampering, or forged release
   state cannot silently rewrite software history.
-- Vank needs strong accountability for agents and people, but it must not publish raw
+- Vang needs strong accountability for agents and people, but it must not publish raw
   identity evidence or KYC payloads into the replicated fabric.
 
 This paper proposes a practical first architecture:
 
 1. keep public voting and forge records minimal and content-addressed;
 2. move raw identity evidence into an encrypted evidence vault;
-3. let Vank issue traceable agent identity attestations only after a regulated or
+3. let Vang issue traceable agent identity attestations only after a regulated or
    contractually trusted identity service has verified the underlying person;
 4. make the cryptographic stack crypto-agile, with a migration path from
    secp256k1/SHA-256 toward post-quantum signatures and KEM-based evidence encryption;
@@ -44,9 +44,9 @@ The current codebase already locks in several useful boundaries.
 That scheme byte is important. It means the system already anticipates a soft-fork path for
 future signature schemes instead of forcing one irreversible address rewrite.
 
-### Vank today
+### Vang today
 
-`vank` currently consumes personhood tickets and scope nullifiers, and its ballot record
+`vang` currently consumes personhood tickets and scope nullifiers, and its ballot record
 deliberately carries no raw identity. In the personhood foundation branch of Pulse:
 
 - `personhood-anchor` is PII-free;
@@ -106,7 +106,7 @@ The viable design is a split model:
 - key compromise of visible secp256k1 identities;
 - future Shor-style break against revealed ECC public keys.
 
-### Vank threats
+### Vang threats
 
 - disclosure of ID copies, liveness checks, or provider transcripts;
 - correlation of a person across scopes or elections;
@@ -134,12 +134,12 @@ wallet, keep it voluntary, and let it link national identity with other electron
 attestations. The Council text also emphasizes user control and free issuance, use, and
 revocation for natural persons.
 
-Implication for Gither/Vank:
+Implication for Gither/Vang:
 
 - public or regulated wallet ecosystems are the best upstream source for high-assurance
   personhood;
 - they should be treated as issuer roots or trust anchors, not as the storage layer for
-  Gither or Vank.
+  Gither or Vang.
 
 ### 2. Privacy-first selective-disclosure wallet layer
 
@@ -243,9 +243,9 @@ Role:
 - document and liveness checks;
 - recovery or fallback where wallet-native issuance is not yet available.
 
-## Proposed Vank architecture
+## Proposed Vang architecture
 
-Vank should become an issuer of **agent identity attestations**, but not a warehouse of raw
+Vang should become an issuer of **agent identity attestations**, but not a warehouse of raw
 identity artifacts.
 
 ### Public fabric payload
@@ -315,7 +315,7 @@ page into signed, portable records with explicit issuer and scheme metadata.
 ### Why ML-DSA
 
 NIST finalized **FIPS 204** as the primary post-quantum digital signature standard. For the
-Gither/Vank problem, that makes ML-DSA the correct primary target for:
+Gither/Vang problem, that makes ML-DSA the correct primary target for:
 
 - code-authority signatures;
 - issuer attestations;
@@ -337,7 +337,7 @@ NIST finalized **FIPS 203** as the primary post-quantum KEM. That makes ML-KEM t
 choice for:
 
 - encrypted evidence envelopes;
-- provider-to-Vank secure handoff;
+- provider-to-Vang secure handoff;
 - key rotation for archived raw identity evidence.
 
 ### Migration phases
@@ -365,7 +365,7 @@ the user-specified “effective SHA-256 break frontier under 512 qubits,” plus
 confirmation.
 
 - new Gither authority records require ML-DSA;
-- Vank issuer attestations require ML-DSA;
+- Vang issuer attestations require ML-DSA;
 - archived sensitive evidence must be rewrapped with ML-KEM;
 - secp256k1 becomes legacy-verify-only or fully disallowed, depending on record class.
 
@@ -407,20 +407,20 @@ Identity issuance and maintenance should be protocol-paid, but not blindly.
 
 1. Miner completes protocol work and receives Gither reward.
 2. A defined fraction flows into an identity-operations pool.
-3. Vank or Gither releases provider receipts when issuer work is validated.
+3. Vang or Gither releases provider receipts when issuer work is validated.
 4. Payment receipts are public; raw identity evidence remains encrypted and off-fabric.
 
 This makes identity a funded infrastructure cost instead of an unfunded compliance burden.
 
 ## Recommended first implementation
 
-1. Keep Vank public records PII-free.
+1. Keep Vang public records PII-free.
 2. Add an encrypted evidence-vault concept instead of storing ID copies in the fabric.
 3. Register issuer/provider trust anchors in Gither.
 4. Introduce hybrid-signature policy records in Gither before changing every primitive.
 5. Let `sha256.fail` emit a frontier/risk JSON artifact instead of pretending it is already
    an application-side switch.
-6. Add Vank support for traceable agent identity attestations backed by provider-issued
+6. Add Vang support for traceable agent identity attestations backed by provider-issued
    evidence envelopes.
 
 ## Decision
@@ -434,7 +434,7 @@ For the current repos, the best first move is:
 Instead:
 
 - Gither becomes the portable policy and payment authority;
-- Vank becomes the issuer of traceable agent identity attestations;
+- Vang becomes the issuer of traceable agent identity attestations;
 - regulated issuers and digital identity services feed encrypted evidence into that system;
 - ML-DSA, SLH-DSA, and ML-KEM define the post-quantum destination;
 - `sha256.fail` supplies a risk frontier that helps time the migration.
@@ -443,7 +443,7 @@ Instead:
 
 - Pulse current crypto boundary: local repo `pulse/src/knitweb/core/crypto.py`
 - Pulse personhood foundation branch: local repo `origin/feat/personhood-foundation`
-- Vank current architecture: local repo `vank/docs/ARCHITECTURE.md`
+- Vang current architecture: local repo `vang/docs/ARCHITECTURE.md`
 - Gither current authority model: local repo `gither/README.md`
 - EU Council, *European digital identity (eID): Council adopts legal framework on a secure and trustworthy digital wallet for all Europeans*: https://www.consilium.europa.eu/en/press/press-releases/2024/03/26/european-digital-identity-eid-council-adopts-legal-framework-on-a-secure-and-trustworthy-digital-wallet-for-all-europeans/
 - NIST FIPS 203, *Module-Lattice-Based Key-Encapsulation Mechanism Standard*: https://csrc.nist.gov/pubs/fips/203/final

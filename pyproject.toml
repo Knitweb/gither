@@ -16,6 +16,10 @@ dependencies = []
 dev = [
   "pytest>=9.0.3",
 ]
+analyze = [
+  "tree-sitter>=0.25",
+  "tree-sitter-python>=0.23",
+]
 
 [project.scripts]
 gither = "gither.cli:main"

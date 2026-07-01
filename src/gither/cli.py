@@ -11,15 +11,23 @@ from pathlib import Path
 from .audit import audit_python
 from .benchmark import benchmark_plan
 from .changebook import write_change_note
+from .codegraph.analyze import analyze_python_repo
+from .codegraph.query import Corpus
+from .codegraph.rosetta import run_import as rosetta_run_import
+from .codegraph.store import build_repo_snapshot, load_repo_snapshot, save_repo_snapshot
 from .gitops import snapshot_repo
 from .gossip import announce_inventory, announce_refs
 from .graph import graph_json
 from .identity import IdentityDoc, SignedIdentity, collect_signatures
+from .popularity import popular_repo_report
 from .licenses import license_protocol_json_text, license_protocol_markdown
 from .peer import PeerIdentity
+from .p2p import build_p2p_manifest, load_p2p_manifest, verify_p2p_manifest, write_p2p_manifest
+from .review import build_review_pack, review_pack_markdown
 from .routing import route_change
 from .sigrefs import SignedRefs, sign_repo_refs
 from .value import value_model
+from .web3fork import web3_fork_feature_json, web3_fork_feature_markdown
 from .workspace import discover_workspace, load_workspace, save_workspace
 
 
@@ -35,8 +43,16 @@ def main(argv: list[str] | None = None) -> int:
         "python-audit": handle_python_audit,
         "change-note": handle_change_note,
         "gate": handle_gate,
+        "review-pack": handle_review_pack,
         "license-protocol": handle_license_protocol,
+        "popular-repos": handle_popular_repos,
+        "rosetta-import": handle_rosetta_import,
+        "rosetta-query": handle_rosetta_query,
+        "analyze-python": handle_analyze_python,
         "value-model": handle_value_model,
+        "web3-fork-feature": handle_web3_fork_feature,
+        "p2p-manifest": handle_p2p_manifest,
+        "p2p-verify": handle_p2p_verify,
         "benchmark-plan": handle_benchmark_plan,
         "peer": handle_peer,
         "rad-id": handle_rad_id,
@@ -51,7 +67,16 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the CLI parser without executing any command."""
     parser = argparse.ArgumentParser(description="Knitweb Gither codebase control plane")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    _add_workspace_commands(subparsers)
+    _add_review_commands(subparsers)
+    _add_codegraph_commands(subparsers)
+    _add_peer_commands(subparsers)
+    _add_misc_commands(subparsers)
+    subparsers.add_parser("explain", help="explain the Gither workflow")
+    return parser
 
+
+def _add_workspace_commands(subparsers) -> None:
     discover = subparsers.add_parser("discover", help="discover Git repositories")
     discover.add_argument("--root", default=".", help="root directory to scan")
     discover.add_argument("--name", default="knitweb", help="workspace name")
@@ -75,6 +100,8 @@ def build_parser() -> argparse.ArgumentParser:
     repo_snapshot.add_argument("--repo", default=".", help="repository path")
     repo_snapshot.add_argument("--json", action="store_true")
 
+
+def _add_review_commands(subparsers) -> None:
     python_audit = subparsers.add_parser("python-audit", help="audit Python code discipline")
     python_audit.add_argument("--root", default=".", help="source root")
     python_audit.add_argument("--json", action="store_true")
@@ -93,12 +120,68 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--json", action="store_true")
     gate.add_argument("--strict", action="store_true", help="return non-zero on audit issues")
 
+    review_pack = subparsers.add_parser("review-pack", help="build a portable review packet")
+    review_pack.add_argument("--repo", default=".", help="repository path")
+    review_pack.add_argument("--python-root", default="src", help="Python source root inside repo")
+    review_pack.add_argument("--max-change-notes", type=int, default=5)
+    review_pack.add_argument("--output", help="write packet to this path")
+    review_pack.add_argument("--json", action="store_true")
+    review_pack.add_argument("--strict", action="store_true", help="return non-zero when blocked")
+
     license_protocol = subparsers.add_parser("license-protocol", help="print mirror license protocol")
     license_protocol.add_argument("--json", action="store_true")
 
-    subparsers.add_parser("benchmark-plan", help="print benchmark plan")
-    subparsers.add_parser("value-model", help="print knowledge ownership model")
 
+def _add_codegraph_commands(subparsers) -> None:
+    popular_repos = subparsers.add_parser("popular-repos", help="scan popular repositories and build PDFs")
+    popular_repos.add_argument("--output-dir", default="artifacts/popularity")
+    popular_repos.add_argument("--limit", type=int, default=20000)
+    popular_repos.add_argument("--summary-limit", type=int, default=100)
+    popular_repos.add_argument("--min-python-share", type=float, default=50.0)
+    popular_repos.add_argument("--pause-seconds", type=float, default=0.0)
+    popular_repos.add_argument("--json", action="store_true")
+
+    rosetta = subparsers.add_parser(
+        "rosetta-import",
+        help="import Rosetta Code tasks into the code knowledge graph",
+    )
+    rosetta.add_argument("--limit", type=int, default=20, help="number of tasks to import")
+    rosetta.add_argument("--output-dir", default="artifacts/codegraph", help="output directory")
+    rosetta.add_argument("--pause", type=float, default=0.5, help="seconds between task fetches")
+    rosetta.add_argument("--json", action="store_true")
+
+    query = subparsers.add_parser(
+        "rosetta-query",
+        help="query the loaded Rosetta code corpus",
+    )
+    query.add_argument("--dir", default="artifacts/codegraph", help="corpus directory")
+    query.add_argument(
+        "--action",
+        choices=["stats", "languages", "chunks", "feature", "category", "search", "top", "features"],
+        default="stats",
+    )
+    query.add_argument("--task", help="task title (for languages/chunks actions)")
+    query.add_argument("--language", help="filter chunks to one language")
+    query.add_argument("--feature", help="task feature to filter on")
+    query.add_argument("--category", help="task category to filter on")
+    query.add_argument("--query", help="free-text search over task titles/descriptions")
+    query.add_argument("--limit", type=int, default=10)
+    query.add_argument("--json", action="store_true")
+
+    analyze = subparsers.add_parser(
+        "analyze-python",
+        help="Phase-2 tree-sitter analysis of a Python repository",
+    )
+    analyze.add_argument("--root", default=".", help="repository root to analyze")
+    analyze.add_argument("--glob", default="**/*.py", help="file glob relative to root")
+    analyze.add_argument(
+        "--snapshot-file",
+        help="JSON snapshot cache to read and refresh for incremental analysis",
+    )
+    analyze.add_argument("--json", action="store_true")
+
+
+def _add_peer_commands(subparsers) -> None:
     peer = subparsers.add_parser("peer", help="show or create this node's peer identity")
     peer.add_argument("--repo", default=".", help="repository path holding .gither")
     peer.add_argument("--new", action="store_true", help="generate a fresh identity, overwriting any existing key")
@@ -122,8 +205,27 @@ def build_parser() -> argparse.ArgumentParser:
     announce.add_argument("--repo", default=".", help="repository path holding .gither")
     announce.add_argument("--pattern", default="refs/heads/", help="ref pattern to publish")
 
-    subparsers.add_parser("explain", help="explain the Gither workflow")
-    return parser
+
+def _add_misc_commands(subparsers) -> None:
+    subparsers.add_parser("benchmark-plan", help="print benchmark plan")
+    subparsers.add_parser("value-model", help="print knowledge ownership model")
+
+    web3_fork = subparsers.add_parser("web3-fork-feature", help="print the web3 fork feature spec")
+    web3_fork.add_argument("--json", action="store_true")
+    p2p_manifest = subparsers.add_parser(
+        "p2p-manifest",
+        help="export workspace repositories as a content-addressed p2p manifest",
+    )
+    p2p_manifest.add_argument("--workspace", default="examples/knitweb.workspace.json")
+    p2p_manifest.add_argument("--output", help="write manifest JSON to this path")
+    p2p_manifest.add_argument("--json", action="store_true")
+
+    p2p_verify = subparsers.add_parser(
+        "p2p-verify",
+        help="verify a p2p repository manifest offline",
+    )
+    p2p_verify.add_argument("--manifest", required=True)
+    p2p_verify.add_argument("--json", action="store_true")
 
 
 def handle_discover(args: argparse.Namespace) -> int:
@@ -229,6 +331,25 @@ def handle_gate(args: argparse.Namespace) -> int:
     return 1 if args.strict and not result["ok"] else 0
 
 
+def handle_review_pack(args: argparse.Namespace) -> int:
+    """Build a portable review packet for the current repository state."""
+    pack = build_review_pack(
+        Path(args.repo),
+        python_root=args.python_root,
+        max_change_notes=args.max_change_notes,
+    )
+    if args.json:
+        output = json.dumps(pack.to_json(), indent=2, sort_keys=True) + "\n"
+    else:
+        output = review_pack_markdown(pack)
+    if args.output:
+        Path(args.output).write_text(output)
+        print(f"wrote {args.output}")
+    else:
+        print(output, end="")
+    return 1 if args.strict and not pack.ok else 0
+
+
 def handle_benchmark_plan(_args: argparse.Namespace) -> int:
     """Print the benchmark plan."""
     print(benchmark_plan())
@@ -241,6 +362,112 @@ def handle_license_protocol(args: argparse.Namespace) -> int:
         print(license_protocol_json_text(), end="")
     else:
         print(license_protocol_markdown())
+    return 0
+
+
+def handle_popular_repos(args: argparse.Namespace) -> int:
+    """Run the repository popularity scan and build local artifacts."""
+    outputs = popular_repo_report(
+        Path(args.output_dir),
+        limit=args.limit,
+        summary_limit=args.summary_limit,
+        min_python_share=args.min_python_share,
+        pause_seconds=args.pause_seconds,
+    )
+    if args.json:
+        print(json.dumps({key: str(value) for key, value in outputs.items()}, indent=2, sort_keys=True))
+    else:
+        for key, value in outputs.items():
+            print(f"{key}: {value}")
+    return 0
+
+
+def handle_rosetta_import(args: argparse.Namespace) -> int:
+    """Import Rosetta Code tasks into the content-addressed code graph."""
+    summary = rosetta_run_import(
+        limit=args.limit,
+        output_dir=args.output_dir,
+        pause=args.pause,
+    )
+    if args.json:
+        print(json.dumps(summary, indent=2, sort_keys=True))
+    else:
+        for key, value in summary.items():
+            if isinstance(value, list):
+                print(f"{key}: {len(value)}")
+                for item in value:
+                    print(f"  - {item}")
+            else:
+                print(f"{key}: {value}")
+    return 0
+
+
+def handle_rosetta_query(args: argparse.Namespace) -> int:
+    """Answer queries against the loaded code corpus."""
+    corpus = Corpus.load(args.dir)
+    if args.action == "stats":
+        result = corpus.stats()
+    elif args.action == "languages":
+        if not args.task:
+            print("--task is required for languages", file=sys.stderr)
+            return 2
+        result = corpus.languages_for_task(args.task)
+    elif args.action == "chunks":
+        if not args.task:
+            print("--task is required for chunks", file=sys.stderr)
+            return 2
+        chunks = corpus.chunks_for_task(args.task, language=args.language)
+        result = [chunk.to_json() for chunk in chunks[: args.limit]]
+    elif args.action == "feature":
+        if not args.feature:
+            print("--feature is required for feature", file=sys.stderr)
+            return 2
+        result = [concept.to_json() for concept in corpus.tasks_by_feature(args.feature)]
+    elif args.action == "category":
+        if not args.category:
+            print("--category is required for category", file=sys.stderr)
+            return 2
+        result = [concept.to_json() for concept in corpus.tasks_by_category(args.category)]
+    elif args.action == "search":
+        if not args.query:
+            print("--query is required for search", file=sys.stderr)
+            return 2
+        result = [concept.to_json() for concept in corpus.search_tasks(args.query, limit=args.limit)]
+    elif args.action == "top":
+        result = corpus.top_tasks_by_language_count(limit=args.limit)
+    elif args.action == "features":
+        result = corpus.features_index()
+    else:
+        print(f"unknown action: {args.action}", file=sys.stderr)
+        return 2
+    if args.json or isinstance(result, (list, dict)):
+        print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
+    else:
+        print(result)
+    return 0
+
+
+def handle_analyze_python(args: argparse.Namespace) -> int:
+    """Run Phase-2 tree-sitter analysis on a repository and print stats."""
+    try:
+        if args.snapshot_file:
+            snapshot_path = Path(args.snapshot_file)
+            previous = load_repo_snapshot(snapshot_path) if snapshot_path.exists() else None
+            snapshot = build_repo_snapshot(args.root, glob=args.glob, previous=previous)
+            save_repo_snapshot(snapshot, snapshot_path)
+            stats = snapshot.stats()
+            stats["snapshot_file"] = str(snapshot_path)
+        else:
+            repo = analyze_python_repo(args.root, glob=args.glob)
+            stats = repo.stats()
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(stats, indent=2, sort_keys=True))
+    else:
+        for key, value in stats.items():
+            print(f"{key}: {value}")
     return 0
 
 
@@ -369,6 +596,46 @@ def handle_announce(args: argparse.Namespace) -> int:
     inv_ann = announce_inventory((rid,), node, timestamp)
     print(json.dumps({"refs": refs_ann.to_json(), "inventory": inv_ann.to_json()}, indent=2, sort_keys=True))
     return 0
+
+
+def handle_web3_fork_feature(args: argparse.Namespace) -> int:
+    """Print the named Web3 fork feature spec."""
+    if args.json:
+        print(web3_fork_feature_json(), end="")
+    else:
+        print(web3_fork_feature_markdown())
+    return 0
+
+
+def handle_p2p_manifest(args: argparse.Namespace) -> int:
+    """Export a content-addressed p2p repository manifest."""
+    workspace = load_workspace(Path(args.workspace))
+    manifest = build_p2p_manifest(workspace)
+    if args.output:
+        write_p2p_manifest(Path(args.output), manifest)
+    if args.json or not args.output:
+        print(json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False))
+    else:
+        available = sum(1 for record in manifest["records"] if record["state"]["available"])
+        print(
+            f"wrote {args.output}: {manifest['count']} repos, "
+            f"{available} available, id {manifest['manifestId']}"
+        )
+    return 0
+
+
+def handle_p2p_verify(args: argparse.Namespace) -> int:
+    """Verify a content-addressed p2p repository manifest."""
+    report = verify_p2p_manifest(load_p2p_manifest(Path(args.manifest)))
+    if args.json:
+        print(json.dumps(report.to_json(), indent=2, sort_keys=True))
+    else:
+        print(f"manifest: {report.manifest_id or '(missing)'}")
+        print(f"records: {report.record_count}")
+        print(f"verify: {'ok' if report.ok else 'FAILED'}")
+        for error in report.errors:
+            print(f"  - {error}")
+    return 0 if report.ok else 1
 
 
 def handle_explain(_args: argparse.Namespace) -> int:
