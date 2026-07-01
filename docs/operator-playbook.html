@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Operator Playbook - Gither</title>
+    <link rel="stylesheet" href="./gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">Gither</a>
+        <a href="./getting-started.html">Getting started</a>
+        <a href="./wiki.html">Wiki</a>
+        <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Release and mirror operations</span>
+        <h1>Gither operator playbook</h1>
+        <p class="lede">This page is the checklist for shipping Gither-managed changes: prepare the local checkout, collect review evidence, merge through a PR, and mirror the static public pages to GitHub Pages and 5mart.</p>
+        <div class="actions">
+          <a class="primary" href="#daily-flow">Daily flow</a>
+          <a href="#review-checklist">Review checklist</a>
+          <a href="#release-checklist">Release checklist</a>
+          <a href="#mirror-checklist">Mirror checklist</a>
+        </div>
+      </header>
+
+      <section id="daily-flow" class="panel">
+        <h2>Daily flow</h2>
+        <ol class="step-list">
+          <li><strong>Confirm the target repo.</strong> Start in the checkout that owns the change, then check <code>git status --short --branch</code>.</li>
+          <li><strong>Create a narrow branch.</strong> Keep one operational concern per branch so the PR review stays readable.</li>
+          <li><strong>Make the smallest complete change.</strong> Update code, docs, tests, and public navigation together when they are one user-facing unit.</li>
+          <li><strong>Run local verification.</strong> Use the repository's normal tests plus <code>gither gate</code> when Python source is involved.</li>
+          <li><strong>Open a PR for review.</strong> Include commands run, public URL impact, and any mirror step still required.</li>
+          <li><strong>Merge only after review evidence is good.</strong> Hosted CI is useful, but Gither should also preserve portable review context.</li>
+        </ol>
+      </section>
+
+      <section id="review-checklist" class="panel">
+        <h2>Review checklist</h2>
+        <ul>
+          <li>The branch is based on current <code>origin/main</code>.</li>
+          <li>The diff contains only the intended feature, fix, or docs update.</li>
+          <li>Every new public page is linked from at least one stable entry point.</li>
+          <li>The README describes public URLs when the change affects publishing.</li>
+          <li>Static docs do not use inline scripts or click handlers.</li>
+          <li>Long-term authority is described as Gither/Knitweb records, not a hosted mirror.</li>
+        </ul>
+      </section>
+
+      <section id="release-checklist" class="panel">
+        <h2>Release checklist</h2>
+        <pre><code>git fetch origin
+git status --short --branch
+python3 -m compileall -q src tests
+python -m pytest -q
+PYTHONPATH=src python -m gither.cli gate --repo . --python-root src --strict</code></pre>
+        <div class="callout">If a generated cache file appears during verification, remove it or ignore it before merging. Do not leave a dirty release checkout.</div>
+      </section>
+
+      <section id="mirror-checklist" class="panel">
+        <h2>Mirror checklist</h2>
+        <div class="grid">
+          <article class="card">
+            <strong>GitHub Pages</strong>
+            <p>The Gither repo publishes from <code>main/docs</code> at <a href="https://knitweb.github.io/gither/">https://knitweb.github.io/gither/</a>.</p>
+          </article>
+          <article class="card">
+            <strong>5mart</strong>
+            <p>The static mirror should be available at <a href="https://www.5mart.ml/gither/">https://www.5mart.ml/gither/</a> after copying the docs output into the hosted <code>www/gither</code> path.</p>
+          </article>
+          <article class="card">
+            <strong>Independent target</strong>
+            <p><a href="https://gither.github.io/">https://gither.github.io/</a> is the desired identity once the <code>gither</code> account or organization is controlled.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Recovery flows</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Problem</th>
+              <th>Recovery</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PR merged but GitHub Pages has old content.</td>
+              <td>Check the Pages build, confirm the repo publishes from <code>main/docs</code>, and revalidate the exact page URL.</td>
+            </tr>
+            <tr>
+              <td>5mart mirror returns 404.</td>
+              <td>Verify the <code>gither/</code> directory exists under the live web root and contains <code>index.html</code>.</td>
+            </tr>
+            <tr>
+              <td>A reviewer asks what changed.</td>
+              <td>Point to the PR diff, the change note if present, and the review pack when generated.</td>
+            </tr>
+            <tr>
+              <td>The repo is dirty after tests.</td>
+              <td>Inspect generated files, keep intentional artifacts, and remove cache output before the final status check.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer>
+        <span>Operator checklist for Gither releases and mirrors.</span>
+        <span><a href="./getting-started.html">Getting started</a> <a href="./wiki.html">Wiki</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

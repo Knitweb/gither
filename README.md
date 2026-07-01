@@ -160,6 +160,14 @@ Read the public agentic-workflows page:
 docs/agentic-workflows.html
 ```
 
+Read the public operator pages:
+
+```text
+docs/getting-started.html
+docs/wiki.html
+docs/operator-playbook.html
+```
+
 ## Portfolio Commands
 
 Discover local repositories:
@@ -231,4 +239,21 @@ Until that identity is controlled, the public fallback is:
 
 ```text
 https://knitweb.github.io/gither/
+```
+
+The 5mart mirror is:
+
+```text
+https://www.5mart.ml/gither/
+```
+
+The instructive pages and wiki entry point are:
+
+```text
+https://knitweb.github.io/gither/getting-started.html
+https://knitweb.github.io/gither/wiki.html
+https://knitweb.github.io/gither/operator-playbook.html
+https://www.5mart.ml/gither/getting-started.html
+https://www.5mart.ml/gither/wiki.html
+https://www.5mart.ml/gither/operator-playbook.html
 ```

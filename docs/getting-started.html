@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Getting Started - Gither</title>
+    <link rel="stylesheet" href="./gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">Gither</a>
+        <a href="./wiki.html">Wiki</a>
+        <a href="./operator-playbook.html">Operator playbook</a>
+        <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Local-first review workflow</span>
+        <h1>Getting started with Gither</h1>
+        <p class="lede">Use Gither as the code-forge layer around an existing Git checkout: snapshot the repo, record why a change exists, run the local gate, and publish a review packet before a hosted mirror receives the merge.</p>
+        <div class="actions">
+          <a class="primary" href="#first-run">First run</a>
+          <a href="#change-flow">Change flow</a>
+          <a href="#public-urls">Public URLs</a>
+        </div>
+      </header>
+
+      <section id="first-run" class="panel">
+        <h2>First run</h2>
+        <p>Start in the repository that should be reviewed. Gither does not replace Git objects yet; it adds review state, ownership state, and release discipline around them.</p>
+        <pre><code>python -m pip install -e .
+gither repo-snapshot --repo .
+gither python-audit --root src
+gither gate --repo . --python-root src</code></pre>
+        <div class="callout">A clean gate means the current checkout is understandable enough to review. It is not a release by itself.</div>
+      </section>
+
+      <section id="change-flow">
+        <h2>Change flow</h2>
+        <ol class="step-list">
+          <li>
+            <strong>1. Route the work</strong>
+            Pick the repository and adjacent dependencies before editing.
+            <pre><code>gither route "add a docs wiki for Gither"</code></pre>
+          </li>
+          <li>
+            <strong>2. Capture the starting state</strong>
+            Keep branch, head commit, remote, and dirty status visible.
+            <pre><code>gither repo-snapshot --repo .</code></pre>
+          </li>
+          <li>
+            <strong>3. Write a change note</strong>
+            The note records why the change exists and which tests prove it.
+            <pre><code>gither change-note \
+  --summary "add Gither wiki pages" \
+  --why "operators need public instructions before using Gither as a forge" \
+  --test "python -m pytest -q"</code></pre>
+          </li>
+          <li>
+            <strong>4. Run the local review gate</strong>
+            Gate the repo before asking another human or agent to review.
+            <pre><code>gither gate --repo . --python-root src --strict</code></pre>
+          </li>
+          <li>
+            <strong>5. Build a portable review packet</strong>
+            The packet is the handoff artifact for PR review or p2p review.
+            <pre><code>gither review-pack --repo . --python-root src --output artifacts/review-pack.md</code></pre>
+          </li>
+          <li>
+            <strong>6. Publish to mirrors</strong>
+            GitHub Pages, GitHub PRs, and 5mart are mirrors. Gither should keep the authority record.
+          </li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <h2>When to use each command</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Use it when</th>
+              <th>Output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>repo-snapshot</code></td>
+              <td>You need the exact Git state before review.</td>
+              <td>Branch, commit, remotes, dirty files.</td>
+            </tr>
+            <tr>
+              <td><code>change-note</code></td>
+              <td>A change needs durable context.</td>
+              <td>A versioned JSON note under <code>.gither/changes</code>.</td>
+            </tr>
+            <tr>
+              <td><code>python-audit</code></td>
+              <td>Python symbols need annotation and docstring discipline.</td>
+              <td>A quality report.</td>
+            </tr>
+            <tr>
+              <td><code>gate</code></td>
+              <td>You are ready to prove a checkout is reviewable.</td>
+              <td>Pass or fail gate status.</td>
+            </tr>
+            <tr>
+              <td><code>review-pack</code></td>
+              <td>A reviewer needs a portable summary.</td>
+              <td>Markdown review packet.</td>
+            </tr>
+            <tr>
+              <td><code>p2p-manifest</code></td>
+              <td>A workspace needs to travel without trusting the transport.</td>
+              <td>Content-addressed repo manifest.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="public-urls" class="panel">
+        <h2>Public URLs</h2>
+        <div class="grid">
+          <article class="card">
+            <strong>GitHub Pages mirror</strong>
+            <p><a href="https://knitweb.github.io/gither/">https://knitweb.github.io/gither/</a></p>
+          </article>
+          <article class="card">
+            <strong>5mart mirror</strong>
+            <p><a href="https://www.5mart.ml/gither/">https://www.5mart.ml/gither/</a></p>
+          </article>
+          <article class="card">
+            <strong>Desired independent identity</strong>
+            <p><a href="https://gither.github.io/">https://gither.github.io/</a> once the account or organization is controlled.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>Gither keeps code review, release state, and ownership state portable.</span>
+        <span><a href="./wiki.html">Wiki</a> <a href="./operator-playbook.html">Operator playbook</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
