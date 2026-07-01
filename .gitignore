@@ -12,3 +12,4 @@ gither-graph.json
 
 # peer identity private key (never commit)
 .gither/identity/
+artifacts/

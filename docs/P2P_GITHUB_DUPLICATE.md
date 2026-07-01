@@ -61,6 +61,33 @@ critical open-source infrastructure should be portable before a lockout happens
 
 The p2p duplicate gives developers a familiar escape path before they need it.
 
+## Current P2P Repo Primitive
+
+Gither now exports a workspace as a content-addressed p2p repository manifest:
+
+```bash
+gither p2p-manifest \
+  --workspace examples/knitweb.workspace.json \
+  --output artifacts/p2p/knitweb-repos.json
+```
+
+Each repository record carries:
+
+- repository identity: name, remote, roles, keywords, docs, optional flag;
+- Git state: branch, head, dirty flag, changed files, remotes, local heads/tags;
+- stable `repoId`, `stateId`, and `recordId` content hashes;
+- a mirror policy that marks GitHub/GitLab as optional mirrors.
+
+The received manifest is verified offline:
+
+```bash
+gither p2p-verify --manifest artifacts/p2p/knitweb-repos.json
+```
+
+This is not yet a full patch/review gossip network.
+It is the seed object that makes repo catalogs portable across local machines, static
+websites, p2p stores, and later Knitweb/Gither gossip transport.
+
 ## Web3 And Serverless Portability
 
 The target is not just another hosted forge.

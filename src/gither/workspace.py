@@ -104,9 +104,9 @@ def infer_repo_metadata(name: str) -> tuple[tuple[str, ...], tuple[str, ...], tu
             "roles": ("activity monitor", "repository telemetry"),
             "keywords": ("monitor", "github", "activity", "repo", "telemetry", "location"),
         },
-        "vank": {
-            "roles": ("governance", "time series", "VoteVank"),
-            "keywords": ("vank", "votevank", "governance", "timeseries", "time-series", "float"),
+        "vang": {
+            "roles": ("governance", "time series", "VoteVang"),
+            "keywords": ("vang", "votevang", "governance", "timeseries", "time-series", "float"),
         },
         "bt": {
             "roles": ("DEX", "basket trust", "market"),

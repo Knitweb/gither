@@ -22,6 +22,8 @@ from .identity import IdentityDoc, SignedIdentity, collect_signatures
 from .popularity import popular_repo_report
 from .licenses import license_protocol_json_text, license_protocol_markdown
 from .peer import PeerIdentity
+from .p2p import build_p2p_manifest, load_p2p_manifest, verify_p2p_manifest, write_p2p_manifest
+from .review import build_review_pack, review_pack_markdown
 from .routing import route_change
 from .sigrefs import SignedRefs, sign_repo_refs
 from .value import value_model
@@ -41,6 +43,7 @@ def main(argv: list[str] | None = None) -> int:
         "python-audit": handle_python_audit,
         "change-note": handle_change_note,
         "gate": handle_gate,
+        "review-pack": handle_review_pack,
         "license-protocol": handle_license_protocol,
         "popular-repos": handle_popular_repos,
         "rosetta-import": handle_rosetta_import,
@@ -48,6 +51,8 @@ def main(argv: list[str] | None = None) -> int:
         "analyze-python": handle_analyze_python,
         "value-model": handle_value_model,
         "web3-fork-feature": handle_web3_fork_feature,
+        "p2p-manifest": handle_p2p_manifest,
+        "p2p-verify": handle_p2p_verify,
         "benchmark-plan": handle_benchmark_plan,
         "peer": handle_peer,
         "rad-id": handle_rad_id,
@@ -103,6 +108,14 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument("--python-root", default="src", help="Python source root inside repo")
     gate.add_argument("--json", action="store_true")
     gate.add_argument("--strict", action="store_true", help="return non-zero on audit issues")
+
+    review_pack = subparsers.add_parser("review-pack", help="build a portable review packet")
+    review_pack.add_argument("--repo", default=".", help="repository path")
+    review_pack.add_argument("--python-root", default="src", help="Python source root inside repo")
+    review_pack.add_argument("--max-change-notes", type=int, default=5)
+    review_pack.add_argument("--output", help="write packet to this path")
+    review_pack.add_argument("--json", action="store_true")
+    review_pack.add_argument("--strict", action="store_true", help="return non-zero when blocked")
 
     license_protocol = subparsers.add_parser("license-protocol", help="print mirror license protocol")
     license_protocol.add_argument("--json", action="store_true")
@@ -182,6 +195,20 @@ def build_parser() -> argparse.ArgumentParser:
 
     web3_fork = subparsers.add_parser("web3-fork-feature", help="print the web3 fork feature spec")
     web3_fork.add_argument("--json", action="store_true")
+    p2p_manifest = subparsers.add_parser(
+        "p2p-manifest",
+        help="export workspace repositories as a content-addressed p2p manifest",
+    )
+    p2p_manifest.add_argument("--workspace", default="examples/knitweb.workspace.json")
+    p2p_manifest.add_argument("--output", help="write manifest JSON to this path")
+    p2p_manifest.add_argument("--json", action="store_true")
+
+    p2p_verify = subparsers.add_parser(
+        "p2p-verify",
+        help="verify a p2p repository manifest offline",
+    )
+    p2p_verify.add_argument("--manifest", required=True)
+    p2p_verify.add_argument("--json", action="store_true")
     subparsers.add_parser("explain", help="explain the Gither workflow")
     return parser
 
@@ -287,6 +314,25 @@ def handle_gate(args: argparse.Namespace) -> int:
         _print_python_audit(result["python_audit"])
         print(f"gate: {'ok' if result['ok'] else 'blocked'}")
     return 1 if args.strict and not result["ok"] else 0
+
+
+def handle_review_pack(args: argparse.Namespace) -> int:
+    """Build a portable review packet for the current repository state."""
+    pack = build_review_pack(
+        Path(args.repo),
+        python_root=args.python_root,
+        max_change_notes=args.max_change_notes,
+    )
+    if args.json:
+        output = json.dumps(pack.to_json(), indent=2, sort_keys=True) + "\n"
+    else:
+        output = review_pack_markdown(pack)
+    if args.output:
+        Path(args.output).write_text(output)
+        print(f"wrote {args.output}")
+    else:
+        print(output, end="")
+    return 1 if args.strict and not pack.ok else 0
 
 
 def handle_benchmark_plan(_args: argparse.Namespace) -> int:
@@ -544,6 +590,37 @@ def handle_web3_fork_feature(args: argparse.Namespace) -> int:
     else:
         print(web3_fork_feature_markdown())
     return 0
+
+
+def handle_p2p_manifest(args: argparse.Namespace) -> int:
+    """Export a content-addressed p2p repository manifest."""
+    workspace = load_workspace(Path(args.workspace))
+    manifest = build_p2p_manifest(workspace)
+    if args.output:
+        write_p2p_manifest(Path(args.output), manifest)
+    if args.json or not args.output:
+        print(json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False))
+    else:
+        available = sum(1 for record in manifest["records"] if record["state"]["available"])
+        print(
+            f"wrote {args.output}: {manifest['count']} repos, "
+            f"{available} available, id {manifest['manifestId']}"
+        )
+    return 0
+
+
+def handle_p2p_verify(args: argparse.Namespace) -> int:
+    """Verify a content-addressed p2p repository manifest."""
+    report = verify_p2p_manifest(load_p2p_manifest(Path(args.manifest)))
+    if args.json:
+        print(json.dumps(report.to_json(), indent=2, sort_keys=True))
+    else:
+        print(f"manifest: {report.manifest_id or '(missing)'}")
+        print(f"records: {report.record_count}")
+        print(f"verify: {'ok' if report.ok else 'FAILED'}")
+        for error in report.errors:
+            print(f"  - {error}")
+    return 0 if report.ok else 1
 
 
 def handle_explain(_args: argparse.Namespace) -> int:

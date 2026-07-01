@@ -81,6 +81,7 @@ Gither already provides:
 - a knowledge ownership model;
 - a license-aware mirror protocol;
 - p2p GitHub-duplicate positioning for Web3/serverless portability.
+- p2p repository manifests with content-addressed repo identity, refs, and state.
 
 This is still early.
 It is not yet a full GitHub/GitLab replacement, but the codebase now points in that
@@ -120,6 +121,12 @@ Run the local review gate:
 
 ```bash
 gither gate --repo . --python-root src
+```
+
+Build a portable review packet:
+
+```bash
+gither review-pack --repo . --python-root src --output artifacts/review-pack.md
 ```
 
 Print the knowledge ownership model:
@@ -177,6 +184,20 @@ Export a repo graph:
 
 ```bash
 gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json
+```
+
+Export the workspace as p2p repository state:
+
+```bash
+gither p2p-manifest \
+  --workspace examples/knitweb.workspace.json \
+  --output artifacts/p2p/knitweb-repos.json
+```
+
+Verify a received p2p repo manifest without trusting the transport:
+
+```bash
+gither p2p-verify --manifest artifacts/p2p/knitweb-repos.json
 ```
 
 ## Authority Model

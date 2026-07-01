@@ -17,7 +17,7 @@
       ],
       "name": "knitweb",
       "path": "/Users/develuse/repo/knitweb",
-      "remote": "git@github.com:Knitweb/knitweb.git",
+      "remote": "git@github.com:Knitweb/pulse.git",
       "roles": [
         "relation fabric",
         "content addressing",
@@ -91,7 +91,7 @@
       ],
       "name": "knitweb-monitor",
       "path": "/Users/develuse/repo/knitweb-monitor",
-      "remote": "git@github.com:Knitweb/knitweb-monitor.git",
+      "remote": "git@github.com:Knitweb/monitor.git",
       "roles": [
         "activity monitor",
         "repository telemetry"
@@ -105,20 +105,20 @@
         "README.md"
       ],
       "keywords": [
-        "vank",
-        "votevank",
+        "vang",
+        "votevang",
         "governance",
         "timeseries",
         "time-series",
         "float"
       ],
-      "name": "vank",
-      "path": "/Users/develuse/repo/vank",
-      "remote": "git@github.com:Knitweb/vank.git",
+      "name": "vang",
+      "path": "/Users/develuse/repo/vang",
+      "remote": "git@github.com:Knitweb/vang.git",
       "roles": [
         "governance",
         "time series",
-        "VoteVank"
+        "VoteVang"
       ],
       "test_commands": [
         "python -m pytest -q"
