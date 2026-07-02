@@ -12,6 +12,8 @@
         <a href="./index.html">Gither</a>
         <a href="./getting-started.html">Getting started</a>
         <a href="./wiki.html">Wiki</a>
+        <a href="./enrichment-score.html">Enrichment score</a>
+        <a href="./repository-gitbooks.html">Repository gitbooks</a>
         <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
       </nav>
 
@@ -22,6 +24,7 @@
         <div class="actions">
           <a class="primary" href="#daily-flow">Daily flow</a>
           <a href="#review-checklist">Review checklist</a>
+          <a href="#enrichment-checklist">Enrichment checklist</a>
           <a href="#release-checklist">Release checklist</a>
           <a href="#mirror-checklist">Mirror checklist</a>
         </div>
@@ -48,6 +51,16 @@
           <li>The README describes public URLs when the change affects publishing.</li>
           <li>Static docs do not use inline scripts or click handlers.</li>
           <li>Long-term authority is described as Gither/Knitweb records, not a hosted mirror.</li>
+        </ul>
+      </section>
+
+      <section id="enrichment-checklist" class="panel">
+        <h2>Enrichment checklist</h2>
+        <ul>
+          <li>Track contributor enrichment from merged PRs, not from raw commit count or line count.</li>
+          <li>Export PR evidence with author, merge timestamp, reviews, checks, labels, touched files, and optional Pulse usage receipts.</li>
+          <li>Run <code>gither enrichment-score --input artifacts/merged-prs.json</code> before publishing a leaderboard or contributor report.</li>
+          <li>Link each repository book to its current enrichment evidence when the repo accepts outside contributions.</li>
         </ul>
       </section>
 
@@ -111,7 +124,7 @@ PYTHONPATH=src python -m gither.cli gate --repo . --python-root src --strict</co
 
       <footer>
         <span>Operator checklist for Gither releases and mirrors.</span>
-        <span><a href="./getting-started.html">Getting started</a> <a href="./wiki.html">Wiki</a></span>
+        <span><a href="./getting-started.html">Getting started</a> <a href="./wiki.html">Wiki</a> <a href="./enrichment-score.html">Enrichment score</a> <a href="./repository-gitbooks.html">Repository gitbooks</a></span>
       </footer>
     </main>
   </body>

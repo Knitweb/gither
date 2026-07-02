@@ -10,3 +10,4 @@ def test_value_model_rejects_commit_farming() -> None:
     assert "Knitweb records dependency relationships" in model
     assert "peer-to-peer duplicate of GitHub" in model
     assert "GitLab can also be a mirror" in model
+    assert "The enrichment score is not a royalty split." in model

@@ -11,6 +11,8 @@
       <nav>
         <a href="./index.html">Gither</a>
         <a href="./getting-started.html">Getting started</a>
+        <a href="./enrichment-score.html">Enrichment score</a>
+        <a href="./repository-gitbooks.html">Repository gitbooks</a>
         <a href="./operator-playbook.html">Operator playbook</a>
         <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
       </nav>
@@ -22,6 +24,8 @@
         <div class="actions">
           <a class="primary" href="#core-records">Core records</a>
           <a href="#command-map">Command map</a>
+          <a href="./enrichment-score.html">Enrichment score</a>
+          <a href="./repository-gitbooks.html">Repository gitbooks</a>
           <a href="#decisions">Decision rules</a>
           <a href="#troubleshooting">Troubleshooting</a>
         </div>
@@ -78,6 +82,16 @@
               <td>Usage-based royalty policy for reviewed components.</td>
               <td><code>gither value-model</code></td>
             </tr>
+            <tr>
+              <td>Contributor enrichment score</td>
+              <td>Contributor signal based on merged PR evidence, review state, tests, docs, dependency surfaces, and optional Pulse usage receipts.</td>
+              <td><code>gither enrichment-score --input artifacts/merged-prs.json</code></td>
+            </tr>
+            <tr>
+              <td>Repository gitbook</td>
+              <td>Living operator documentation for each Knitweb repository.</td>
+              <td><code>docs/repository-gitbooks.html</code></td>
+            </tr>
           </tbody>
         </table>
       </section>
@@ -109,6 +123,10 @@
             <strong>Value</strong>
             <p><code>value-model</code> and <code>license-protocol</code> define ownership and mirror constraints.</p>
           </article>
+          <article class="card">
+            <strong>Enrichment</strong>
+            <p><code>enrichment-score</code> turns merged PR exports into a contributor signal without rewarding raw commit volume.</p>
+          </article>
         </div>
       </section>
 
@@ -118,6 +136,7 @@
           <li>Use Git for the object model and transport while Gither is still early.</li>
           <li>Treat GitHub and GitLab as mirrors, not the long-term source of authority.</li>
           <li>Do not reward raw commit volume. Code earns only when it is reviewed, released, depended on, and actually used.</li>
+          <li>Use merged PRs as the tracking unit for contributor enrichment, then require review, gate, test, documentation, dependency, or usage evidence for stronger signals.</li>
           <li>Keep documentation tied to code changes. If a page does not help an operator review, release, or recover the system, it should be shorter.</li>
           <li>Prefer local gates and portable artifacts before hosted automation.</li>
           <li>Mirror to public sites only after the repo state and docs links have been tested.</li>
@@ -161,7 +180,7 @@
 
       <footer>
         <span>Wiki page for the current Gither implementation.</span>
-        <span><a href="./getting-started.html">Getting started</a> <a href="./operator-playbook.html">Operator playbook</a></span>
+        <span><a href="./getting-started.html">Getting started</a> <a href="./enrichment-score.html">Enrichment score</a> <a href="./repository-gitbooks.html">Repository gitbooks</a> <a href="./operator-playbook.html">Operator playbook</a></span>
       </footer>
     </main>
   </body>

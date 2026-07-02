@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>gither Gitbook - Gither</title>
+    <link rel="stylesheet" href="../gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">All books</a>
+        <a href="../repository-gitbooks.html">Standard</a>
+        <a href="../enrichment-score.html">Enrichment</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Repository book</span>
+        <h1>gither</h1>
+        <p class="lede">The code forge authority for routing, review gates, PR enrichment, p2p manifests, and public documentation mirrors.</p>
+      </header>
+
+      <section class="panel">
+        <h2>Start</h2>
+        <pre><code>python -m pip install -e .
+gither repo-snapshot --repo .
+gither gate --repo . --python-root src --strict</code></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Concepts</h2>
+        <ul>
+          <li>GitHub and GitLab are mirrors; Gither owns review and release state.</li>
+          <li>Change notes preserve why a change exists before it becomes a PR.</li>
+          <li>Enrichment score ranks merged, reviewed contribution evidence without rewarding raw volume.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Guides</h2>
+        <ol class="step-list">
+          <li><strong>Change flow</strong> Route, snapshot, edit, write a change note, test, and gate.</li>
+          <li><strong>PR enrichment</strong> Export merged PR evidence and run <code>gither enrichment-score</code>.</li>
+          <li><strong>Docs release</strong> Mirror <code>docs/</code> to GitHub Pages and <code>www.5mart.ml/gither</code>.</li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <h2>Reference</h2>
+        <table>
+          <tbody>
+            <tr><th>Docs</th><td><code>README.md</code>, <code>docs/MULTI_REPO_WORKFLOW.md</code></td></tr>
+            <tr><th>Tests</th><td><code>PYTHONPATH=src python -m pytest -q</code>, <code>python -m py_compile src/gither/*.py</code></td></tr>
+            <tr><th>Remote</th><td><code>git@github.com:Knitweb/gither.git</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h2>Evidence</h2>
+        <p>Accepted Gither PRs should include test output, docs links, review packs when useful, and enrichment export examples when contribution scoring changes.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Recovery</h2>
+        <p>If a public page is stale, verify the branch, Pages source, 5mart web root, and the exact mirrored URL.</p>
+      </section>
+    </main>
+  </body>
+</html>

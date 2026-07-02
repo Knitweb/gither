@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enrichment Score - Gither</title>
+    <link rel="stylesheet" href="./gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">Gither</a>
+        <a href="./wiki.html">Wiki</a>
+        <a href="./repository-gitbooks.html">Repository gitbooks</a>
+        <a href="./operator-playbook.html">Operator playbook</a>
+        <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Contribution evidence</span>
+        <h1>Gither enrichment score</h1>
+        <p class="lede">The enrichment score ranks contributors who improve other people's codebases through merged, reviewed pull requests. It is a contribution signal, not a direct payment rule.</p>
+        <div class="actions">
+          <a class="primary" href="#score-model">Score model</a>
+          <a href="#tracking">Merged PR tracking</a>
+          <a href="#command">Command</a>
+          <a href="#publication">Publication</a>
+        </div>
+      </header>
+
+      <section id="score-model" class="panel">
+        <h2>Score model</h2>
+        <p>Only accepted work counts. Drafts, open PRs, closed-unmerged PRs, raw commits, and generated volume do not produce enrichment points.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Evidence</th>
+              <th>Points</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Merged PR</td>
+              <td>40</td>
+              <td>The change entered the target branch and can be audited later.</td>
+            </tr>
+            <tr>
+              <td>Reviewer evidence</td>
+              <td>6 per review, capped at 4</td>
+              <td>Reviewed work is harder to farm than raw PR volume.</td>
+            </tr>
+            <tr>
+              <td>Gate passed</td>
+              <td>18</td>
+              <td>Gither should reward accepted quality gates before mirror publication.</td>
+            </tr>
+            <tr>
+              <td>Tests touched</td>
+              <td>12</td>
+              <td>Tests make the enriched codebase safer for the next maintainer.</td>
+            </tr>
+            <tr>
+              <td>Docs touched</td>
+              <td>8</td>
+              <td>Operational knowledge is part of the codebase.</td>
+            </tr>
+            <tr>
+              <td>Dependency or integration surface touched</td>
+              <td>14</td>
+              <td>Shared surfaces enrich downstream users when they are handled carefully.</td>
+            </tr>
+            <tr>
+              <td>Usage receipts</td>
+              <td>4 per receipt, capped at 12</td>
+              <td>Pulse usage evidence can raise confidence that the contribution matters in practice.</td>
+            </tr>
+            <tr>
+              <td>Bounded footprint</td>
+              <td>Small capped bonus</td>
+              <td>Changed files and churn are capped so line-count farming stays weak.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="tracking" class="panel">
+        <h2>Merged PR tracking</h2>
+        <ol class="step-list">
+          <li><strong>Export PR evidence.</strong> Use GitHub, GitLab, or a Gither mirror export that contains author, state, merge time, reviews, checks, labels, files, and optional Pulse usage receipts.</li>
+          <li><strong>Normalize locally.</strong> Gither converts GitHub-like JSON into stable pull-request evidence records.</li>
+          <li><strong>Score only merged work.</strong> The calculator drops any record that is not merged.</li>
+          <li><strong>Publish the leaderboard as evidence.</strong> The score can be linked from the repository gitbook and the public Gither wiki.</li>
+        </ol>
+      </section>
+
+      <section id="command" class="panel">
+        <h2>Command</h2>
+        <p>Store a PR export under an artifact path, then score contributors offline.</p>
+        <pre><code>gither enrichment-score --input artifacts/merged-prs.json
+gither enrichment-score --input artifacts/merged-prs.json --json</code></pre>
+        <div class="callout">The command accepts a JSON list or an object with <code>pull_requests</code>, <code>pullRequests</code>, <code>items</code>, or <code>nodes</code>.</div>
+      </section>
+
+      <section id="publication" class="panel">
+        <h2>Publication</h2>
+        <div class="grid">
+          <article class="card">
+            <strong>GitHub Pages fallback</strong>
+            <p><a href="https://knitweb.github.io/gither/enrichment-score.html">https://knitweb.github.io/gither/enrichment-score.html</a></p>
+          </article>
+          <article class="card">
+            <strong>5mart mirror</strong>
+            <p><a href="https://www.5mart.ml/gither/enrichment-score.html">https://www.5mart.ml/gither/enrichment-score.html</a></p>
+          </article>
+          <article class="card">
+            <strong>Desired independent identity</strong>
+            <p><a href="https://gither.github.io/enrichment-score.html">https://gither.github.io/enrichment-score.html</a> once the account or organization is controlled.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>Enrichment rewards merged evidence, not raw volume.</span>
+        <span><a href="./repository-gitbooks.html">Repository gitbooks</a> <a href="./wiki.html">Wiki</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

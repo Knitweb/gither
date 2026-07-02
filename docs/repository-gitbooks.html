@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repository Gitbooks - Gither</title>
+    <link rel="stylesheet" href="./gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">Gither</a>
+        <a href="./wiki.html">Wiki</a>
+        <a href="./enrichment-score.html">Enrichment score</a>
+        <a href="./operator-playbook.html">Operator playbook</a>
+        <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Knitweb documentation system</span>
+        <h1>Repository gitbooks</h1>
+        <p class="lede">Every repository in the Knitweb workspace should have a living gitbook: quick enough for first contact, deep enough for operators, and tied to merged PR evidence through Gither.</p>
+        <div class="actions">
+          <a class="primary" href="#standard">Book standard</a>
+          <a href="#workspace">Workspace books</a>
+          <a href="./gitbooks/index.html">Book index</a>
+          <a href="#research">Research baseline</a>
+          <a href="#publish">Publish targets</a>
+        </div>
+      </header>
+
+      <section id="standard" class="panel">
+        <h2>Book standard</h2>
+        <p>A Gither gitbook is not a marketing page. It is the operator surface for a repository.</p>
+        <div class="grid">
+          <article class="card">
+            <strong>Start</strong>
+            <p>Project purpose, install path, first command, supported mirrors, and current owner.</p>
+          </article>
+          <article class="card">
+            <strong>Concepts</strong>
+            <p>Stable domain model, trust assumptions, data records, and how the repo fits the Knitweb graph.</p>
+          </article>
+          <article class="card">
+            <strong>Guides</strong>
+            <p>Task recipes for maintainers, reviewers, release operators, and agentic contributors.</p>
+          </article>
+          <article class="card">
+            <strong>Reference</strong>
+            <p>Commands, APIs, schemas, config, ports, environment variables, and compatibility notes.</p>
+          </article>
+          <article class="card">
+            <strong>Evidence</strong>
+            <p>Tests, review gates, merged PRs, enrichment score exports, release receipts, and known limitations.</p>
+          </article>
+          <article class="card">
+            <strong>Recovery</strong>
+            <p>Mirror failures, dirty worktrees, dependency drift, key rotation, rollback, and incident playbooks.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="workspace" class="panel">
+        <h2>Workspace books</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Repository</th>
+              <th>Book focus</th>
+              <th>Minimum pages</th>
+              <th>Evidence hook</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="./gitbooks/knitweb.html">knitweb</a></td>
+              <td>Relation fabric, content addressing, and hashgraph records.</td>
+              <td>Start, concepts, record reference, graph examples, recovery.</td>
+              <td>Dependency records and graph export tests.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/pulse.html">pulse</a></td>
+              <td>Live state, token events, wallet behavior, and usage receipts.</td>
+              <td>Start, receipt concepts, wallet guide, API reference, operator checks.</td>
+              <td>Usage receipts feeding Gither enrichment and royalties.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/lens.html">lens</a></td>
+              <td>Reasoning, RAG benchmarks, query behavior, and evaluation traces.</td>
+              <td>Start, corpus guide, benchmark guide, query reference, accuracy report.</td>
+              <td>Accepted benchmark PRs and reproducible evaluation outputs.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/knitweb-monitor.html">knitweb-monitor</a></td>
+              <td>Repository telemetry, activity signals, and mirror health.</td>
+              <td>Start, telemetry schema, dashboard guide, alerting, recovery.</td>
+              <td>Public mirror checks and PR activity rollups.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/vang.html">vang</a></td>
+              <td>Governance, issuer flow, time-series records, and release authority.</td>
+              <td>Start, governance model, issuer guide, voting reference, disputes.</td>
+              <td>Release authority attestations and dispute decisions.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/bt.html">bt</a></td>
+              <td>DEX market, basket trust, Pulse readiness, and distribution paths.</td>
+              <td>Start, market concepts, operator guide, contract/reference, risk notes.</td>
+              <td>Deployment receipts and market usage signals.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/molgang.html">molgang</a></td>
+              <td>Game, node deployment, 3D graph, and 5mart display path.</td>
+              <td>Start, gameplay model, node guide, deployment guide, assets reference.</td>
+              <td>5mart publish checks and node health evidence.</td>
+            </tr>
+            <tr>
+              <td><a href="./gitbooks/gither.html">gither</a></td>
+              <td>Code forge, review gate, enrichment score, and mirror authority.</td>
+              <td>Start, wiki, operator playbook, enrichment score, repository gitbooks.</td>
+              <td>Merged PR exports, review packs, and local gate results.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="research" class="panel">
+        <h2>Research baseline</h2>
+        <p>The structure is informed by documentation systems that separate concepts, guides, reference material, and operational examples.</p>
+        <ul>
+          <li><a href="https://quip.gitbook.io/docs">Quip docs</a> for compact GitBook-style onboarding and navigation.</li>
+          <li><a href="https://docs.libp2p.io/">libp2p docs</a> for peer-to-peer concepts, protocols, and implementation references.</li>
+          <li><a href="https://docs.ipfs.tech/">IPFS docs</a> for content-addressed concepts, how-to pages, and reference material.</li>
+          <li><a href="https://docs.radicle.xyz/">Radicle docs</a> for sovereign code collaboration and peer-to-peer forge operations.</li>
+          <li><a href="https://docs.quantum.ibm.com/">IBM Quantum docs</a> and <a href="https://docs.pennylane.ai/">PennyLane docs</a> for quantum tutorials, API references, and learning paths.</li>
+        </ul>
+      </section>
+
+      <section id="publish" class="panel">
+        <h2>Publish targets</h2>
+        <div class="grid">
+          <article class="card">
+            <strong>Book index</strong>
+            <p><a href="https://knitweb.github.io/gither/gitbooks/">https://knitweb.github.io/gither/gitbooks/</a></p>
+          </article>
+          <article class="card">
+            <strong>Desired independent identity</strong>
+            <p><a href="https://gither.github.io/repository-gitbooks.html">https://gither.github.io/repository-gitbooks.html</a></p>
+          </article>
+          <article class="card">
+            <strong>GitHub Pages fallback</strong>
+            <p><a href="https://knitweb.github.io/gither/repository-gitbooks.html">https://knitweb.github.io/gither/repository-gitbooks.html</a></p>
+          </article>
+          <article class="card">
+            <strong>5mart mirror</strong>
+            <p><a href="https://www.5mart.ml/gither/repository-gitbooks.html">https://www.5mart.ml/gither/repository-gitbooks.html</a></p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>Gitbooks are living review surfaces for every repository.</span>
+        <span><a href="./enrichment-score.html">Enrichment score</a> <a href="./operator-playbook.html">Operator playbook</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
