@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wiki - Gither</title>
+    <link rel="stylesheet" href="./gither-guide.css" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="./index.html">Gither</a>
+        <a href="./getting-started.html">Getting started</a>
+        <a href="./enrichment-score.html">Enrichment score</a>
+        <a href="./repository-gitbooks.html">Repository gitbooks</a>
+        <a href="./operator-playbook.html">Operator playbook</a>
+        <a href="https://github.com/Knitweb/gither">GitHub mirror</a>
+      </nav>
+
+      <header class="hero">
+        <span class="eyebrow">Gither wiki</span>
+        <h1>Wiki for the Gither code forge</h1>
+        <p class="lede">This wiki is the operating manual for the current Gither system: what the records mean, which commands create them, and how a change moves from local checkout to reviewed mirror.</p>
+        <div class="actions">
+          <a class="primary" href="#core-records">Core records</a>
+          <a href="#command-map">Command map</a>
+          <a href="./enrichment-score.html">Enrichment score</a>
+          <a href="./repository-gitbooks.html">Repository gitbooks</a>
+          <a href="#decisions">Decision rules</a>
+          <a href="#troubleshooting">Troubleshooting</a>
+        </div>
+      </header>
+
+      <section id="core-records" class="panel">
+        <h2>Core records</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Record</th>
+              <th>Meaning</th>
+              <th>Current implementation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Repository snapshot</td>
+              <td>Observable Git state for a checkout.</td>
+              <td><code>gither repo-snapshot --repo .</code></td>
+            </tr>
+            <tr>
+              <td>Change note</td>
+              <td>Why a change exists, how it was tested, and what a reviewer must know.</td>
+              <td><code>.gither/changes/*.json</code></td>
+            </tr>
+            <tr>
+              <td>Review gate</td>
+              <td>The local acceptance check before a mirror receives work.</td>
+              <td><code>gither gate --repo . --python-root src</code></td>
+            </tr>
+            <tr>
+              <td>Review pack</td>
+              <td>Portable reviewer handoff with repo state and audit evidence.</td>
+              <td><code>gither review-pack</code></td>
+            </tr>
+            <tr>
+              <td>RID</td>
+              <td>Content-addressed repository identity.</td>
+              <td><code>gither.identity</code></td>
+            </tr>
+            <tr>
+              <td>Signed refs</td>
+              <td>Peer-verifiable publication of refs.</td>
+              <td><code>gither.sigrefs</code></td>
+            </tr>
+            <tr>
+              <td>P2P manifest</td>
+              <td>Workspace state that can be verified without trusting GitHub or GitLab.</td>
+              <td><code>gither p2p-manifest</code></td>
+            </tr>
+            <tr>
+              <td>Ownership model</td>
+              <td>Usage-based royalty policy for reviewed components.</td>
+              <td><code>gither value-model</code></td>
+            </tr>
+            <tr>
+              <td>Contributor enrichment score</td>
+              <td>Contributor signal based on merged PR evidence, review state, tests, docs, dependency surfaces, and optional Pulse usage receipts.</td>
+              <td><code>gither enrichment-score --input artifacts/merged-prs.json</code></td>
+            </tr>
+            <tr>
+              <td>Repository gitbook</td>
+              <td>Living operator documentation for each Knitweb repository.</td>
+              <td><code>docs/repository-gitbooks.html</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="command-map" class="panel">
+        <h2>Command map</h2>
+        <div class="grid">
+          <article class="card">
+            <strong>Inspect</strong>
+            <p><code>repo-snapshot</code>, <code>discover</code>, and <code>graph</code> map the checkout and workspace before edits start.</p>
+          </article>
+          <article class="card">
+            <strong>Explain</strong>
+            <p><code>change-note</code> turns developer intent into a durable, reviewable record.</p>
+          </article>
+          <article class="card">
+            <strong>Gate</strong>
+            <p><code>python-audit</code> and <code>gate</code> make code quality explicit before a PR or release.</p>
+          </article>
+          <article class="card">
+            <strong>Package</strong>
+            <p><code>review-pack</code> and <code>p2p-manifest</code> create portable handoff artifacts.</p>
+          </article>
+          <article class="card">
+            <strong>Verify</strong>
+            <p><code>p2p-verify</code> checks received repository state without trusting the transport.</p>
+          </article>
+          <article class="card">
+            <strong>Value</strong>
+            <p><code>value-model</code> and <code>license-protocol</code> define ownership and mirror constraints.</p>
+          </article>
+          <article class="card">
+            <strong>Enrichment</strong>
+            <p><code>enrichment-score</code> turns merged PR exports into a contributor signal without rewarding raw commit volume.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="decisions" class="panel">
+        <h2>Decision rules</h2>
+        <ul>
+          <li>Use Git for the object model and transport while Gither is still early.</li>
+          <li>Treat GitHub and GitLab as mirrors, not the long-term source of authority.</li>
+          <li>Do not reward raw commit volume. Code earns only when it is reviewed, released, depended on, and actually used.</li>
+          <li>Use merged PRs as the tracking unit for contributor enrichment, then require review, gate, test, documentation, dependency, or usage evidence for stronger signals.</li>
+          <li>Keep documentation tied to code changes. If a page does not help an operator review, release, or recover the system, it should be shorter.</li>
+          <li>Prefer local gates and portable artifacts before hosted automation.</li>
+          <li>Mirror to public sites only after the repo state and docs links have been tested.</li>
+        </ul>
+      </section>
+
+      <section id="troubleshooting" class="panel">
+        <h2>Troubleshooting</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Symptom</th>
+              <th>Likely cause</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gate fails on dirty state</td>
+              <td>Untracked or modified files are still present.</td>
+              <td>Inspect with <code>git status --short</code>, commit intended files, and ignore or remove generated cache files.</td>
+            </tr>
+            <tr>
+              <td>Python audit fails</td>
+              <td>A public symbol lacks annotations, docstrings, or manageable size.</td>
+              <td>Fix the code before documenting around the failure.</td>
+            </tr>
+            <tr>
+              <td>Public page is 404</td>
+              <td>The GitHub Pages mirror or 5mart mirror has not received the new static files.</td>
+              <td>Publish the repo PR, then mirror the <code>docs/</code> output to the public web root.</td>
+            </tr>
+            <tr>
+              <td>Reviewer cannot reconstruct the work</td>
+              <td>No change note or review pack was produced.</td>
+              <td>Run <code>gither change-note</code> and <code>gither review-pack</code> before review.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer>
+        <span>Wiki page for the current Gither implementation.</span>
+        <span><a href="./getting-started.html">Getting started</a> <a href="./enrichment-score.html">Enrichment score</a> <a href="./repository-gitbooks.html">Repository gitbooks</a> <a href="./operator-playbook.html">Operator playbook</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -85,6 +85,16 @@ Valid economic claims require:
 - revenue or settlement input;
 - reproducible split rules.
 
+## Contributor Enrichment Signal
+
+Gither can still rank helpful contributors before money is involved.
+That signal is the enrichment score: a contributor earns points only from merged pull
+requests that carry review, gate, test, documentation, dependency, or usage evidence.
+
+The enrichment score is not a royalty split.
+It is a discovery and reputation signal for people who improve other people's codebases
+without rewarding raw commit count, open pull-request spam, or generated line volume.
+
 ## Knitweb And Pulse
 
 Knitweb owns the relationship graph.

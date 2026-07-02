@@ -1,0 +1,46 @@
+{
+  "created_at": "20260701T222428Z",
+  "diff_name_status": [
+    "M\tREADME.md",
+    "M\tdocs/index.html",
+    "A\tdocs/getting-started.html",
+    "A\tdocs/gither-guide.css",
+    "A\tdocs/operator-playbook.html",
+    "A\tdocs/wiki.html",
+    "A\ttests/test_docs_site.py"
+  ],
+  "programmer_notes": "Adds static docs pages, homepage links, README public URLs, and docs tests.",
+  "repo": {
+    "branch": "codex/gither-instructive-pages",
+    "changed_files": [
+      "README.md",
+      "docs/index.html",
+      "docs/getting-started.html",
+      "docs/gither-guide.css",
+      "docs/operator-playbook.html",
+      "docs/wiki.html",
+      "tests/test_docs_site.py"
+    ],
+    "dirty": true,
+    "head": "41f59f5693f3e19961f7a05280b4ed0b35f7b37f",
+    "name": "gither",
+    "path": "/Users/develuse/repo/gither",
+    "remotes": [
+      "origin\tgit@github.com:Knitweb/gither.git (fetch)",
+      "origin\tgit@github.com:Knitweb/gither.git (push)"
+    ]
+  },
+  "review_gate": {
+    "requires_code_context": true,
+    "requires_human_review_for_public_release": true,
+    "requires_python_audit": true,
+    "requires_tests": true
+  },
+  "summary": "add Gither instructive pages and wiki",
+  "tests": [
+    "python3 -m compileall -q src tests",
+    "uv run --with pytest -- python -m pytest -q",
+    "PYTHONPATH=src python3 -m gither.cli gate --repo . --python-root src --strict"
+  ],
+  "why": "Operators need public pages for getting started, wiki reference, and release mirroring before using Gither as a forge"
+}

@@ -15,6 +15,7 @@ from .codegraph.analyze import analyze_python_repo
 from .codegraph.query import Corpus
 from .codegraph.rosetta import run_import as rosetta_run_import
 from .codegraph.store import build_repo_snapshot, load_repo_snapshot, save_repo_snapshot
+from .enrichment import load_pull_request_evidence, score_contributors
 from .gitops import snapshot_repo
 from .gossip import announce_inventory, announce_refs
 from .graph import graph_json
@@ -54,6 +55,7 @@ def main(argv: list[str] | None = None) -> int:
         "p2p-manifest": handle_p2p_manifest,
         "p2p-verify": handle_p2p_verify,
         "benchmark-plan": handle_benchmark_plan,
+        "enrichment-score": handle_enrichment_score,
         "peer": handle_peer,
         "rad-id": handle_rad_id,
         "sigrefs": handle_sigrefs,
@@ -209,6 +211,13 @@ def _add_peer_commands(subparsers) -> None:
 def _add_misc_commands(subparsers) -> None:
     subparsers.add_parser("benchmark-plan", help="print benchmark plan")
     subparsers.add_parser("value-model", help="print knowledge ownership model")
+
+    enrichment = subparsers.add_parser(
+        "enrichment-score",
+        help="score contributors from merged pull-request evidence",
+    )
+    enrichment.add_argument("--input", required=True, help="JSON pull-request export")
+    enrichment.add_argument("--json", action="store_true")
 
     web3_fork = subparsers.add_parser("web3-fork-feature", help="print the web3 fork feature spec")
     web3_fork.add_argument("--json", action="store_true")
@@ -474,6 +483,24 @@ def handle_analyze_python(args: argparse.Namespace) -> int:
 def handle_value_model(_args: argparse.Namespace) -> int:
     """Print the Gither knowledge ownership model."""
     print(value_model())
+    return 0
+
+
+def handle_enrichment_score(args: argparse.Namespace) -> int:
+    """Score contributors from a pull-request evidence export."""
+    scores = score_contributors(load_pull_request_evidence(Path(args.input)))
+    if args.json:
+        print(json.dumps([score.to_json() for score in scores], indent=2, sort_keys=True))
+        return 0
+    if not scores:
+        print("no merged pull-request evidence found")
+        return 1
+    for score in scores:
+        repos = ", ".join(score.repos) or "(unscoped)"
+        print(
+            f"{score.author}: {score.score} points, "
+            f"{score.merged_prs} merged PR(s), repos: {repos}"
+        )
     return 0
 
 

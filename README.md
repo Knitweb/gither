@@ -82,6 +82,7 @@ Gither already provides:
 - a license-aware mirror protocol;
 - p2p GitHub-duplicate positioning for Web3/serverless portability.
 - p2p repository manifests with content-addressed repo identity, refs, and state.
+- contributor enrichment scoring from merged pull-request evidence.
 
 This is still early.
 It is not yet a full GitHub/GitLab replacement, but the codebase now points in that
@@ -135,6 +136,13 @@ Print the knowledge ownership model:
 gither value-model
 ```
 
+Score contributors from merged PR evidence:
+
+```bash
+gither enrichment-score --input artifacts/merged-prs.json
+gither enrichment-score --input artifacts/merged-prs.json --json
+```
+
 Print the license mirror protocol:
 
 ```bash
@@ -158,6 +166,17 @@ Read the public agentic-workflows page:
 
 ```text
 docs/agentic-workflows.html
+```
+
+Read the public operator pages:
+
+```text
+docs/getting-started.html
+docs/wiki.html
+docs/operator-playbook.html
+docs/enrichment-score.html
+docs/repository-gitbooks.html
+docs/gitbooks/index.html
 ```
 
 ## Portfolio Commands
@@ -231,4 +250,30 @@ Until that identity is controlled, the public fallback is:
 
 ```text
 https://knitweb.github.io/gither/
+```
+
+The 5mart mirror is:
+
+```text
+https://www.5mart.ml/gither/
+```
+
+The instructive pages and wiki entry point are:
+
+```text
+https://knitweb.github.io/gither/getting-started.html
+https://knitweb.github.io/gither/wiki.html
+https://knitweb.github.io/gither/operator-playbook.html
+https://knitweb.github.io/gither/enrichment-score.html
+https://knitweb.github.io/gither/repository-gitbooks.html
+https://knitweb.github.io/gither/gitbooks/
+https://www.5mart.ml/gither/getting-started.html
+https://www.5mart.ml/gither/wiki.html
+https://www.5mart.ml/gither/operator-playbook.html
+https://www.5mart.ml/gither/enrichment-score.html
+https://www.5mart.ml/gither/repository-gitbooks.html
+https://www.5mart.ml/gither/gitbooks/
+https://gither.github.io/enrichment-score.html
+https://gither.github.io/repository-gitbooks.html
+https://gither.github.io/gitbooks/
 ```

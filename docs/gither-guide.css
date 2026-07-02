@@ -1,0 +1,289 @@
+:root {
+  color-scheme: dark;
+  --bg: #101216;
+  --panel: #181d24;
+  --panel-2: #202732;
+  --line: #343d49;
+  --text: #eff4f8;
+  --muted: #a8b4c3;
+  --cyan: #58c7dd;
+  --green: #3ed18a;
+  --gold: #e6b84e;
+  --red: #ff736b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+
+main {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 22px 18px 52px;
+}
+
+a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  max-width: 860px;
+  font-size: 34px;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-top: 30px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 20px;
+  letter-spacing: 0;
+}
+
+h3 {
+  margin-top: 18px;
+  color: var(--cyan);
+  font-size: 16px;
+}
+
+p,
+li {
+  color: var(--text);
+  font-size: 15px;
+}
+
+p + p {
+  margin-top: 10px;
+}
+
+ul,
+ol {
+  margin: 10px 0 0;
+  padding-left: 22px;
+}
+
+li {
+  margin-bottom: 7px;
+}
+
+code,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+code {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  background: #1a2130;
+  color: var(--cyan);
+  font-size: 13px;
+}
+
+pre {
+  margin: 12px 0 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #0e1319;
+  color: #dfe8ef;
+  font-size: 13px;
+}
+
+pre code {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  border: 1px solid var(--line);
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--panel-2);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+tr:nth-child(even) td {
+  background: #141a22;
+}
+
+.hero,
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.hero {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.eyebrow,
+.muted {
+  color: var(--muted);
+}
+
+.eyebrow {
+  font-size: 13px;
+}
+
+.lede {
+  max-width: 880px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.actions a.primary {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.card,
+.callout {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #141a22;
+}
+
+.card {
+  padding: 12px;
+}
+
+.card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.panel {
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.callout {
+  margin-top: 14px;
+  padding: 12px;
+  color: var(--muted);
+}
+
+.step-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.step-list li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #141a22;
+}
+
+.step-list strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -343,6 +343,11 @@
           <h1>Gither</h1>
           <p class="subline">Start as a familiar GitHub duplicate. Move review state, release state, and ownership state into portable records.</p>
           <div class="hero-actions">
+            <a class="primary" href="./getting-started.html">Getting started</a>
+            <a href="./wiki.html">Wiki</a>
+            <a href="./enrichment-score.html">Enrichment score</a>
+            <a href="./repository-gitbooks.html">Repository gitbooks</a>
+            <a href="./operator-playbook.html">Operator playbook</a>
             <a class="primary" href="./agentic-workflows.html">Agentic workflows</a>
             <a href="./p2p-github-duplicate.html">Why not GitLab</a>
             <a href="./radicle-gap-backlog.html">Radicle gap</a>
@@ -420,11 +425,14 @@ gither repo-snapshot --repo .
 gither change-note --summary "accept routed agent change" --why "portable review context"
 gither python-audit --root src
 gither gate --repo . --python-root src
+gither review-pack --repo . --python-root src --output artifacts/review-pack.md
 gither license-protocol
 gither value-model
 gither route "benchmark Lens against LightRAG"
 gither test-plan --workspace examples/knitweb.workspace.json
-gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json</pre>
+gither graph --workspace examples/knitweb.workspace.json --output gither-graph.json
+gither p2p-manifest --workspace examples/knitweb.workspace.json --output artifacts/p2p/knitweb-repos.json
+gither p2p-verify --manifest artifacts/p2p/knitweb-repos.json</pre>
           </div>
         </section>
 
@@ -434,6 +442,26 @@ gither graph --workspace examples/knitweb.workspace.json --output gither-graph.j
             <span class="muted">operator readable</span>
           </div>
           <div class="body cards">
+            <article class="card">
+              <strong><a href="./getting-started.html">Getting started</a></strong>
+              <p>Install Gither, snapshot a repository, write a change note, run the gate, and publish a review packet.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./wiki.html">Wiki</a></strong>
+              <p>Core records, command map, decision rules, and troubleshooting for the current Gither system.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./operator-playbook.html">Operator playbook</a></strong>
+              <p>Daily workflow, review checklist, release checklist, and mirror checklist for GitHub Pages and 5mart.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./enrichment-score.html">Enrichment score</a></strong>
+              <p>How Gither scores contributors who enrich other codebases through merged, reviewed pull requests.</p>
+            </article>
+            <article class="card">
+              <strong><a href="./repository-gitbooks.html">Repository gitbooks</a></strong>
+              <p>The GitBook-style documentation standard for every repository in the Knitweb workspace.</p>
+            </article>
             <article class="card">
               <strong><a href="./agentic-workflows.html">Agentic workflows</a></strong>
               <p>How Gither coordinates routed agent work across Knitweb, Pulse, and optional vang release authority.</p>
@@ -502,6 +530,11 @@ gither graph --workspace examples/knitweb.workspace.json --output gither-graph.j
       <footer>
         <span>Gither should be the forge an agentic AI developer picks when hosted PRs are not enough.</span>
         <span>
+          <a href="./getting-started.html">Getting started</a>
+          <a href="./wiki.html">Wiki</a>
+          <a href="./enrichment-score.html">Enrichment score</a>
+          <a href="./repository-gitbooks.html">Repository gitbooks</a>
+          <a href="./operator-playbook.html">Operator playbook</a>
           <a href="./architecture.html">Architecture</a>
           <a href="./code-forge.html">Code forge</a>
           <a href="./agentic-workflows.html">Agentic workflows</a>
